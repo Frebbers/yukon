@@ -17,3 +17,7 @@ int main() {
 
 
 }
+
+void inputHandler(){
+
+}
