@@ -15,7 +15,7 @@ int main() {
     //"*var =" kaldes referencing; fortæller C at var er en pointer
     //" = *var" kaldes dereferencing; hvilken værdi peger var på?
     //&var addressen af en variable
-    int t = *lars
+    int t = *lars;
 
 
 
