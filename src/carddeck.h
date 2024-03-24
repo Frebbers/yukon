@@ -7,10 +7,19 @@
 
 #include <stdio.h>
 
-typedef struct {
-    char suit;
+typedef struct Card {
+    int suit;
+    int value;
+    int isFaceUp;
+    struct Card* next;
+    struct Card* prev;
+} Card;
 
-};
+typedef struct Deck {
+    Card* head;
+    Card* tail;
+    int size;
+} Deck;
 
 
 

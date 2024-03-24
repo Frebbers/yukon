@@ -1,11 +1,6 @@
 #include <stdio.h>
-typedef struct {
-    int* suit;
-    int* value;
-    struct Card* nextCard;
-    
-
-} Card;
+#include "stdlib.h"
+#include "carddeck.h"
 
 int main() {
 
@@ -26,5 +21,5 @@ int main() {
 
     return 0;
 
-
 }
+
