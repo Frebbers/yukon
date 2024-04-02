@@ -22,8 +22,6 @@ void displayDeck(Card *deck) {
         return;
     }
 
-    // Print the column headers for C1 - C7
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
 
     Card *current = deck;
     int cardsInColumn = 0;
