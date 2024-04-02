@@ -1,48 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "carddeck.h"
+#include "carddeck.c"
 
-// Define a structure for a node in the linked list
-typedef struct Card {
-    char value[3];
-    struct Card *next;
-} Card;
-
-// Function to create a new card node
-Card* createCard(const char *value) {
-    Card *newCard = (Card *)malloc(sizeof(Card));
-    if (newCard) {
-        strcpy(newCard->value, value);
-        newCard->next = NULL;
-    }
-    return newCard;
-}
-
-// Function to load the deck from a file into a linked list
-Card* loadDeck(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Error: No deck loaded.\n");
-        return NULL;
-    }
-
-    char buffer[3];
-    Card *head = NULL, *tail = NULL;
-
-    while (fscanf(file, "%2s", buffer) == 1) {
-        Card *newCard = createCard(buffer);
-        if (head == NULL) {
-            head = newCard;
-            tail = newCard;
-        } else {
-            tail->next = newCard;
-            tail = newCard;
-        }
-    }
-
-    fclose(file);
-    return head;
-}
 
 // Function to display the static parts of the interface
 void displayStaticInterface() {
@@ -54,8 +15,7 @@ void displayStaticInterface() {
     printf("\t\t\t\t\t\t\t\t[] F4\n\n");
 }
 
-// Function to display the deck
-// Function to display the deck
+
 void displayDeck(Card *deck) {
     if (deck == NULL) {
         printf("Error: No deck loaded.\n");
@@ -94,9 +54,6 @@ int main() {
     char message[100] = "";
 
     while (1) {
-        // Clear the console (uncomment next line if you are on Windows or use `clear` for Unix-like systems)
-        // system("cls"); // Windows
-        // system("clear"); // Unix/Linux/Mac
 
         displayStaticInterface();
 
@@ -111,7 +68,6 @@ int main() {
         char command[3];
         scanf("%2s", command);
 
-        // If 'SW' command is entered
         if (strcmp(command, "SW") == 0) {
             strcpy(lastCommand, "SW");
             const char *filename = "rsc/cards.txt";
@@ -121,15 +77,17 @@ int main() {
             } else {
                 strcpy(message, "Error: No deck loaded.");
             }
+        } else if (strcmp(command,"QQ") == 0){
+            freeDeck(deck);
+            printf("The program exits.");
+            exit(0);
         } else {
             strcpy(lastCommand, command);
             strcpy(message, "Unknown command.");
         }
     }
 
-    // Normally you would free the linked list memory here, but since this is a continuous loop,
-    // it would only be reached when the program exits.
-    // When implementing an 'exit' command or similar, make sure to free the memory and break the loop.
+
 
     return 0;
 }

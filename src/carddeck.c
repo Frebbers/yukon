@@ -1,14 +1,18 @@
 
 #include "carddeck.h"
 #include "stdlib.h"
+#include "string.h"
 
-Card* newCard(int suit, int value, int isFaceUp, Card* next, Card* prev) {
+Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev) {
     Card* card = (Card*)malloc(sizeof(Card));
-    card->suit = suit;
-    card->value = value;
-    card->isFaceUp = isFaceUp;
-    card->next = next;
-    card->prev = prev;
+    if (card != NULL){
+        card->suit = suit;
+        strcpy(card->value, value);
+        card->isFaceUp = isFaceUp;
+        card->next = next;
+        card->prev = prev;
+    }
+
     return card;
 }
 void addCard(Deck* deck, Card* card) {
@@ -36,4 +40,49 @@ Card* removeCard(Deck* deck) {
     }
     deck->size--;
     return card;
+}
+
+Card* createCard(const char *value) {
+    Card *newCard = (Card *)malloc(sizeof(Card));
+    if (newCard) {
+        strcpy(newCard->value, value);
+        newCard->next = NULL;
+    }
+    return newCard;
+}
+
+// Function to load the deck from a file into a linked list
+Card* loadDeck(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error: No deck loaded.\n");
+        return NULL;
+    }
+
+    char buffer[3];
+    Card *head = NULL, *tail = NULL;
+
+    while (fscanf(file, "%2s", buffer) == 1) {
+        Card *newCard = createCard(buffer);
+        if (head == NULL) {
+            head = newCard;
+            tail = newCard;
+        } else {
+            tail->next = newCard;
+            tail = newCard;
+        }
+    }
+
+    fclose(file);
+    return head;
+}
+
+//Befrier memory
+void freeDeck(Card* head) {
+    Card* tmp;
+    while (head != NULL) {
+        tmp = head;
+        head = head->next;
+        free(tmp);
+    }
 }
