@@ -21,6 +21,8 @@ typedef struct Deck {
     int size;
 } Deck;
 
+Card* newCard(int suit, int value, int isFaceUp, Card* next, Card* prev);
+
 
 
 

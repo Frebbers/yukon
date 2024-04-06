@@ -5,4 +5,6 @@ set(CMAKE_C_STANDARD 17)
 
 add_executable(untitled src/main.c
         src/carddeck.h
-        src/carddeck.c)
+        src/carddeck.c
+        src/gameLoader.c
+        src/gameLoader.h)
