@@ -5,7 +5,7 @@
 #include "carddeck.c"
 
 void staticInterface(){
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     printf("\t\t\t\t\t\t\t\t[] F1\n\n");
     printf("\t\t\t\t\t\t\t\t[] F2\n\n");
     printf("\t\t\t\t\t\t\t\t[] F3\n\n");
@@ -13,29 +13,31 @@ void staticInterface(){
 }
 
 void displayDynamicInterface(Card* head) {
-    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     Card* current = head;
+    int cardsPrinted=0;
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 7; col++) {
             if (current != NULL) {
                 printf("\t%s", current->value);
                 current = current->next;
+                cardsPrinted++;
             } else {
                 printf("\t[]");
             }
         }
         // Virkelig grimt at se på her, men we ball - skal ændres fuldkommen senere
         if (row == 0) {
-                printf("\t[] F1%d");
+                printf("\t[] F1");
         }
         if (row == 2) {
-            printf("\t[] F2%d");
+            printf("\t[] F2");
         }
         if (row == 4) {
-            printf("\t[] F3%d");
+            printf("\t[] F3");
         }
         if (row == 6) {
-            printf("\t[] F4%d");
+            printf("\t[] F4");
         }
         printf("\n");
     }
