@@ -23,6 +23,7 @@ Card* removeCard(Deck* deck);
 Card* createCard(const char *value);
 Card* loadDeck(const char *filename);
 Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
+void freeDeck(Card* head);
 
 
 
