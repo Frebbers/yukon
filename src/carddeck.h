@@ -18,6 +18,11 @@ typedef struct Deck {
     int size;
 } Deck;
 
+void addCard(Deck* deck, Card* card);
+Card* removeCard(Deck* deck);
+Card* createCard(const char *value);
+Card* loadDeck(const char *filename);
+Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
 
 
 

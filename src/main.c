@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "carddeck.h"
-#include "carddeck.c"
+//#include "carddeck.c"
 
 void staticInterface(){
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
