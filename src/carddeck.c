@@ -77,7 +77,9 @@ Card* loadDeck(const char *filename) {
     return head;
 }
 void saveDeck(Card* head, const char *filename) {
-    FILE *fp = fopen(filename, "w");
+    char full[_MAX_PATH];
+    _fullpath(full,filename , _MAX_PATH);
+    FILE *fp = fopen(full, "w");
     if (fp == NULL) {
         printf("Error: Could not save deck. Invalid path\n");
         }

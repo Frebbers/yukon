@@ -75,9 +75,7 @@ int main() {
                 strcpy(message, "Error: No deck loaded.");
             }
         } else if (strcmp(command,"QQ") == 0){
-            char full[_MAX_PATH];
-            _fullpath(full,"rsc/savedcards.txt" , _MAX_PATH);
-            saveDeck(head, full);
+            saveDeck(head,"rsc/savedcards.txt");
 
             freeDeck(deck);
             printf("The program exits.");
