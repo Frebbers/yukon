@@ -1,6 +1,3 @@
-//
-// Created by Magnus on 24/03/2024.
-//
 
 #ifndef YUKON_CARDDECK_H
 #define YUKON_CARDDECK_H
@@ -9,7 +6,7 @@
 
 typedef struct Card {
     int suit;
-    int value;
+    char value[3];
     int isFaceUp;
     struct Card* next;
     struct Card* prev;
@@ -21,7 +18,13 @@ typedef struct Deck {
     int size;
 } Deck;
 
-
+void addCard(Deck* deck, Card* card);
+Card* removeCard(Deck* deck);
+Card* createCard(const char *value);
+Card* loadDeck(const char *filename);
+Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
+void freeDeck(Card* head);
+void saveDeck(Card* head, const char *filename);
 
 
 #endif //YUKON_CARDDECK_H
