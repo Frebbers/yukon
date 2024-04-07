@@ -51,7 +51,7 @@ Card* createCard(const char *value) {
     return newCard;
 }
 
-// Function to load the deck from a file into a linked list
+
 Card* loadDeck(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -76,6 +76,7 @@ Card* loadDeck(const char *filename) {
     fclose(file);
     return head;
 }
+
 
 //Befrier memory
 void freeDeck(Card* head) {
