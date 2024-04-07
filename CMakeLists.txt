@@ -5,7 +5,14 @@ set(CMAKE_C_STANDARD 17)
 
 # If you are using CLion, setting the C_STANDARD property ensures that it will understand the C17 standard.
 # For add_executable, typically only source files are listed.
-add_executable(untitled src/main.c src/carddeck.c)
+add_executable(untitled src/main.c src/carddeck.c
+        src/board.c
+        src/board.h
+        src/LD.c
+        src/LD.h
+        src/SW.c
+        src/SW.h
+)
 
 # If you need to include directories for your project, you can use include_directories like so:
 include_directories(src)
