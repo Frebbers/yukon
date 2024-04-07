@@ -76,6 +76,21 @@ Card* loadDeck(const char *filename) {
     fclose(file);
     return head;
 }
+void saveDeck(Card* head, const char *filename) {
+    FILE *fp = fopen(filename, "w");
+    if (fp == NULL) {
+        printf("Error: Could not save deck. Invalid path\n");
+        }
+    else {
+        while (head != NULL) {
+            fprintf(fp, "%s\n", head->value);
+            head = head->next;
+        }
+        fclose(fp);
+        printf("Deck saved to %s\n", filename);
+    }
+}
+
 
 
 //Befrier memory

@@ -24,7 +24,7 @@ Card* createCard(const char *value);
 Card* loadDeck(const char *filename);
 Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
 void freeDeck(Card* head);
-
+void saveDeck(Card* head, const char *filename);
 
 
 #endif //YUKON_CARDDECK_H
