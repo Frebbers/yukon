@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 typedef struct Card {
-    int suit;
+    char suit;
     char value[3];
     int isFaceUp;
     struct Card* next;

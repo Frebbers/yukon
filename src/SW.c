@@ -10,6 +10,7 @@
 void displayDynamicInterface(Card* head) {
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     char *foundations[] = {"F1", "F2", "F3", "F4"};
+    char *message = "";
     Card* current = head;
     int cardsPrinted=0;
     int rowCounter = 0;

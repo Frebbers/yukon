@@ -6,31 +6,25 @@
 #include "board.h"
 
 
-
-
-
-
-
 int main() {
     int startGame = 1;
     int quitGame = 0;
     Card *deck = NULL;
     Card *head = NULL;
-    char input[50] = "";
+    char command[50] = "";
     char lastCommand[50] = "";
     char message[] = "Enter a command to start the game";
     char function[3];
 
 
-    while (startGame == 1){
-        board();
-        strcpy(lastCommand, handleInput(message, input));
-        strcpy(input, lastCommand);
-        memcpy(function, input, 2);
-
-
-        if (strcmp(function, "SW") == 0) {
-            strcpy(lastCommand, "SW");
+    board();
+    while (startGame ==1){
+        strcpy(lastCommand, handleInput(message, command));
+        strcpy(command, lastCommand);
+        memcpy(function, command, 2);
+    //LD function
+        if (strcmp(function, "LD") == 0) {
+            strcpy(lastCommand, "LD");
             const char *filename = "rsc/cards.txt";
             Card* newDeck = loadDeck(filename);
             if (newDeck != NULL) {
@@ -43,21 +37,23 @@ int main() {
             } else {
                 strcpy(message, "Error: No deck loaded.");
             }
-
-            displayDynamicInterface(head);
-
-        // Quit the game
-        } else if (strcmp(function,"QQ") == 0){
+        }
+    //QQ function
+        else if (strcmp(function, "QQ") == 0){
             freeDeck(deck);
             printf("The program exits.");
             exit(0);
+        }
+    //SW function
+        else if (strcmp(function, "SW") == 0){
+            displayDynamicInterface(head);
+        }
 
-        // Unknown command.
-        } else {
-            strcpy(lastCommand, function);
+    //"Unknown command" message
+        else {
+            strcpy(lastCommand, command);
             strcpy(message, "Unknown command.");
         }
     }
-
 
 }
