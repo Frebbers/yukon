@@ -52,7 +52,7 @@ Card* createCard(const char *value) {
 }
 
 
-Card* loadDeck(const char *filename) {
+/*Card* loadDeck(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error: No deck loaded.\n");
@@ -75,7 +75,7 @@ Card* loadDeck(const char *filename) {
 
     fclose(file);
     return head;
-}
+}*/
 
 
 //Befrier memory

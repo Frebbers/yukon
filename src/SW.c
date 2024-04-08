@@ -20,7 +20,7 @@ char* displayDynamicInterface(Card* head) {
                 printf("\t%s", current->value);
                 current = current->next;
                 cardsPrinted++;
-                message = "DEck loaded";
+                message = "OK";
 
             } else {
                 printf("\t");
