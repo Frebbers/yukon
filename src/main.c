@@ -56,7 +56,7 @@ int main() {
     //"Unknown command" message
         else {
             strcpy(lastCommand, command);
-            strcpy(message, "Unknown command.");
+            message = "Unknown command.";
         }
     }
 
