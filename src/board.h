@@ -6,6 +6,7 @@
 #define UNTITLED_BOARD_H
 
 void board();
+void loadedDeck();
 char* handleInput(char* message, char command[50]);
 
 

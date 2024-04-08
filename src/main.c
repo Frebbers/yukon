@@ -4,6 +4,7 @@
 #include "SW.h"
 #include "carddeck.h"
 #include "board.h"
+#include "LD.h"
 
 
 int main() {
@@ -13,7 +14,7 @@ int main() {
     Card *head = NULL;
     char command[50] = "";
     char lastCommand[50] = "";
-    char message[] = "Enter a command to start the game";
+    char *message = "Enter a command to start the game";
     char function[3];
 
 
@@ -33,9 +34,11 @@ int main() {
                 }
                 deck = newDeck;
                 head = deck;
-                strcpy(message, "OK");
+                loadedDeck();
+                message = "OK";
             } else {
-                strcpy(message, "Error: No deck loaded.");
+                board();
+                message= "Error: No deck loaded.";
             }
         }
     //QQ function
@@ -46,7 +49,8 @@ int main() {
         }
     //SW function
         else if (strcmp(function, "SW") == 0){
-            displayDynamicInterface(head);
+            message = displayDynamicInterface(head);
+
         }
 
     //"Unknown command" message

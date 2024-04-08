@@ -21,6 +21,25 @@ void board() {
         }
     }
 }
+
+void loadedDeck() {
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+    char *foundations[] = {"F1", "F2", "F3", "F4"};
+    int index = 0;
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 7; col++) {
+            printf("\t[]");
+
+        }
+        if ((row)%2==0){
+            printf("\t[]\t%s", foundations[index]);
+            index++;
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
 char* handleInput(char* message, char command[50]) {
     char* input=malloc(sizeof(char) * 50); //dynamically allocate a specified amount of memory
     printf("LAST Command: %s\n", command);

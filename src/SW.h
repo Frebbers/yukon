@@ -3,7 +3,7 @@
 //
 #include <stdio.h>
 struct Card;
-void displayDynamicInterface(struct Card* head);
+char* displayDynamicInterface(struct Card* head);
 
 #ifndef YUKON_SW_H
 #define YUKON_SW_H
