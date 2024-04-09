@@ -10,7 +10,7 @@
 char* displayDynamicInterface(Card* head) {
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     char *foundations[] = {"F1", "F2", "F3", "F4"};
-    char *message = "";
+    char *message="Error: No deck loaded.";
     Card* current = head;
     int cardsPrinted=0;
     int rowCounter = 0;
@@ -23,8 +23,8 @@ char* displayDynamicInterface(Card* head) {
                 message = "OK";
 
             } else {
+
                 printf("\t");
-                message= "Error: No deck loaded.";
             }
         }
         if ((row)%2==0){
