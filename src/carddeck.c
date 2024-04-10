@@ -68,6 +68,23 @@ Card* pushPosition(Card* head, int position, char value, char suit) {
     return newCard;
 
 }
+void saveDeck(Card* head, const char *filename) {
+    char full[_MAX_PATH];
+    _fullpath(full,filename , _MAX_PATH);
+    FILE *fp = fopen(full, "w");
+    if (fp == NULL) {
+        printf("Error: Could not save deck. Invalid path\n");
+        }
+    else {
+        while (head != NULL) {
+            fprintf(fp, "%s\n", head->value);
+            head = head->next;
+        }
+        fclose(fp);
+        printf("Deck saved to %s\n", filename);
+    }
+}
+
 
 
 //Befrier memory

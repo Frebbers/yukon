@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 #include <stdio.h>
 #include <malloc.h>
 
+=======
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "carddeck.h"
+>>>>>>> dev
 
 void board() {
     char *foundations[] = {"F1", "F2", "F3", "F4\n"};
@@ -21,6 +28,7 @@ void board() {
         }
     }
 }
+<<<<<<< HEAD
 
 void loadedDeck() {
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
@@ -50,3 +58,5 @@ char* handleInput(char* message, char command[50]) {
 }
 
 
+=======
+>>>>>>> dev
