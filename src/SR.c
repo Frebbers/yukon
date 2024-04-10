@@ -68,7 +68,6 @@ Card * SR(Card *head) {
            newTail = newCard;
        }
    }
-    saveDeck(newHead);
        return newHead;
 
 }
