@@ -78,4 +78,16 @@ void freeDeck(Card* head) {
         head = head->next;
         free(tmp);
     }
+
+
+
+}
+
+void swapTwoCards (Card* card1, Card* card2){
+    char tempSuit = card1->suit;
+    char tempValue = card1->value;
+    card1->suit = card2->suit;
+    card1->value = card2->value;
+    card2->suit = tempSuit;
+    card2->value = tempValue;
 }

@@ -47,7 +47,6 @@ Card * SR(Card *head) {
     }
 
 
-
 //shuffling the deck
    for (index = 0; index < 52; index++) {
        random = size[index];
@@ -69,7 +68,7 @@ Card * SR(Card *head) {
            newTail = newCard;
        }
    }
-
+    saveDeck(newHead);
        return newHead;
 
 }
