@@ -17,7 +17,7 @@ char* displayDynamicInterface(Card* head) {
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 7; col++) {
             if (current != NULL) {
-                printf("\t%s", current->value);
+                printf("\t%c%c", current->value, current->suit);
                 current = current->next;
                 cardsPrinted++;
                 message = "OK";

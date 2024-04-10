@@ -3,18 +3,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev) {
-    Card* card = (Card*)malloc(sizeof(Card));
-    if (card != NULL){
-        card->suit = suit;
-        strcpy(card->value, value);
-        card->isFaceUp = isFaceUp;
-        card->next = next;
-        card->prev = prev;
-    }
 
-    return card;
-}
 void addCard(Deck* deck, Card* card) {
     if (deck->head == NULL) {
         deck->head = card;
@@ -42,40 +31,43 @@ Card* removeCard(Deck* deck) {
     return card;
 }
 
-Card* createCard(const char *value) {
-    Card *newCard = (Card *)malloc(sizeof(Card));
-    if (newCard) {
-        strcpy(newCard->value, value);
-        newCard->next = NULL;
+Card* createCard(char value, char suit) {
+    Card* newCard = (Card*)malloc(sizeof(Card));
+    if (newCard == NULL) {
+        printf("Error: Unable to allocate memory for new card.\n");
+        return NULL;
     }
+    newCard->suit = suit;
+    newCard->value = value;
+    newCard->isFaceUp = 0;
+    newCard->next = NULL;
+    newCard->prev = NULL;
     return newCard;
 }
 
+Card* pushPosition(Card* head, int position, char value, char suit) {
 
-/*Card* loadDeck(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Error: No deck loaded.\n");
-        return NULL;
+    Card *tail = head;
+    Card* newCard = (Card*)malloc(sizeof(Card));
+
+    newCard->suit = suit;
+    newCard->value = value;
+    newCard->isFaceUp = 0;
+    newCard->next = NULL;
+    newCard->prev = NULL;
+
+    int counter = 0;
+
+    while(counter < (position-1)){
+        tail = tail->next;
+        counter++;
     }
 
-    char buffer[3];
-    Card *head = NULL, *tail = NULL;
+    newCard->next = tail->next;
+    tail->next = newCard;
+    return newCard;
 
-    while (fscanf(file, "%2s", buffer) == 1) {
-        Card *newCard = createCard(buffer);
-        if (head == NULL) {
-            head = newCard;
-            tail = newCard;
-        } else {
-            tail->next = newCard;
-            tail = newCard;
-        }
-    }
-
-    fclose(file);
-    return head;
-}*/
+}
 
 
 //Befrier memory

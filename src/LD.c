@@ -12,11 +12,11 @@ Card* loadDeck(const char *filename) {
        return NULL;
     }
 
-    char buffer[3];
+    char buffer[2];
     Card *head = NULL, *tail = NULL;
 
     while (fscanf(file, "%2s", buffer) == 1) {
-        Card *newCard = createCard(buffer);
+        Card *newCard = createCard(buffer[0], buffer[1]);
         if (head == NULL) {
             head = newCard;
             tail = newCard;

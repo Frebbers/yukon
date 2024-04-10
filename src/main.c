@@ -5,6 +5,7 @@
 #include "carddeck.h"
 #include "board.h"
 #include "LD.h"
+#include "SR.h"
 
 
 int main() {
@@ -47,6 +48,24 @@ int main() {
             printf("The program exits.");
             exit(0);
         }
+    //SR function
+        else if (strcmp(function, "SR") == 0){
+            Card *newDeck = SR(head);
+            if (newDeck != NULL) {
+                if (deck != NULL) {
+                    freeDeck(deck);
+                }
+                deck = newDeck;
+                head = deck;
+                loadedDeck();
+                message = "OK";
+            } else {
+                board();
+                message= "Error: No deck loaded.";
+            }
+        }
+
+
     //SW function
         else if (strcmp(function, "SW") == 0){
             message = displayDynamicInterface(head);

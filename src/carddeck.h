@@ -6,7 +6,7 @@
 
 typedef struct Card {
     char suit;
-    char value[3];
+    char value;
     int isFaceUp;
     struct Card* next;
     struct Card* prev;
@@ -20,9 +20,10 @@ typedef struct Deck {
 
 void addCard(Deck* deck, Card* card);
 Card* removeCard(Deck* deck);
-Card* createCard(const char *value);
+Card* createCard(char value, char suit);
+Card* pushPosition(Card* head, int position, char value, char suit);
 
-Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
+        Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
 void freeDeck(Card* head);
 
 
