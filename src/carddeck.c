@@ -91,12 +91,13 @@ void saveDeck(Card* head, const char *filename) {
         }
     else {
         while (head != NULL) {
-            fprintf(fp, "%s\n", head->value);
+            fprintf(fp, "%c%c\n", head->value, head->suit);
             head = head->next;
         }
         fclose(fp);
         printf("Deck saved to %s\n", filename);
     }
+
 }
 
 

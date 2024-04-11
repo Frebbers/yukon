@@ -41,8 +41,8 @@ int main() {
                 board();
                 message= "Error: No deck loaded.";
             }
-        } else if (strcmp(command,"QQ") == 0){
-            saveDeck(head,"rsc/savedcards.txt");
+        } else if (strcmp(function,"QQ") == 0){
+           saveDeck(head,"rsc/savedcards.txt");
 
             freeDeck(deck);
             printf("The program exits.");
