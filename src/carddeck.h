@@ -22,7 +22,7 @@ void addCard(Deck* deck, Card* card);
 Card* removeCard(Deck* deck);
 Card* createCard(char value, char suit);
 Card* pushPosition(Card* head, int position, char value, char suit);
-
+void appendCard(Card** head_ref, char value, char suit);
         Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
 void freeDeck(Card* head);
 void saveDeck(Card* head, const char *filename);

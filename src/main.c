@@ -61,7 +61,7 @@ int main() {
                 message = "OK";
             } else {
                 board();
-                message= "Error: No deck loaded.";
+                message= "Error";
             }
         }
 

@@ -45,6 +45,20 @@ Card* createCard(char value, char suit) {
     return newCard;
 }
 
+void appendCard(Card** head_ref, char value, char suit) {
+    Card *newCard = createCard(value, suit);
+    Card *last = *head_ref;
+
+    if (*head_ref == NULL) {
+        *head_ref = newCard;
+        return;
+    }
+    while (last->next != NULL) {
+        last = last->next;
+    }
+    last->next = newCard;
+}
+
 Card* pushPosition(Card* head, int position, char value, char suit) {
 
     Card *tail = head;
