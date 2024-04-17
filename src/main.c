@@ -6,6 +6,7 @@
 #include "board.h"
 #include "LD.h"
 #include "SR.h"
+#include "Phases.h"
 void dealCards(Card **deck) {
     // Constants for the game setup.
     const int totalCardsInColumns[7] = {1, 6, 7, 8, 9, 10, 11};
