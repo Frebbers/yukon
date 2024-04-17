@@ -6,20 +6,44 @@
 #include "board.h"
 #include "LD.h"
 #include "SR.h"
-void dealCards(Card** deck) {
-    const int columnSizes[7] = {1, 6, 7, 8, 9, 10, 11};
+void dealCards(Card **deck) {
+    // Constants for the game setup.
+    const int totalCardsInColumns[7] = {1, 6, 7, 8, 9, 10, 11};
+    const int faceUpStartIndex[7] = {0, 1, 2, 3, 4, 5, 6};
+
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+
+    int maxRows = 0;
     for (int i = 0; i < 7; i++) {
-        printf("C%d ", i + 1);
-        for (int j = 0; j < columnSizes[i]; j++) {
-            if (*deck != NULL) {
-                Card* card = removeCard(deck);  // Function to remove and return the top card from the deck
-                printf("[%c%c] ", card->value, card->suit);
-                // Place the card into the appropriate column, manage face-down or face-up based on rules
+        if (totalCardsInColumns[i] > maxRows) {
+            maxRows = totalCardsInColumns[i];
+        }
+    }
+
+    for (int row = 0; row < maxRows; row++) {
+        printf("\t");
+        for (int col = 0; col < 7; col++) {
+            if (row < totalCardsInColumns[col]) { // If the current row should have a card for this column.
+                if (*deck != NULL) {
+                    Card *card = removeCard(deck);
+                    // Check if the card is face down.
+                    if (row < faceUpStartIndex[col]) {
+                        printf("[ ]\t"); // Face down card representation.
+                    } else {
+                        printf("[%c%c]\t", card->value, card->suit); // Face up card representation.
+                    }
+                }
+            } else {
+                printf("\t");
             }
         }
         printf("\n");
     }
 }
+
+
+
+
 
 int main() {
     int startGame = 1;
