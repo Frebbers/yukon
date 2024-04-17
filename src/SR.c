@@ -33,9 +33,6 @@ Card * SR(Card *head) {
         counter++;
     }*/
 
-
-
-
     //get 52 random numbers
     srand(time(NULL));
     for (index = 0; index < 52; index++) {
