@@ -68,12 +68,12 @@ int main() {
         //SI function
         else if (strcmp(function,"SI") == 0){
             //TODO fix this
-            Deck* newDeck = splitShuffle((Deck *) head);
+            Card* newDeck = splitShuffle( head);
             if (newDeck != NULL) {
                 if (deck != NULL) {
                     freeDeck(deck);
                 }
-                deck = newDeck->head;
+                deck = newDeck;
                 head = deck;
                 loadedDeck();
                 message = "OK";

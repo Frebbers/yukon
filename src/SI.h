@@ -4,5 +4,6 @@
 
 #ifndef UNTITLED_SI_H
 #define UNTITLED_SI_H
-Deck* splitShuffle(Deck* oldDeck);
+Deck* oldSplitShuffle(Deck* oldDeck);
+Card* splitShuffle(Card* oldDeck);
 #endif //UNTITLED_SI_H
