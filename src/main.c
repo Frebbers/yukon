@@ -73,7 +73,7 @@ int main() {
                 if (deck != NULL) {
                     freeDeck(deck);
                 }
-                deck = newDeck;
+                deck = newDeck->head;
                 head = deck;
                 loadedDeck();
                 message = "OK";
