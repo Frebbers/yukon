@@ -6,7 +6,20 @@
 #include "board.h"
 #include "LD.h"
 #include "SR.h"
-
+void dealCards(Card** deck) {
+    const int columnSizes[7] = {1, 6, 7, 8, 9, 10, 11};
+    for (int i = 0; i < 7; i++) {
+        printf("C%d ", i + 1);
+        for (int j = 0; j < columnSizes[i]; j++) {
+            if (*deck != NULL) {
+                Card* card = removeCard(deck);  // Function to remove and return the top card from the deck
+                printf("[%c%c] ", card->value, card->suit);
+                // Place the card into the appropriate column, manage face-down or face-up based on rules
+            }
+        }
+        printf("\n");
+    }
+}
 
 int main() {
     int startGame = 1;
@@ -41,12 +54,19 @@ int main() {
                 board();
                 message= "Error: No deck loaded.";
             }
-        } else if (strcmp(function,"QQ") == 0){
-           saveDeck(head,"rsc/savedcards.txt");
+        } else if (strcmp(function,"QQ") == 0) {
+            saveDeck(head, "rsc/savedcards.txt");
 
             freeDeck(deck);
             printf("The program exits.");
             exit(0);
+        } else if (strcmp(function,"PP") == 0){
+            if (deck != NULL) {
+                dealCards(&head); // Deal cards from the deck into columns
+                message = "OK";
+            } else {
+                message = "Error: No deck loaded.";
+            }
         }
     //SR function
         else if (strcmp(function, "SR") == 0){
