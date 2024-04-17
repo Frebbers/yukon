@@ -26,6 +26,6 @@ void appendCard(Card** head_ref, char value, char suit);
         Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
 void freeDeck(Card* head);
 void saveDeck(Card* head, const char *filename);
-
+void dealCards(Card **deck);
 
 #endif //YUKON_CARDDECK_H

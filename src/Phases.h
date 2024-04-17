@@ -7,5 +7,15 @@
 
 #endif //UNTITLED_PHASES_H
 
-void startupPhase(Card** deck, Card** head);
-void playPhase(Card** deck, Card** head);
+#include <stdio.h>
+#include "carddeck.h"
+
+
+void startupPhase();
+
+void playPhase(Card **head);
+
+
+void checkAndFlipTopCard(Card **pile);
+
+void moveCard(Card **source, Card **destination);
