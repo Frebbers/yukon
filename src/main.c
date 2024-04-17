@@ -6,6 +6,7 @@
 #include "board.h"
 #include "LD.h"
 #include "SR.h"
+#include "SI.h"
 
 
 int main() {
@@ -64,8 +65,24 @@ int main() {
                 message= "Error: No deck loaded.";
             }
         }
+        //SI function
+        else if (strcmp(function,"SI") == 0){
+            //TODO fix this
+            Deck* newDeck = splitShuffle((Deck *) head);
+            if (newDeck != NULL) {
+                if (deck != NULL) {
+                    freeDeck(deck);
+                }
+                deck = newDeck;
+                head = deck;
+                loadedDeck();
+                message = "OK";
+            } else {
+                board();
+                message= "Error: No deck loaded.";
+            }
 
-
+        }
     //SW function
         else if (strcmp(function, "SW") == 0){
             message = displayDynamicInterface(head);
