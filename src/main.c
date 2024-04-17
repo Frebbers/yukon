@@ -20,7 +20,7 @@ int main() {
 
 
     board();
-    while (startGame ==1){
+    while (startGame == 1){
         strcpy(lastCommand, handleInput(message, command));
         strcpy(command, lastCommand);
         memcpy(function, command, 2);
