@@ -63,39 +63,54 @@ Card* splitShuffle(Card* oldDeck) {
 
     // Distribute the first 26 cards into deck1 and the next 26 into deck2
     for (int i = 0; i < 26; i++) {
-        deck1[i] = removeCard(&oldDeck);
-        deck2[i] = removeCard(&oldDeck);
+        deck1[i] = oldDeck;
+        oldDeck = oldDeck->next;
+        deck2[i] = oldDeck;
+        oldDeck = oldDeck->next;
     }
 
     // Shuffle the cards
-    int i = 0, j = 0;
+    newDeck = deck1[0];
+    int i = 1, j = 0;
     while (i < 26 && j < 26) {
         int randNum = rand() % 2;
         if (randNum == 0) {
-            addCard(&newDeck, deck1[i]);
+            appendCard(&newDeck, deck1[i]->value, deck1[i]->suit);
+            if (newDeck->next != NULL) {
+                newDeck = newDeck->next;
+            }
             i++;
         } else {
-            addCard(&newDeck, deck2[j]);
+            appendCard(&newDeck, deck2[j]->value, deck2[j]->suit);
+            if (newDeck->next != NULL) {
+                newDeck = newDeck->next;
+            }
             j++;
         }
     }
 
     // Add the remaining cards from the non-empty deck to the new deck
     while (i < 26) {
-        addCard(&newDeck, deck1[i]);
+        appendCard(&newDeck, deck1[i]->value, deck1[i]->suit);
+        if (newDeck->next != NULL) {
+            newDeck = newDeck->next;
+        }
         i++;
     }
     while (j < 26) {
-        addCard(&newDeck, deck2[j]);
+        appendCard(&newDeck, deck2[j]->value, deck2[j]->suit);
+        if (newDeck->next != NULL) {
+            newDeck = newDeck->next;
+        }
         j++;
     }
 
     // Free the memory allocated for deck1 and deck2
-    for (i = 0; i < 26; i++) {
+   /* for (i = 0; i < 26; i++) {
         free(deck1[i]);
         free(deck2[i]);
     }
-
+*/
     return newDeck;
 }
 

@@ -12,7 +12,7 @@
 int main() {
     int startGame = 1;
     int quitGame = 0;
-    Deck *deck = NULL;
+    Card *deck = NULL;
     Card *head = NULL;
     char command[50] = "";
     char lastCommand[50] = "";

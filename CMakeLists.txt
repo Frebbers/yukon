@@ -13,6 +13,7 @@ add_executable(untitled src/main.c src/carddeck.c
         src/SW.c
         src/SW.h
         src/SR.c
+        src/SI.c
 )
 
 # If you need to include directories for your project, you can use include_directories like so:
