@@ -5,7 +5,7 @@
 #ifndef UNTITLED_LD_H
 #define UNTITLED_LD_H
 
-Card* loadDeck(const char *filename);
+Deck* loadDeck(const char *filename);
 
 
 #endif //UNTITLED_LD_H

@@ -5,7 +5,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-Card* loadDeck(const char *filename) {
+Deck* loadDeck(const char *filename) {
     FILE *file = fopen(filename, "r");
     char *message;
     if (file == NULL) {
@@ -14,7 +14,7 @@ Card* loadDeck(const char *filename) {
 
     char buffer[2];
     Card *head = NULL, *tail = NULL;
-
+    Deck deck = new Deck;
     while (fscanf(file, "%2s", buffer) == 1) {
         Card *newCard = createCard(buffer[0], buffer[1]);
         if (head == NULL) {

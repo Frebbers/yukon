@@ -12,7 +12,7 @@
 int main() {
     int startGame = 1;
     int quitGame = 0;
-    Card *deck = NULL;
+    Deck *deck = NULL;
     Card *head = NULL;
     char command[50] = "";
     char lastCommand[50] = "";
@@ -29,7 +29,7 @@ int main() {
         if (strcmp(function, "LD") == 0) {
             strcpy(lastCommand, "LD");
             const char *filename = "rsc/cards.txt";
-            Card* newDeck = loadDeck(filename);
+            Deck* newDeck = loadDeck(filename);
             if (newDeck != NULL) {
                 if (deck != NULL) {
                     freeDeck(deck);
@@ -42,8 +42,8 @@ int main() {
                 board();
                 message= "Error: No deck loaded.";
             }
-        } else if (strcmp(command,"QQ") == 0){
-            saveDeck(head,"rsc/savedcards.txt");
+        } else if (strcmp(function,"QQ") == 0){
+           saveDeck(head,"rsc/savedcards.txt");
 
             freeDeck(deck);
             printf("The program exits.");
@@ -62,7 +62,7 @@ int main() {
                 message = "OK";
             } else {
                 board();
-                message= "Error: No deck loaded.";
+                message= "Error";
             }
         }
         //SI function
