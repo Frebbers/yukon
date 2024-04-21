@@ -124,12 +124,15 @@ void swapTwoCards (Card* card1, Card* card2){
     card2->value = tempValue;
 }
 
-void dealCards(Card **deck) {
+void dealCards(Card *head) {
     // Constants for the game setup.
     const int totalCardsInColumns[7] = {1, 6, 7, 8, 9, 10, 11};
     const int faceUpStartIndex[7] = {0, 1, 2, 3, 4, 5, 6};
 
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+    char *foundations[] = {"F1", "F2", "F3", "F4"};
+
+    int counter = 0;
 
     int maxRows = 0;
     for (int i = 0; i < 7; i++) {
@@ -138,23 +141,51 @@ void dealCards(Card **deck) {
         }
     }
 
+    //Prints the cards in the columns
+    Card *card = head;
     for (int row = 0; row < maxRows; row++) {
-        printf("\t");
+            printf("\t");
+
         for (int col = 0; col < 7; col++) {
-            if (row < totalCardsInColumns[col]) { // If the current row should have a card for this column.
-                if (*deck != NULL) {
-                    Card *card = removeCard(deck);
-                    // Check if the card is face down.
-                    if (row < faceUpStartIndex[col]) {
-                        printf("[ ]\t"); // Face down card representation.
-                    } else {
-                        printf("[%c%c]\t", card->value, card->suit); // Face up card representation.
-                    }
-                }
+
+            if ( row < totalCardsInColumns[col]) { // If the current row should have a card for this column.
+
+                if (card != NULL && row < faceUpStartIndex[col]) {
+                     // Check if the card is face down.
+                     printf("[  ]\t"); // Face down card representation.
+                } else {
+                    printf("[%c%c]\t", card->value, card->suit); // Face up card representation.
+                        }
+
+                card= card->next; // Move to the next card.
+
             } else {
-                printf("\t");
+                printf("\t"); // Empty space if there is no card in this column.
             }
+
         }
-        printf("\n");
+
+        //Prints the foundations
+        if((row)%2 == 0 && row < 7){
+            if(row == 0){
+                    printf("\t[]\t%s\n",foundations[counter]);
+                    counter++;
+            }else if(row == 2){
+                    printf("\t[]\t%s\n",foundations[counter]);
+                    counter++;
+            }else if(row == 4){
+                    printf("\t[]\t%s\n",foundations[counter]);
+                    counter++;
+            }else if(row == 6){
+                    printf("\t[]\t%s\n",foundations[counter]);
+                    counter++;
+            }
+        }else{
+            printf("\n");
+        }
+
     }
 }
+
+
+
