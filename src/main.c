@@ -56,13 +56,28 @@ int main() {
             //P function
         else if (strcmp(function,"P") == 0){
             if (deck != NULL) {
-                dealCards(head); // Deal cards from the deck into columns
+                dealCards(head);
+             //   dealCards(head); // Deal cards from the deck into columns
                 message = "OK";
-                playPhase(&head); // Enter into the play phase
+              //  playPhase(&head); // Enter into the play phase
             } else {
                 message = "Error: No deck loaded.";
             }
         }
+
+    //Move cards
+        else if (strcmp(function, "M") == 0) {
+            Column** columns= dealCards(head);
+            printColumns(columns);
+
+            moveCard(&columns[2], &columns[3], '3', 'C');
+            printColumns(columns);
+
+
+        }
+
+
+
     //SR function
         else if (strcmp(function, "SR") == 0){
             Card *newDeck = SR(head);
