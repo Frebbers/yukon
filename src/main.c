@@ -56,7 +56,7 @@ int main() {
             //P function
         else if (strcmp(function,"P") == 0){
             if (deck != NULL) {
-                dealCards(&head); // Deal cards from the deck into columns
+                dealCards(head); // Deal cards from the deck into columns
                 message = "OK";
                 playPhase(&head); // Enter into the play phase
             } else {
