@@ -3,6 +3,15 @@
 #include "stdlib.h"
 #include "string.h"
 
+Column* createColumn(Card* card) {
+    Column* newColumn = (Column*)malloc(sizeof(Column));
+    if (newColumn == NULL) {
+        printf("Error: Unable to allocate memory for new column.\n");
+        return NULL;
+    }
+    newColumn->card = card;
+    return newColumn;
+}
 
 void addCard(Deck* deck, Card* card) {
     if (deck->head == NULL) {
@@ -141,6 +150,9 @@ void dealCards(Card *head) {
         }
     }
 
+    // Create an array to hold the columns
+    Column* columns[7] = {NULL};
+
     //Prints the cards in the columns
     Card *card = head;
     for (int row = 0; row < maxRows; row++) {
@@ -150,11 +162,14 @@ void dealCards(Card *head) {
 
             if ( row < totalCardsInColumns[col]) { // If the current row should have a card for this column.
 
+                // Create a new column with the current card
+                columns[col] = createColumn(card);
+
                 if (card != NULL && row < faceUpStartIndex[col]) {
                      // Check if the card is face down.
                      printf("[  ]\t"); // Face down card representation.
                 } else {
-                    printf("[%c%c]\t", card->value, card->suit); // Face up card representation.
+                    printf("[%c%c]\t", columns[col]->card->value, columns[col]->card->suit); // Face up card representation.
                         }
 
                 card= card->next; // Move to the next card.

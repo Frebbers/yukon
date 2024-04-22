@@ -18,6 +18,13 @@ typedef struct Deck {
     int size;
 } Deck;
 
+typedef struct Column {
+    Card* card;
+    struct Column* next;
+} Column;
+
+Column* createColumn(Card* card);
+
 void addCard(Deck* deck, Card* card);
 Card* removeCard(Deck* deck);
 Card* createCard(char value, char suit);
