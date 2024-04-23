@@ -70,10 +70,11 @@ int main() {
             Card* newDeck = splitShuffle( head);
             if (newDeck != NULL) {
                 if (deck != NULL) {
-                    freeDeck(deck);
+                //    freeDeck(deck);
                 }
                 deck = newDeck;
-                head = deck;
+                 head = deck;
+                //head = newDeck;
                 loadedDeck();
                 message = "OK";
             } else {

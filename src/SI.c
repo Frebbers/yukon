@@ -15,6 +15,8 @@ Card* splitShuffle(Card* oldDeck) {
     Card* deck1[26];
     Card* deck2[26];
 
+
+
     // Distribute the first 26 cards into deck1 and the next 26 into deck2
     for (int i = 0; i < 26; i++) {
         deck1[i] = oldDeck;
@@ -30,15 +32,15 @@ Card* splitShuffle(Card* oldDeck) {
         int randNum = rand() % 2;
         if (randNum == 0) {
             appendCard(&newDeck, deck1[i]->value, deck1[i]->suit);
-            if (newDeck->next != NULL) {
+            //LDif (newDeck->next != NULL) {
                 newDeck = newDeck->next;
-            }
+            //}
             i++;
         } else {
             appendCard(&newDeck, deck2[j]->value, deck2[j]->suit);
-            if (newDeck->next != NULL) {
+        //    if (newDeck->next != NULL) {
                 newDeck = newDeck->next;
-            }
+          //  }
             j++;
         }
     }
@@ -46,25 +48,20 @@ Card* splitShuffle(Card* oldDeck) {
     // Add the remaining cards from the non-empty deck to the new deck
     while (i < 26) {
         appendCard(&newDeck, deck1[i]->value, deck1[i]->suit);
-        if (newDeck->next != NULL) {
+        //if (newDeck->next != NULL) {
             newDeck = newDeck->next;
-        }
+        //}
         i++;
     }
     while (j < 26) {
         appendCard(&newDeck, deck2[j]->value, deck2[j]->suit);
-        if (newDeck->next != NULL) {
+       // if (newDeck->next != NULL) {
             newDeck = newDeck->next;
-        }
+        //}
         j++;
     }
 
-    // Free the memory allocated for deck1 and deck2
-   /* for (i = 0; i < 26; i++) {
-        free(deck1[i]);
-        free(deck2[i]);
-    }
-*/
+
     return newDeck;
 }
 
