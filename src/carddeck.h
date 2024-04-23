@@ -25,13 +25,9 @@ typedef struct Column {
 } Column;
 
 void createColumn(Column** headColumn, Card card);
-Column** makeC(Card* card);
-void addCard(Deck* deck, Card* card);
-Card* removeCard(Deck* deck);
 Card* createCard(char value, char suit);
-Card* pushPosition(Card* head, int position, char value, char suit);
 void appendCard(Card** head_ref, char value, char suit);
-        Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
+Card* newCard(int suit, const char *value, int isFaceUp, Card* next, Card* prev);
 void freeDeck(Card* head);
 void saveDeck(Card* head, const char *filename);
 
@@ -42,4 +38,6 @@ void freeColumns(Column** columns, int size);
 void printColumns(Column** columns);
 void findAndPrintCardInColumn(Column* column, char value, char suit);
 void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit);
+Column* rotateColumn(Column** column);
+Column** rotateColumns(Column** columns);
 #endif //YUKON_CARDDECK_H

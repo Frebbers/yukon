@@ -5,16 +5,6 @@
 
 
 
-void createColumn(Column** headColumn, Card card) {
-    Column* newColumn = (Column*)malloc(sizeof(Column));
-    newColumn->card = (Card*)malloc(sizeof(Card));
-
-    *(newColumn->card) = card; // Copy the contents of card
-    newColumn->next = *headColumn;
-    *headColumn = newColumn;
-
-}
-
 char convertSuit(char suit) {
     if (suit == 'H' || suit == 'D') {
         return 'R';
@@ -58,62 +48,12 @@ int convertValue(char value) {
 
 }
 
-void freeColumns(Column** columns, int size) {
-    for (int i = 0; i < size; i++) {
-        Column* current = columns[i];
-        while (current != NULL) {
-            Column* temp = current;
-            current = current->next;
-            free(temp);
-        }
-    }
-    free(columns);
-}
-
-/*Column** makeC(Card* card){
-    // Create an array to hold the columns
-    Column** columns = malloc(2 * sizeof(Column*));
-
-// Initialize the columns
-    for (int i = 0; i < 2; i++) {
-        columns[i] = NULL;
-    }
-
-    for (int i = 0; card != NULL; i = (i + 1) % 2) {
-        createColumn(&columns[i], *card);
-        card = card->next;
-    }
-
-    return columns;
-}*/
-
-void printColumns(Column** columns) {
-    for (int i = 0; i < 7; i++) {
-        printf("Column %d:\n", i + 1);
-        Column* current = columns[i];
-        while (current != NULL) {
-            printf("Card Value: %c, Card Suit: %c\n", current->card->value, current->card->suit);
-            current = current->next;
-        }
-        printf("\n");
-    }
-}
-
-void findAndPrintCardInColumn(Column* column, char value, char suit) {
-    while (column != NULL) {
-        if (column->card->value == value && column->card->suit == suit) {
-            printf("Card found: Value: %c, Suit: %c\n", column->card->value, column->card->suit);
-            return;
-        }
-        column = column->next;
-    }
-    printf("Card not found.\n");
-}
 void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit) {
     Column* current = *sourceColumn;
     Column* tempDest = *destColumn;
     Column* destCard = *destColumn;
     Column* prev = NULL;
+    char *message = "";
 
     // Find the card in the source column
     while (current != NULL) {
@@ -126,7 +66,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
 
     // If the card is not found, return
     if (current == NULL) {
-        printf("Card not found in source column.\n");
+        message="Card not found in source column.\n";
         return;
     }
 
@@ -138,10 +78,6 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
         }
         tempDest = tempDest->next;
     }
-    // compare too char
-
-
-
 
     // Check if the card can be moved to the destination column
     int destValue = convertValue(destCard->card->value);
@@ -151,7 +87,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     if (destValue - 1 != currentValue || sourceSuit == destSuit) {
         printf("Invalid move: Card cannot be moved to destination column.\n");
         printf("Current Value: %d, Destination Value: %d\n", currentValue, destValue);
-        printf("Current Suit: %c, Destination Suit: %c\n", sourceSuit, destSuit);
+        printf("Current Suit: %c, Destination Suit: %c\n", current->card->suit, destCard->card->suit);
         return;
     }
 
@@ -162,11 +98,10 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
         prev->next = current->next;
     }
 
-        // Add the card to the destination column
+    // Add the card to the destination column as last card
+    destCard->next = current;
+    current->next = NULL;
 
-
-    current->next = *destColumn;
-    *destColumn = current;
 }
 
 
@@ -180,8 +115,7 @@ Card* createCard(char value, char suit) {
     newCard->suit = suit;
     newCard->value = value;
     newCard->isFaceUp = 0;
-    newCard->next = NULL;
-    newCard->prev = NULL;
+
     return newCard;
 }
 
@@ -217,8 +151,6 @@ void saveDeck(Card* head, const char *filename) {
 
 }
 
-
-
 //Befrier memory
 void freeDeck(Card* head) {
     Card* tmp;
@@ -229,76 +161,23 @@ void freeDeck(Card* head) {
     }
 }
 
+void createColumn(Column** headColumn, Card card) {
+    Column* newColumn = (Column*)malloc(sizeof(Column));
+    newColumn->card = (Card*)malloc(sizeof(Card));
 
+    *(newColumn->card) = card; // Copy the contents of card
+    newColumn->next = NULL; // The new column is the last one, so its next is NULL
 
-/*void dealCards(Card *head) {
-    // Constants for the game setup.
-    const int totalCardsInColumns[7] = {1, 6, 7, 8, 9, 10, 11};
-    const int faceUpStartIndex[7] = {0, 1, 2, 3, 4, 5, 6};
-
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
-    char *foundations[] = {"F1", "F2", "F3", "F4"};
-
-    int counter = 0;
-
-    int maxRows = 0;
-    for (int i = 0; i < 7; i++) {
-        if (totalCardsInColumns[i] > maxRows) {
-            maxRows = totalCardsInColumns[i];
+    if (*headColumn == NULL) {
+        *headColumn = newColumn; // If the column is empty, the new column is the head
+    } else {
+        Column* lastColumn = *headColumn;
+        while(lastColumn->next != NULL) {
+            lastColumn = lastColumn->next; // Find the last column
         }
+        lastColumn->next = newColumn; // The last column's next is the new column
     }
-
-    // Create an array to hold the columns
-    Column* column[7] = {NULL};
-
-    //Prints the cards in the columns
-    Card *card = head;
-    for (int row = 0; row < maxRows; row++) {
-            printf("\t");
-
-        for (int col = 0; col < 7; col++) {
-
-            if ( row < totalCardsInColumns[col]) { // If the current row should have a card for this column.
-
-                // Create a new column with the current card
-                column[col] = createColumn(card);
-
-                if (card != NULL && row < faceUpStartIndex[col]) {
-                     // Check if the card is face down.
-                     printf("[  ]\t"); // Face down card representation.
-                } else {
-                    printf("[%c%c]\t", column[col]->card->value, column[col]->card->suit); // Face up card representation.
-                        }
-
-                card= card->next; // Move to the next card.
-
-            } else {
-                printf("\t"); // Empty space if there is no card in this column.
-            }
-
-        }
-
-        //Prints the foundations
-        if((row)%2 == 0 && row < 7){
-            if(row == 0){
-                    printf("\t[]\t%s\n",foundations[counter]);
-                    counter++;
-            }else if(row == 2){
-                    printf("\t[]\t%s\n",foundations[counter]);
-                    counter++;
-            }else if(row == 4){
-                    printf("\t[]\t%s\n",foundations[counter]);
-                    counter++;
-            }else if(row == 6){
-                    printf("\t[]\t%s\n",foundations[counter]);
-                    counter++;
-            }
-        }else{
-            printf("\n");
-        }
-
-    }
-}*/
+}
 
 Column** dealCards(Card* card){
     // Constants for the game setup.
@@ -335,15 +214,13 @@ Column** dealCards(Card* card){
                     // Check if the card is face down.
                     printf("[  ]\t"); // Face down card representation.
                 } else {
-                    printf("[%c%c]\t", columns[col]->card->value, columns[col]->card->suit); // Face up card representation.
+                    printf("[%c%c]\t", card->value, card->suit); // Face up card representation.
                 }
-
                 card= card->next; // Move to the next card.
 
             } else {
                 printf("\t"); // Empty space if there is no card in this column.
             }
-
         }
 
         //Prints the foundations
@@ -367,15 +244,20 @@ Column** dealCards(Card* card){
 
     }
 
-
-
-
-
-    for (int i = 0; card != NULL; i = (i + 1) % 2) {
-        createColumn(&columns[i], *card);
-        card = card->next;
-    }
   return columns;
+}
+
+
+void printColumns(Column** columns) {
+    for (int i = 0; i < 7; i++) {
+        printf("Column %d:\n", i + 1);
+        Column* current = columns[i];
+        while (current != NULL) {
+            printf("Card Value: %c, Card Suit: %c\n", current->card->value, current->card->suit);
+            current = current->next;
+        }
+        printf("\n");
+    }
 }
 
 

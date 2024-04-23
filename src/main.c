@@ -12,22 +12,39 @@
 
 int main() {
     int startGame = 1;
+    int len;
     Card *deck = NULL;
     Card *head = NULL;
+
     char command[50] = "";
     char lastCommand[50] = "";
+
     char *message = "Enter a command to start the game";
-    char function[3];
+    char function[9]= " ";
+    int counter = 0;
+
+    char ld[]= "LD";
+    char p[]= "P";
+    char move[]= "C&d:&d%c->C&d";
+
+
 
 
     board();
-    while (startGame ==1){
+    while (startGame == 1){
         strcpy(lastCommand, handleInput(message, command));
         strcpy(command, lastCommand);
-        sscanf(command, "%2s", function);
+        sscanf(command, "%9s", function); // Extract function name from command
+        memcpy(function, command, strlen(function));
+        function[strlen(function)] = '\0'; // Ensure function is null-terminated
+        printf("Function is %s\n", function);
+        printf("length of function is %llu\n", strlen(function));
+        printf("%c",function[1]);
+
+
     //LD function
-        if (strcmp(function, "LD") == 0) {
-            strcpy(lastCommand, "LD");
+        if (strcmp(function, ld) == 0){
+           // strcpy(lastCommand, "LD");
             const char *filename = "rsc/cards.txt";
             Card* newDeck = loadDeck(filename);
             if (newDeck != NULL) {
@@ -54,7 +71,8 @@ int main() {
 
         }
             //P function
-        else if (strcmp(function,"P") == 0){
+
+        else if (strcmp(function, "P") == 0) {
             if (deck != NULL) {
                 dealCards(head);
              //   dealCards(head); // Deal cards from the deck into columns
@@ -66,14 +84,27 @@ int main() {
         }
 
     //Move cards
-        else if (strcmp(function, "M") == 0) {
+    //scan the command for the source column and the destination column
+        else if (function[0]=='C' &&
+
+                    function[2]==':' &&
+
+
+                        function[5]=='-' &&
+                         function[6]=='>' &&
+                          function[7]=='C')
+
+            {
+
+            int sourceColumn=convertValue(function[1]);;
+            char sourceValue=function[3];
+            char sourceSuit=function[4];
+            int destColumn=convertValue(function[8]);
             Column** columns= dealCards(head);
             printColumns(columns);
 
-            moveCard(&columns[2], &columns[3], '3', 'C');
+            moveCard(&columns[sourceColumn-1], &columns[destColumn-1], sourceValue, sourceSuit);
             printColumns(columns);
-
-
         }
 
 
@@ -110,3 +141,4 @@ int main() {
     }
 
 }
+
