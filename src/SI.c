@@ -25,8 +25,12 @@ Card* splitShuffle(Card* oldDeck, int splitIndex) {
     //newDeck = *deck1;
     //TODO  add pointer to start of newdeck
    int i = 0;
+    Card *newDeckTemp;
     while (deck1 != NULL && deck2 != NULL) {
-        if (i==0) {newDeck = deck1;}
+        if (i==0) {
+            newDeck = deck1;
+            newDeckTemp = newDeck;
+        }
         else {newDeck->next = deck1;
         newDeck = newDeck->next;}
 
@@ -38,8 +42,8 @@ Card* splitShuffle(Card* oldDeck, int splitIndex) {
     }
     if (deck1 != NULL) {newDeck->next = deck1;}
     if (deck2 != NULL) {newDeck->next = deck2;}
-
-
+    //Point the head of the linked list to the start of the shuffled deck
+    newDeck = newDeckTemp;
     return newDeck;
 }
 
