@@ -16,6 +16,3 @@ void startupPhase();
 void playPhase(Card **head);
 
 
-void checkAndFlipTopCard(Card **pile);
-
-void moveCard(Card **source, Card **destination);
