@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "stdlib.h"
+#include <stdlib.h>
 #include <string.h>
 #include "SW.h"
 #include "carddeck.h"
@@ -20,7 +20,7 @@ int main() {
 
     char command[50] = "";
     char lastCommand[50] = "";
-
+    char argument[50] = "";
     char *message = "Enter a command to start the game";
     char function[9]= " ";
     board();
@@ -28,7 +28,9 @@ int main() {
     while (startGame == 1){
         strcpy(lastCommand, handleInput(message, command));
         strcpy(command, lastCommand);
-        sscanf(command, "%9s", function); // Extract function name from command
+        // Extract function name and argument
+        sscanf(command, "%s %s", function, argument);
+
         function[strlen(function)] = '\0';
 
 
@@ -110,6 +112,7 @@ int main() {
         //SI function
         else if (strcmp(function,"SI") == 0){
             int input;
+            sscanf(argument, "%d", &input);
             Card* newDeck = splitShuffle(head,input);
             if (newDeck != NULL) {
                 if (deck != NULL) {

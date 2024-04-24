@@ -23,6 +23,7 @@ Card* loadDeck(const char *filename) {
         } else {
             tail->next = newCard;
             tail = newCard;
+            tail -> next = NULL;
         }
     }
     fclose(file);
