@@ -67,7 +67,8 @@ int main() {
         }
         //SI function
         else if (strcmp(function,"SI") == 0){
-            Card* newDeck = splitShuffle( head);
+            int input;
+            Card* newDeck = splitShuffle(head,input);
             if (newDeck != NULL) {
                 if (deck != NULL) {
                 //    freeDeck(deck);
