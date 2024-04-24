@@ -291,7 +291,7 @@ Card* reverseDealCards(Column** columns) {
     return head;
 }
 Column** dealColumns(Column** columns){
-    Column** printColumns = malloc(7 * sizeof(Column*));
+
     const int faceUpStartIndex[7] = {0, 1, 2, 3, 4, 5, 6};
 
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
@@ -319,16 +319,16 @@ Column** dealColumns(Column** columns){
                 getRow++;
             }
 
-            printColumns[col] = columns[col];
+
 
 
 
             // Print the card
-            if (printColumns[col] != NULL) {
+            if (columns[col] != NULL) {
                 if (row < faceUpStartIndex[col]) {
-                    printf("%c%c\t",printColumns[col]->card->value, printColumns[col]->card->suit); // Face down card representation.
+                    printf("[]\t"); // Face down card representation.
                 } else {
-                    printf("[%c%c]\t", printColumns[col]->card->value, printColumns[col]->card->suit); // Face up card representation.
+                    printf("%c%c\t", columns[col]->card->value, columns[col]->card->suit); // Face up card representation.
                 }
             } else {
                 printf("\t"); // Empty space if there is no card in this column.
@@ -357,8 +357,11 @@ Column** dealColumns(Column** columns){
         }
 
     }
-
-    return printColumns;
+    //reset columns pointer to the first card in the columns
+    for (int i = 0; i < 7; i++) {
+        columns[i] = firstCardInColumns[i];
+    }
+    return columns;
 }
 
 

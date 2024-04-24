@@ -87,8 +87,8 @@ int main() {
             int destColumn=convertValue(function[8]);
 
             moveCard(&columns[sourceColumn-1], &columns[destColumn-1], sourceValue, sourceSuit);
+            dealColumns(columns);
 
-            printColumns(columns);
         }
 
 
