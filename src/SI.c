@@ -6,62 +6,44 @@
 #include <stdlib.h>
 #include <time.h>
 
-Card* splitShuffle(Card* oldDeck) {
-    // Initialize random number generator
-    srand(time(NULL));
-
-    // Reserve memory for the new deck and two 26-card decks
-    Card* newDeck = NULL;
-    Card* deck1[26];
-    Card* deck2[26];
-
-
-
-    // Distribute the first 26 cards into deck1 and the next 26 into deck2
-    for (int i = 0; i < 26; i++) {
-        deck1[i] = oldDeck;
-        oldDeck = oldDeck->next;
-        deck2[i] = oldDeck;
-        oldDeck = oldDeck->next;
-    }
+Card* splitShuffle(Card* oldDeck, int splitIndex) {
+    //The shuffled deck to be returned
+    Card* newDeck;
+    //The first part of the deck. Length is equal to splitIndex
+    Card *deck1 = oldDeck;
+    //The second part of the deck equal to 52-splitIndex
+    Card *deck2;
+    if (splitIndex < 1 || splitIndex > 52) {return oldDeck;}
+    // Split the deck into two decks
+    // Find the "splitIndex" card set its "next" pointer to NULL. Set Deck2 to point to that card.
+    for (int i = 0; i < splitIndex; i++) {oldDeck = oldDeck->next;}
+    Card *temp = oldDeck->next;
+    oldDeck->next = NULL;
+    deck2 = temp;
 
     // Shuffle the cards
-    newDeck = deck1[0];
-    int i = 1, j = 0;
-    while (i < 26 && j < 26) {
-        int randNum = rand() % 2;
-        if (randNum == 0) {
-            appendCard(&newDeck, deck1[i]->value, deck1[i]->suit);
-            //LDif (newDeck->next != NULL) {
-                newDeck = newDeck->next;
-            //}
-            i++;
-        } else {
-            appendCard(&newDeck, deck2[j]->value, deck2[j]->suit);
-        //    if (newDeck->next != NULL) {
-                newDeck = newDeck->next;
-          //  }
-            j++;
+    //newDeck = *deck1;
+    //TODO  add pointer to start of newdeck
+   int i = 0;
+    Card *newDeckTemp;
+    while (deck1 != NULL && deck2 != NULL) {
+        if (i==0) {
+            newDeck = deck1;
+            newDeckTemp = newDeck;
         }
-    }
+        else {newDeck->next = deck1;
+        newDeck = newDeck->next;}
 
-    // Add the remaining cards from the non-empty deck to the new deck
-    while (i < 26) {
-        appendCard(&newDeck, deck1[i]->value, deck1[i]->suit);
-        //if (newDeck->next != NULL) {
-            newDeck = newDeck->next;
-        //}
-        i++;
+                deck1 = deck1->next;
+                newDeck->next = deck2;
+                newDeck = newDeck->next;
+                deck2 = deck2->next;
+                i++;
     }
-    while (j < 26) {
-        appendCard(&newDeck, deck2[j]->value, deck2[j]->suit);
-       // if (newDeck->next != NULL) {
-            newDeck = newDeck->next;
-        //}
-        j++;
-    }
-
-
+    if (deck1 != NULL) {newDeck->next = deck1;}
+    if (deck2 != NULL) {newDeck->next = deck2;}
+    //Point the head of the linked list to the start of the shuffled deck
+    newDeck = newDeckTemp;
     return newDeck;
 }
 

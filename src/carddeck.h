@@ -9,7 +9,7 @@ typedef struct Card {
     char value;
     int isFaceUp;
     struct Card* next;
-    struct Card* prev;
+//    struct Card* prev;
 } Card;
 
 typedef struct Deck {
