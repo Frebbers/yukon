@@ -7,29 +7,36 @@
 #include "LD.h"
 #include "SR.h"
 #include "SI.h"
+#include "Phases.h"
+
 
 
 int main() {
     int startGame = 1;
-    int quitGame = 0;
+    int len;
     Card *deck = NULL;
     Card *head = NULL;
+    Column** columns = NULL;
+
     char command[50] = "";
     char lastCommand[50] = "";
+
     char *message = "Enter a command to start the game";
-    char function[3];
-
-
+    char function[9]= " ";
     board();
+
     while (startGame == 1){
         strcpy(lastCommand, handleInput(message, command));
         strcpy(command, lastCommand);
-        memcpy(function, command, 2);
+        sscanf(command, "%9s", function); // Extract function name from command
+        function[strlen(function)] = '\0';
+
+
     //LD function
-        if (strcmp(function, "LD") == 0) {
-            strcpy(lastCommand, "LD");
+        if (strcmp(function, "LD") == 0){
+           // strcpy(lastCommand, "LD");
             const char *filename = "rsc/cards.txt";
-            Deck* newDeck = loadDeck(filename);
+            Card* newDeck = loadDeck(filename);
             if (newDeck != NULL) {
                 if (deck != NULL) {
                     freeDeck(deck);
@@ -42,13 +49,48 @@ int main() {
                 board();
                 message= "Error: No deck loaded.";
             }
-        } else if (strcmp(function,"QQ") == 0){
-           saveDeck(head,"rsc/savedcards.txt");
+
+        }
+        //QQ function
+        else if (strcmp(function,"QQ") == 0) {
+            saveDeck(head, "rsc/savedcards.txt");
 
             freeDeck(deck);
             printf("The program exits.");
             exit(0);
+
         }
+            //P function
+
+        else if (strcmp(function, "P") == 0) {
+            if (deck != NULL) {
+                columns=dealCards(head); // Deal cards from the deck into columns
+                 message = "OK";
+              //  playPhase(&head); // Enter into the play phase
+            } else {
+                message = "Error: No deck loaded.";
+            }
+        }
+
+    //Move cards from one column to column
+        else if ( function[0]=='C' &&
+                    function[2]==':' &&
+                        function[5]=='-' &&
+                         function[6]=='>' &&
+                          function[7]=='C')
+        {
+            int sourceColumn=convertValue(function[1]);;
+            char sourceValue=function[3];
+            char sourceSuit=function[4];
+            int destColumn=convertValue(function[8]);
+
+            moveCard(&columns[sourceColumn-1], &columns[destColumn-1], sourceValue, sourceSuit);
+
+            printColumns(columns);
+        }
+
+
+
     //SR function
         else if (strcmp(function, "SR") == 0){
             Card *newDeck = SR(head);
@@ -97,3 +139,4 @@ int main() {
     }
 
 }
+
