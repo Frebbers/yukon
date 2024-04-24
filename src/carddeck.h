@@ -36,8 +36,7 @@ char convertSuit(char suit);
 Column** dealCards(Card* card);
 void freeColumns(Column** columns, int size);
 void printColumns(Column** columns);
-void findAndPrintCardInColumn(Column* column, char value, char suit);
 void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit);
-Column* rotateColumn(Column** column);
-Column** rotateColumns(Column** columns);
+Card* reverseDealCards(Column** columns);
+Column** dealColumns(Column** columns);
 #endif //YUKON_CARDDECK_H
