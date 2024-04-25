@@ -208,6 +208,7 @@ Column** dealCards(Card* card){
                 if (card != NULL && row < faceUpStartIndex[col]) {
                     // Check if the card is face down.
                     printf("[  ]\t"); // Face down card representation.
+
                 } else {
                     printf("[%c%c]\t", card->value, card->suit); // Face up card representation.
                 }
@@ -325,7 +326,8 @@ Column** dealColumns(Column** columns){
 
             // Print the card
             if (columns[col] != NULL) {
-                if (row < faceUpStartIndex[col]) {
+                int count = 0;
+                if (row < faceUpStartIndex[col] && columns[col]->next!=NULL) {
                     printf("[]\t"); // Face down card representation.
                 } else {
                     printf("%c%c\t", columns[col]->card->value, columns[col]->card->suit); // Face up card representation.
