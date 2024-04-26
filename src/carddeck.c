@@ -110,6 +110,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     Column* prev = NULL;
     char *message = "";
 
+
     // Find the card and end column
 
     while (current != NULL) {
