@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <renderTools.h>
 #include <SDL_image.h>
+#include "carddeck.h"
 
 void closeSDL(SDL_Window* window, SDL_Renderer* renderer) {
     // Destroy window and renderer
@@ -42,6 +43,7 @@ int initSDL(SDL_Window* window, SDL_Renderer** renderer) {
     }
     return 0;
 }
+
 SDL_Texture* loadTexture(const char* filepath, SDL_Renderer* renderer) {
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loadedSurface = IMG_Load(filepath);
@@ -55,4 +57,10 @@ SDL_Texture* loadTexture(const char* filepath, SDL_Renderer* renderer) {
         SDL_FreeSurface(loadedSurface);
     }
     return newTexture;
+}
+
+void createCardTexture(SDL_Renderer* renderer, Card* card) {
+    char pathToCard[] = "";
+    sprintf(pathToCard,"rsc/graphics/%c%c.png",card->value,card->suit);
+    card->texture = loadTexture(pathToCard, renderer);
 }

@@ -6,3 +6,4 @@
 #define UNTITLED_RENDERTOOLS_H
 
 #endif //UNTITLED_RENDERTOOLS_H
+SDL_Texture* loadTexture(const char* filepath, SDL_Renderer* renderer);
