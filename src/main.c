@@ -8,10 +8,30 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
+#include <SDL.h>
 
 
+int main(int argc, char *argv[]) {
+int width = 800;
+int height = 600;
+    SDL_INIT_EVERYTHING;
+    SDL_Window *window = SDL_CreateWindow("Yukon", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+    if (window == NULL) {
+        printf("Could not create window: %s\n", SDL_GetError());
+        return 1;
+    }
+    SDL_Event windowEvent;
+    while(1==1) {
+        if (SDL_PollEvent(&windowEvent)) {
+            if (windowEvent.type == SDL_QUIT) {
+                break;
+            }
+        }
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+    }
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-int main() {
     int startGame = 1;
     int len;
     Card *deck = NULL;
