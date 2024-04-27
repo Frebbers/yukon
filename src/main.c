@@ -29,7 +29,22 @@ int main(int argc, char *argv[]) {
         printf("Could not create renderer: %s\n", SDL_GetError());
         return 1;
     }
-    SDL_Surface* surface = IMG_Load("rsc/cards.png");
+    // Load image into memory
+    SDL_Surface* surface = IMG_Load("rsc/graphics/2_of_clubs.png");
+    if (!surface) {
+        printf("Could not create surface: %s\n", SDL_GetError());
+        return 1;
+    }
+    //create texture from surface
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
+    SDL_FreeSurface(surface);
+    if (!tex) {
+        printf("Could not create texture: %s\n", SDL_GetError());
+        return 1;
+    }
+    SDL_RenderClear(rend);
+    SDL_RenderCopy(rend, tex, NULL, NULL);
+    SDL_RenderPresent(rend);
     SDL_Event windowEvent;
     while (1 == 1) {
         if (SDL_PollEvent(&windowEvent)) {
@@ -39,8 +54,11 @@ int main(int argc, char *argv[]) {
         }
 
     }
+    SDL_DestroyTexture(tex);
+    SDL_DestroyRenderer(rend);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
 
     return 0;
 }
