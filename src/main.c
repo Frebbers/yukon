@@ -13,12 +13,14 @@
 
 
 int main(int argc, char *argv[]) {
-    int width = 800;
-    int height = 600;
+    int WINDOW_WIDTH = 1600;
+    int WINDOW_HEIGHT = 1000;
+    int FPS = 120;
+    int SCROLL_SPEED = 5;
     SDL_INIT_EVERYTHING;
     SDL_Window *window = SDL_CreateWindow
             ("Yukon", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-             width, height,SDL_WINDOW_SHOWN);
+             WINDOW_WIDTH, WINDOW_HEIGHT,SDL_WINDOW_SHOWN);
     if (window == NULL) {
         printf("Could not create window: %s\n", SDL_GetError());
         return 1;
@@ -42,15 +44,29 @@ int main(int argc, char *argv[]) {
         printf("Could not create texture: %s\n", SDL_GetError());
         return 1;
     }
-    SDL_RenderClear(rend);
-    SDL_RenderCopy(rend, tex, NULL, NULL);
-    SDL_RenderPresent(rend);
+    // Get the dimensions of texture and set destination to the whole screen
+    SDL_Rect dest;
+    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
+    // Center the texture on the screen
+    dest.x = (WINDOW_WIDTH - dest.w) / 2;
+    dest.y = (WINDOW_HEIGHT - dest.h) / 2;
+    float y_pos = WINDOW_HEIGHT;
+
+
+
+
+    int close_requested = 0;
     SDL_Event windowEvent;
-    while (1 == 1) {
-        if (SDL_PollEvent(&windowEvent)) {
+    while (!close_requested) {
+        while (SDL_PollEvent(&windowEvent)) {
+            SDL_RenderClear(rend);
+            SDL_RenderCopy(rend, tex, NULL, &dest);
+            SDL_RenderPresent(rend);
+            SDL_Delay(1000 / FPS);
             if (windowEvent.type == SDL_QUIT) {
-                break;
+                close_requested = 1;
             }
+
         }
 
     }
