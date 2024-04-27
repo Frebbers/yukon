@@ -35,4 +35,4 @@ target_link_libraries(untitled
         PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,
         SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
 
-file(COPY ${CMAKE_SOURCE_DIR}/rsc/cards.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
+file(COPY ${CMAKE_SOURCE_DIR}/rsc/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
