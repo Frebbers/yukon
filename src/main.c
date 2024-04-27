@@ -8,26 +8,30 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
+#include <SDL_image.h>
 #include <SDL.h>
 
 
 int main(int argc, char *argv[]) {
-int width = 800;
-int height = 600;
+    int width = 800;
+    int height = 600;
     SDL_INIT_EVERYTHING;
-    SDL_Window *window = SDL_CreateWindow("Yukon", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+    SDL_Window *window = SDL_CreateWindow
+            ("Yukon", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+             width, height,SDL_WINDOW_SHOWN);
     if (window == NULL) {
         printf("Could not create window: %s\n", SDL_GetError());
         return 1;
     }
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    SDL_Renderer* rend = SDL_CreateRenderer(window, -1, render_flags);
+    SDL_Renderer *rend = SDL_CreateRenderer(window, -1, render_flags);
     if (!rend) {
         printf("Could not create renderer: %s\n", SDL_GetError());
         return 1;
     }
+    SDL_Surface* surface = IMG_Load("rsc/cards.png");
     SDL_Event windowEvent;
-    while(1==1) {
+    while (1 == 1) {
         if (SDL_PollEvent(&windowEvent)) {
             if (windowEvent.type == SDL_QUIT) {
                 break;
@@ -38,7 +42,9 @@ int height = 600;
     SDL_DestroyWindow(window);
     SDL_Quit();
 
-
+    return 0;
+}
+/*
     int startGame = 1;
     int len;
     Card *deck = NULL;
@@ -171,3 +177,4 @@ int height = 600;
 
 }
 
+*/

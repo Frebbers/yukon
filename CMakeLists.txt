@@ -23,11 +23,16 @@ Include_directories(src)
 include_directories(src/include/SDL2)
 link_directories(${PROJECT_SOURCE_DIR}/src/lib)
 find_package(SDL2 CONFIG REQUIRED)
+
 target_link_libraries(untitled
         PRIVATE
         $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 
-#target_link_libraries(untitled ${PROJECT_SOURCE_DIR}/src/lib/SDL2.dll)
+find_package(SDL2_image CONFIG REQUIRED)
+target_link_libraries(untitled
+        PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,
+        SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
+
 file(COPY ${CMAKE_SOURCE_DIR}/rsc/cards.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
