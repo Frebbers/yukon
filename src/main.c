@@ -20,6 +20,12 @@ int height = 600;
         printf("Could not create window: %s\n", SDL_GetError());
         return 1;
     }
+    Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    SDL_Renderer* rend = SDL_CreateRenderer(window, -1, render_flags);
+    if (!rend) {
+        printf("Could not create renderer: %s\n", SDL_GetError());
+        return 1;
+    }
     SDL_Event windowEvent;
     while(1==1) {
         if (SDL_PollEvent(&windowEvent)) {
@@ -27,10 +33,11 @@ int height = 600;
                 break;
             }
         }
-        SDL_DestroyWindow(window);
-        SDL_Quit();
+
     }
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
 
     int startGame = 1;
     int len;
