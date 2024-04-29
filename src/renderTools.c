@@ -23,25 +23,26 @@ SDL_Window *createWindow(int WINDOW_WIDTH, int WINDOW_HEIGHT) {
     }
     return window;
 }
-
-int initSDL(SDL_Window* window, SDL_Renderer** renderer) {
-    // Initialize SDL
+//initializes the SDL renderer
+SDL_Renderer* initSDL(SDL_Window* window) {
+   /*
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Could not initialize SDL: %s\n", SDL_GetError());
-        return -1;
+        return 0;
     }
-    // Create window;
+    */
+    // Check if window was created
     if (window == NULL) {
-        return -1;
+        printf("createWindow() was called but 'window' is NULL: %s\n", SDL_GetError());
+        return 0;
     }
-
     // Create renderer
-    *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (*renderer == NULL) {
+    SDL_Renderer *newRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
+    if (newRenderer == NULL) {
         printf("Could not create renderer: %s\n", SDL_GetError());
-        return -1;
+        return 0;
     }
-    return 0;
+    return newRenderer;
 }
 
 SDL_Texture* loadTexture(const char* filepath, SDL_Renderer* renderer) {

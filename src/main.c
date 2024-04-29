@@ -8,6 +8,7 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
+#include "renderTools.h"
 #include <SDL_image.h>
 #include <SDL.h>
 
@@ -18,25 +19,15 @@ int main(int argc, char *argv[]) {
     int FPS = 120;
     int SCROLL_SPEED = 5;
     SDL_INIT_EVERYTHING;
-    SDL_Window *window = SDL_CreateWindow
-            ("Yukon", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-             WINDOW_WIDTH, WINDOW_HEIGHT,SDL_WINDOW_SHOWN);
-    if (window == NULL) {
-        printf("Could not create window: %s\n", SDL_GetError());
-        return 1;
-    }
-    Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    SDL_Renderer *rend = SDL_CreateRenderer(window, -1, render_flags);
+    SDL_Window *window = createWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
+    if (!window) {return 1;}
+    SDL_Renderer *rend = initSDL(window);
     if (!rend) {
-        printf("Could not create renderer: %s\n", SDL_GetError());
-        return 1;
-    }
+        SDL_DestroyWindow(window);
+        return 1;}
     // Load image into memory
     SDL_Surface* surface = IMG_Load("rsc/graphics/2_of_clubs.png");
-    if (!surface) {
-        printf("Could not create surface: %s\n", SDL_GetError());
-        return 1;
-    }
+
     //create texture from surface
     SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
@@ -70,11 +61,7 @@ int main(int argc, char *argv[]) {
         }
 
     }
-    SDL_DestroyTexture(tex);
-    SDL_DestroyRenderer(rend);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
+    closeSDL(window, rend);
 
     return 0;
 }
