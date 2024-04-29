@@ -25,12 +25,12 @@ SDL_Window *createWindow(int WINDOW_WIDTH, int WINDOW_HEIGHT) {
 }
 //initializes the SDL renderer
 SDL_Renderer* initSDL(SDL_Window* window) {
-   /*
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Could not initialize SDL: %s\n", SDL_GetError());
         return 0;
     }
-    */
+
     // Check if window was created
     if (window == NULL) {
         printf("createWindow() was called but 'window' is NULL: %s\n", SDL_GetError());
