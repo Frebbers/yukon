@@ -59,8 +59,16 @@ SDL_Texture* loadTexture(const char* filepath, SDL_Renderer* renderer) {
     return newTexture;
 }
 
-void createCardTexture(SDL_Renderer* renderer, Card* card) {
+void applyCardBackTexture(SDL_Renderer* renderer, Card* card) {
     char pathToCard[] = "";
-    sprintf(pathToCard,"rsc/graphics/%c%c.png",card->value,card->suit);
+    sprintf(pathToCard,"rsc/graphics/cardBack.png");
     card->texture = loadTexture(pathToCard, renderer);
+}
+//renders the back of the card if it is facedown, otherwise it renders the front of the card
+void applyCardTexture(SDL_Renderer* renderer, Card* card) {
+    if (!card->isFaceUp) {applyCardBackTexture(renderer, card);
+    }
+    else {char pathToCard[] = "";
+        sprintf(pathToCard,"rsc/graphics/%c%c.png",card->value,card->suit);
+        card->texture = loadTexture(pathToCard, renderer);}
 }
