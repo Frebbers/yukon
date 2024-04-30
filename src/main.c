@@ -17,7 +17,7 @@ int main() {
     Card *deck = NULL;
     Card *head = NULL;
     Column** columns = NULL;
-    Column** foundation = createFoundation();
+
 
     char command[50] = "";
     char lastCommand[50] = "";
@@ -87,7 +87,7 @@ int main() {
             char sourceSuit=function[4];
             int destColumn=convertValue(function[8]);
 
-            moveCard(&columns[sourceColumn-1], &foundation[destColumn-1], sourceValue, sourceSuit);
+            moveCard(&columns[sourceColumn-1], &columns[destColumn-1], sourceValue, sourceSuit);
             dealColumns(columns);
 
         }
@@ -103,8 +103,10 @@ int main() {
             char sourceSuit=function[4];
             int destColumn=convertValue(function[8]);
 
-            moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn-1], sourceValue, sourceSuit);
+            moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
             //dealColumns(columns);
+            printColumns(columns);
+
 
         }
 

@@ -72,9 +72,9 @@ char convertSuit(char suit) {
 
 int convertValue(char value) {
 
-    if(value == 'A'){
+    if(value == 'A' || value == '1') {
         return 1;
-    } else if(value == '2'){
+    }else if(value == '2'){
         return 2;
     }else if(value == '3'){
         return 3;
@@ -108,6 +108,8 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     Column* tempDest = *destColumn;
     Column* destCard = *destColumn;
     Column* prev = NULL;
+
+
     char *message = "";
 
 
@@ -188,12 +190,13 @@ Column** dealCards(Card* card){
 
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
     char *foundations[] = {"F1", "F2", "F3", "F4"};
+    Card *fn = (Card*)malloc(sizeof(Card));
 
     // Create an array to hold the columns
-    Column** columns = malloc(7 * sizeof(Column*));
+    Column** columns = malloc(11 * sizeof(Column*));
     // Initialize the columns and maxRows
     int maxRows = 20;
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 11; i++) {
         columns[i] = NULL;
     }
 
@@ -226,15 +229,20 @@ Column** dealCards(Card* card){
         //Prints the foundations
         if((row)%2 == 0 && row < 7){
             if(row == 0){
+
+                createColumn(&columns[7], *fn);
                 printf("\t[]\t%s\n",foundations[counter]);
                 counter++;
             }else if(row == 2){
+                createColumn(&columns[8], *fn);
                 printf("\t[]\t%s\n",foundations[counter]);
                 counter++;
             }else if(row == 4){
+                createColumn(&columns[9], *fn);
                 printf("\t[]\t%s\n",foundations[counter]);
                 counter++;
             }else if(row == 6){
+                createColumn(&columns[10], *fn);
                 printf("\t[]\t%s\n",foundations[counter]);
                 counter++;
             }
@@ -249,7 +257,7 @@ Column** dealCards(Card* card){
 
 
 void printColumns(Column** columns) {
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 11; i++) {
         printf("Column %d:\n", i + 1);
         Column* current = columns[i];
         while (current != NULL) {
@@ -401,29 +409,19 @@ void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value
         return;
     }
 
-    //get the last card from the destination column
-    if (tempDest ==NULL){
-        destFound = current;
-    } else {
-        while (tempDest != NULL) {
-            if (tempDest->next == NULL) {
-                destFound = tempDest;
-                break;
+        //get the last card from the destination column
+        if (tempDest ==NULL){
+            createColumn(&tempDest, *current->card);
+        } else {
+            while (tempDest != NULL) {
+                if (tempDest->next == NULL) {
+                    destFound = tempDest;
+                    break;
+                }
+                tempDest = tempDest->next;
             }
-            tempDest = tempDest->next;
         }
-    }
 
-    destFound->next = current;
+        destFound->next = current;
 }
-
-//create 4 empty columns for the foundation
-Column** createFoundation(){
-    Column** foundation = malloc(4 * sizeof(Column*));
-    for (int i = 0; i < 4; i++) {
-        foundation[i] = NULL;
-    }
-    return foundation;
-}
-
 
