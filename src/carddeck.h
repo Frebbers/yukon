@@ -39,4 +39,6 @@ void printColumns(Column** columns);
 void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit);
 Card* reverseDealCards(Column** columns);
 Column** dealColumns(Column** columns);
+Column** createFoundation();
+void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value, char suit);
 #endif //YUKON_CARDDECK_H

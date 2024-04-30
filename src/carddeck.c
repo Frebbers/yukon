@@ -115,6 +115,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
 
     while (current != NULL) {
         if (current->card->value == value && current->card->suit == suit) {
+            // Remove the card from the source column MOVE IT DOWN AFTER VALIDATION CHECK
             if (prev == NULL) {
                 *sourceColumn = current->next;
             } else {
@@ -179,6 +180,7 @@ void createColumn(Column** headColumn, Card card) {
     }
 }
 
+
 Column** dealCards(Card* card){
     // Constants for the game setup.
     const int totalCardsInColumns[7] = {1, 6, 7, 8, 9, 10, 11};
@@ -194,6 +196,7 @@ Column** dealCards(Card* card){
     for (int i = 0; i < 7; i++) {
         columns[i] = NULL;
     }
+
    int counter = 0;
     //Prints the cards in the columns
    for (int row = 0; row < maxRows; row++) {
@@ -365,6 +368,62 @@ Column** dealColumns(Column** columns){
         columns[i] = firstCardInColumns[i];
     }
     return columns;
+}
+
+
+void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value, char suit) {
+
+    Column* current = *sourceColumn;
+    Column* tempDest = *foundation;
+    Column* destFound = *foundation;
+    Column* prev = NULL;
+    char *message = "";
+
+    // Find the card in the source column and remove it
+    while (current != NULL) {
+        if (current->card->value == value && current->card->suit == suit) {
+            if (prev == NULL) {
+                *sourceColumn = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            current->next = NULL;
+            break;
+        }
+        prev = current;
+        current = current->next;
+    }
+    printf("Card %c%c\n", current->card->value, current->card->suit);
+
+    // If the card is not found, return
+    if (current == NULL) {
+        printf("Card not found in source column.\n");
+        return;
+    }
+
+    //get the last card from the destination column
+    if (tempDest ==NULL){
+        destFound = current;
+    } else {
+        while (tempDest != NULL) {
+            if (tempDest->next == NULL) {
+                destFound = tempDest;
+                break;
+            }
+            tempDest = tempDest->next;
+        }
+    }
+
+    destFound->next = current;
+}
+
+//create 4 empty columns for the foundation
+Column** createFoundation(){
+    Column** foundation = malloc(4 * sizeof(Column*));
+    for (int i = 0; i < 4; i++) {
+        foundation[i] = NULL;
+    }
+    return foundation;
 }
 
 
