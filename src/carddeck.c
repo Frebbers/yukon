@@ -495,47 +495,76 @@ Column** dealColumns(Column** columns){
 
 void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value, char suit) {
 
-    Column* current = *sourceColumn;
-    Column* tempDest = *foundation;
-    Column* destFound = *foundation;
-    Column* prev = NULL;
+    Column *current = *sourceColumn;
+    Column *tempDest = *foundation;
+    Column *destFound = *foundation;
+    Column *prev = NULL;
     char *message = "";
 
     // Find the card in the source column and remove it
     while (current != NULL) {
         if (current->card->value == value && current->card->suit == suit) {
-            if (prev == NULL) {
-                *sourceColumn = current->next;
-            } else {
-                prev->next = current->next;
-            }
-            current->next = NULL;
             break;
         }
         prev = current;
         current = current->next;
     }
-    printf("Card %c%c\n", current->card->value, current->card->suit);
-
     // If the card is not found, return
     if (current == NULL) {
         printf("Card not found in source column.\n");
         return;
     }
 
-        //get the last card from the destination column
-        if (tempDest ==NULL){
-            createColumn(&tempDest, *current->card);
+
+
+// If the destination column is empty and the card is an Ace, move the card
+    if (tempDest != NULL && current->card->value == 'A') {
+        *foundation = &(*current);
+        //remove the card from the source column
+        if (prev == NULL) {
+            *sourceColumn = current->next;
         } else {
-            while (tempDest != NULL) {
-                if (tempDest->next == NULL) {
-                    destFound = tempDest;
-                    break;
+            prev->next = current->next;
+        }
+        return;
+    } else if (tempDest == NULL && current->card->value != 'A'||current->card->next!=NULL) {
+        printf("Card %c%c\n is not Ace or it is not last in a column", current->card->value, current->card->suit);
+        return;
+    }
+
+    //get the last card from the destination column
+    if (tempDest != NULL) {
+        while (tempDest != NULL) {
+            if (tempDest->next == NULL) {
+                destFound = tempDest;
+
+                // Check if the card can be moved to the destination column
+                int destValue = convertValue(destFound->card->value);
+                int currentValue = convertValue(current->card->value);
+                //char sourceSuit = convertSuit(current->card->suit);
+                char destSuit = convertSuit(destFound->card->suit);
+                if (destValue + 1 != currentValue || suit != destSuit || current->card->next != NULL) {
+                    printf("Invalid move: Card cannot be moved to destination column.\n");
+                    printf("Current Value: %d, Destination Value: %d\n", currentValue, destValue);
+                    printf("Current Suit: %c, Destination Suit: %c\n", current->card->suit, destFound->card->suit);
+                    return;
                 }
-                tempDest = tempDest->next;
+
+                // Add the card and all cards below to the destination column
+                if (destValue + 1 == currentValue && suit == destSuit && current->card->next == NULL) {
+                    destFound->next = current;
+                    return;
+                }
+                break;
+            }
+            tempDest = tempDest->next;
+            //remove the card from the source column
+            if (prev == NULL) {
+                *sourceColumn = current->next;
+            } else {
+                prev->next = current->next;
             }
         }
-
-        destFound->next = current;
+    }
 }
 
