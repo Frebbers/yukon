@@ -114,7 +114,6 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
 
 
     // Find the card and end column
-
     while (current != NULL) {
         if (current->card->value == value && current->card->suit == suit) {
                  break;
@@ -361,6 +360,7 @@ Card* reverseDealCards(Column** columns) {
     }
     return head;
 }
+
 Column** dealColumns(Column** columns){
 
     const int faceUpStartIndex[7] = {0, 1, 2, 3, 4, 5, 6};
@@ -371,6 +371,8 @@ Column** dealColumns(Column** columns){
     int counter = 0;
     //Prints the cards in the columns
     Column* firstCardInColumns[7];
+    Column* fnColumn[4];
+
 
     for (int row = 0; row < 20; row++) {
         printf("\t");
@@ -410,29 +412,83 @@ Column** dealColumns(Column** columns){
 
 
         //Prints the foundations
-        if((row)%2 == 0 && row < 7){
-            if(row == 0){
-                printf("\t[]\t%s\n",foundations[counter]);
-                counter++;
-            }else if(row == 2){
-                printf("\t[]\t%s\n",foundations[counter]);
-                counter++;
-            }else if(row == 4){
-                printf("\t[]\t%s\n",foundations[counter]);
-                counter++;
-            }else if(row == 6){
-                printf("\t[]\t%s\n",foundations[counter]);
-                counter++;
+       // for (int col = 7; col < 10; col++) {
+            if((row)%2 == 0 && row < 7){
+                if(row == 0){
+
+                    Column* temp = columns[7];
+                    Column* last = columns[7];
+                    //print last card in the foundation column
+                    while (temp != NULL) {
+                        if (temp->next == NULL) {
+                            last = temp;
+                            break;
+                        }
+                        temp = temp->next;
+                    }
+                    printf("\t[%c%c]\t%s\n",last->card->value,last->card->suit ,foundations[counter]);
+                    counter++;
+                }else if(row == 2){
+
+                    Column* temp = columns[8];
+                    Column* last = columns[8];
+                    //print last card in the foundation column
+                    while (temp != NULL) {
+                        if (temp->next == NULL) {
+                            last = temp;
+                            break;
+                        }
+                        temp = temp->next;
+                    }
+                    printf("\t[%c%c]\t%s\n",last->card->value,last->card->suit, foundations[counter]);
+                    counter++;
+                }else if(row == 4){
+
+
+
+                    Column* temp = columns[9];
+                    Column* last = columns[9];
+                    //print last card in the foundation column
+                    while (temp != NULL) {
+                        if (temp->next == NULL) {
+                            last = temp;
+                            break;
+                        }
+                        temp = temp->next;
+                    }
+                    printf("\t[%c%c]\t%s\n",last->card->value,last->card->suit, foundations[counter]);
+                    counter++;
+                }else if(row == 6){
+
+
+                    Column* temp = columns[10];
+                    Column* last = columns[10];
+                    //print last card in the foundation column
+                    while (temp != NULL) {
+                        if (temp->next == NULL) {
+                            last = temp;
+                            break;
+                        }
+                        temp = temp->next;
+                    }
+                    printf("\t[%c%c]\t%s\n",last->card->value,last->card->suit, foundations[counter]);
+                    counter++;
+                }
+            }else{
+                printf("\n");
             }
-        }else{
-            printf("\n");
-        }
+        //}
 
     }
+
+
+
     //reset columns pointer to the first card in the columns
     for (int i = 0; i < 7; i++) {
         columns[i] = firstCardInColumns[i];
     }
+
+
     return columns;
 }
 
