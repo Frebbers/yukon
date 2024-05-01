@@ -89,7 +89,7 @@ int main() {
 
             moveCard(&columns[sourceColumn-1], &columns[destColumn-1], sourceValue, sourceSuit);
             dealColumns(columns);
-            //printColumns(columns);
+
 
         }
     //Move from column to foundation
@@ -105,10 +105,7 @@ int main() {
             int destColumn=convertValue(function[8]);
 
             moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
-            //dealColumns(columns);
-            printColumns(columns);
-
-
+            dealColumns(columns);
         }
         else if((strcmp(function, "PR") == 0)){ printColumns(columns);}
 
