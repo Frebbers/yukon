@@ -56,7 +56,7 @@ int main() {
         if (strcmp(function, "LD") == 0) {
             // strcpy(lastCommand, "LD");
             char *filePath;
-            if (strcmp(argument, "") == 0) { filePath = "rsc/cards.txt"; }
+            if (strcmp(argument, "") == 0) { filePath = "rsc/UnShuffledcards.txt"; }
             else { filePath = getFilePath(argument); }
             if (fileExists(filePath) == 1) {
                 Card *newDeck = loadDeck(filePath);
@@ -155,15 +155,11 @@ int main() {
             }
                 //SD function
             else if (strcmp(function, "SD") == 0) {
-                char input[50] = "";
-                sscanf(argument, "%s", &input);
-                if (input[0] != '\0') {
-                    char filename[60];
-                    sprintf(filename, "rsc/%s", input);
-                    saveDeck(head, filename);
-                } else {
-                    saveDeck(head, "rsc/cards.txt");
-                }
+            char *filePath;
+            if (strcmp(argument, "") == 0) { filePath = "rsc/cards.txt"; }
+            else { filePath = getFilePath(argument); }
+                    saveDeck(head, filePath);
+                    message = "OK";
             }
                 //SW function
             else if (strcmp(function, "SW") == 0) {
