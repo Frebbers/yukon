@@ -12,8 +12,20 @@
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
     char *filename = malloc(60);
+    if (strcmp(input, "") == 0) {
+        NULL;
+    }
     sprintf(filename, "rsc/%s", input);
     return filename;
+}
+int fileExists(const char *filename) {
+    FILE *file;
+    file = fopen(filename, "r");
+    if (file) {
+        fclose(file);
+        return 1;
+    }
+    return 0;
 }
 
 
@@ -44,10 +56,11 @@ int main() {
         if (strcmp(function, "LD") == 0) {
             // strcpy(lastCommand, "LD");
             char *filePath;
-            if (strcmp(argument, "") == 0) {filePath = "rsc/cards.txt";}
-            else {filePath = getFilePath(argument);}
-            //const char *filename = "rsc/cards.txt";
+            if (strcmp(argument, "") == 0) { filePath = "rsc/cards.txt"; }
+            else { filePath = getFilePath(argument); }
+            if (fileExists(filePath) == 1) {
                 Card *newDeck = loadDeck(filePath);
+
                 if (newDeck != NULL) {
                     if (deck != NULL) {
                         freeDeck(deck);
@@ -58,10 +71,12 @@ int main() {
                     message = "OK";
                 } else {
                     board();
-                    message = "Error: No deck loaded.";
+                    message = "Error: Deck is invalid.";
                 }
-
+            } else {
+                message = "Error: File not found.";
             }
+        }
 
                 //QQ function
             else if (strcmp(function, "QQ") == 0) {
