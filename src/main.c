@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "SW.h"
 #include "carddeck.h"
 #include "board.h"
@@ -26,8 +27,21 @@ int fileExists(const char *filename) {
     }
     return 0;
 }
+/*
+int main() {
+    Card* deck = loadDeck("rsc/UnShuffledCards.txt");
+    int i=0;
+    while (i<10) {
+        printf("Shuffling deck using SR function\n");
+        deck = SR(deck);
+        i++;
+    }
 
-
+    printf(displayDynamicInterface(deck));
+    freeDeck(deck);
+    exit(0);
+}
+*/
 int main() {
     int len;
     Card *deck = NULL;
@@ -114,22 +128,17 @@ int main() {
 
             }
 
-
-
                 //SR function
             else if (strcmp(function, "SR") == 0) {
                 Card *newDeck = SR(head);
                 if (newDeck != NULL) {
-                    if (deck != NULL) {
-                        freeDeck(deck);
-                    }
                     deck = newDeck;
                     head = deck;
                     loadedDeck();
                     message = "OK";
                 } else {
                     board();
-                    message = "Error";
+                    message = "Error: No deck loaded.";
                 }
             }
                 //SI function
@@ -138,9 +147,6 @@ int main() {
                 sscanf(argument, "%d", &input);
                 Card *newDeck = splitShuffle(head, input);
                 if (newDeck != NULL) {
-                    if (deck != NULL) {
-                        //    freeDeck(deck);
-                    }
                     deck = newDeck;
                     head = deck;
                     //head = newDeck;

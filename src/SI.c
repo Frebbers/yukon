@@ -21,9 +21,6 @@ Card* splitShuffle(Card* oldDeck, int splitIndex) {
     oldDeck->next = NULL;
     deck2 = temp;
 
-    // Shuffle the cards
-    //newDeck = *deck1;
-    //TODO  add pointer to start of newdeck
    int i = 0;
     Card *newDeckTemp;
     while (deck1 != NULL && deck2 != NULL) {
