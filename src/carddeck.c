@@ -13,7 +13,7 @@ Card* createCard(char value, char suit) {
     }
     newCard->suit = suit;
     newCard->value = value;
-    newCard->isFaceUp = 0;
+    newCard->isFaceUp = 1;
 
     return newCard;
 }
@@ -124,7 +124,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
 
 
     // If the card is not found, return
-    if (current == NULL) {
+    if (current == NULL || current->card->isFaceUp == 0) {
         printf("Card not found in source column.\n");
         return;
     }
@@ -230,9 +230,12 @@ Column** dealCards(Card* card){
                 createColumn(&columns[col], *card);
 
                 if (card != NULL && row < faceUpStartIndex[col]) { // Check if the card is face down.
-                    printf("[  ]\t"); // Face down card representation.
+                    //set the card to face down
+                    columns[col]->card->isFaceUp = 0;
+                    printf("[ ]\t"); // Face down card representation.
 
                 } else {
+
                     printf("[%c%c]\t", card->value, card->suit); // Face up card representation.
                 }
                 card= card->next; // Move to the next card.
@@ -320,7 +323,7 @@ void printColumns(Column** columns) {
         printf("Column %d:\n", i + 1);
         Column* current = columns[i];
         while (current != NULL) {
-            printf("Card Value: %c, Card Suit: %c\n", current->card->value, current->card->suit);
+            printf("Card Value: %c, Card Suit: %c, Face:%d\n", current->card->value, current->card->suit, current->card->isFaceUp);
             current = current->next;
         }
         printf("\n");
@@ -402,8 +405,10 @@ Column** dealColumns(Column** columns){
             if (columns[col] != NULL) {
                 int count = 0;
                 if (row < faceUpStartIndex[col] && columns[col]->next!=NULL) {
+                    columns[col]->card->isFaceUp = 0;
                     printf("[]\t"); // Face down card representation.
                 } else {
+                    columns[col]->card->isFaceUp = 1;
                     printf("%c%c\t", columns[col]->card->value, columns[col]->card->suit); // Face up card representation.
                 }
             } else {
