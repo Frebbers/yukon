@@ -516,16 +516,18 @@ void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value
         prev = current;
         current = current->next;
     }
+
+
     // If the card is not found, return
-    if (current == NULL) {
+    if (current == NULL || current->card->isFaceUp == 0) {
         printf("Card not found in source column.\n");
         return;
     }
 
 
 
-// If the destination column is empty and the card is an Ace, move the card
-    if (tempDest != NULL && current->card->value == 'A') {
+    // If the destination column is empty and the card is an Ace, move the card
+    if (tempDest != NULL && current->card->value == 'A' && current->card->next == NULL) {
         *foundation = &(*current);
         //remove the card from the source column
         if (prev == NULL) {
