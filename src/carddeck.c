@@ -129,14 +129,15 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
         return;
     }
 
-
+    //Move if the destination column is empty
     if (tempDest ==NULL && current->card->value == 'K') {
         *destColumn = &(*current);
         //remove the card from the source column
         if (prev == NULL) {
             *sourceColumn = current->next;
         } else {
-            prev->next = current->next;
+            prev->next = current;
+            prev->next=NULL;
         }
 
         return;
@@ -173,7 +174,8 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
             if (prev == NULL) {
                 *sourceColumn = current->next;
             } else {
-                prev->next = current->next;
+                prev->next = current;
+                prev->next=NULL;
             }
         }
     }
@@ -524,10 +526,11 @@ void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value
         if (prev == NULL) {
             *sourceColumn = current->next;
         } else {
-            prev->next = current->next;
+            prev->next = current;
+            prev->next=NULL;
         }
         return;
-    } else if (tempDest == NULL && current->card->value != 'A'||current->card->next!=NULL) {
+    } else if (tempDest != NULL && current->card->value != 'A'||current->card->next!=NULL) {
         printf("Card %c%c\n is not Ace or it is not last in a column", current->card->value, current->card->suit);
         return;
     }
@@ -562,7 +565,8 @@ void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value
             if (prev == NULL) {
                 *sourceColumn = current->next;
             } else {
-                prev->next = current->next;
+                prev->next = current;
+                prev->next=NULL;
             }
         }
     }
