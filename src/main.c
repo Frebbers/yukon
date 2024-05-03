@@ -55,7 +55,7 @@ int main() {
         }
         //QQ function
         else if (strcmp(function,"QQ") == 0) {
-            saveDeck(head, "rsc/savedcards.txt");
+          //  saveDeck(head, "rsc/savedcards.txt");
 
             freeDeck(deck);
             printf("The program exits.");
@@ -128,6 +128,19 @@ int main() {
                 message= "Error: No deck loaded.";
             }
 
+        }
+        //SD function
+        else if (strcmp(function, "SD") == 0){
+            char input[50] = "";
+            sscanf(argument, "%s", &input);
+            if (input[0] != '\0'){
+                char filename[60];
+                sprintf(filename, "rsc/%s", input);
+                saveDeck(head, filename);
+            }
+            else {
+                saveDeck(head, "rsc/cards.txt");
+            }
         }
     //SW function
         else if (strcmp(function, "SW") == 0){
