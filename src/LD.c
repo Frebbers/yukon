@@ -37,7 +37,6 @@ int addCard (int cards[52], int card) {
 }
 Card* loadDeck(const char *filename) {
     FILE *file = fopen(filename, "r");
-    char *message;
     if (file == NULL) {
        return NULL;
     }
@@ -62,11 +61,11 @@ Card* loadDeck(const char *filename) {
             tail -> next = NULL;
         }
         i++;
-        if (i == 52) {return NULL;}
+        if (i == 53) {return NULL;}
     }
     fclose(file);
     //return head;
-    if (i != 51) {return NULL;}
+    if (i != 52) {return NULL;}
     return head;
 }
 

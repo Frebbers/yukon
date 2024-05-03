@@ -9,23 +9,29 @@
 #include "SI.h"
 #include "Phases.h"
 
+//function to take a file name from the user and return a path to that file in rsc folder
+char *getFilePath(char *input) {
+    char *filename = malloc(60);
+    sprintf(filename, "rsc/%s", input);
+    return filename;
+}
 
 
 int main() {
-    int startGame = 1;
     int len;
     Card *deck = NULL;
     Card *head = NULL;
-    Column** columns = NULL;
+    Column **columns = NULL;
 
     char command[50] = "";
     char lastCommand[50] = "";
     char argument[50] = "";
     char *message = "Enter a command to start the game";
-    char function[9]= " ";
+    char function[9] = " ";
     board();
+    char*filename = "";
 
-    while (startGame == 1){
+    while (1) {
         strcpy(lastCommand, handleInput(message, command));
         strcpy(command, lastCommand);
         // Extract function name and argument
@@ -34,126 +40,129 @@ int main() {
         function[strlen(function)] = '\0';
 
 
-    //LD function
-        if (strcmp(function, "LD") == 0){
-           // strcpy(lastCommand, "LD");
-            const char *filename = "rsc/cards.txt";
-            Card* newDeck = loadDeck(filename);
-            if (newDeck != NULL) {
-                if (deck != NULL) {
-                    freeDeck(deck);
+        //LD function
+        if (strcmp(function, "LD") == 0) {
+            // strcpy(lastCommand, "LD");
+            char *filePath;
+            if (strcmp(argument, "") == 0) {filePath = "rsc/cards.txt";}
+            else {filePath = getFilePath(argument);}
+            //const char *filename = "rsc/cards.txt";
+                Card *newDeck = loadDeck(filePath);
+                if (newDeck != NULL) {
+                    if (deck != NULL) {
+                        freeDeck(deck);
+                    }
+                    deck = newDeck;
+                    head = deck;
+                    loadedDeck();
+                    message = "OK";
+                } else {
+                    board();
+                    message = "Error: No deck loaded.";
                 }
-                deck = newDeck;
-                head = deck;
-                loadedDeck();
-                message = "OK";
-            } else {
-                board();
-                message= "Error: No deck loaded.";
+
             }
 
-        }
-        //QQ function
-        else if (strcmp(function,"QQ") == 0) {
-          //  saveDeck(head, "rsc/savedcards.txt");
+                //QQ function
+            else if (strcmp(function, "QQ") == 0) {
+                //  saveDeck(head, "rsc/savedcards.txt");
 
-            freeDeck(deck);
-            printf("The program exits.");
-            exit(0);
+                freeDeck(deck);
+                printf("The program exits.");
+                exit(0);
 
-        }
-            //P function
-
-        else if (strcmp(function, "P") == 0) {
-            if (deck != NULL) {
-                columns=dealCards(head); // Deal cards from the deck into columns
-                 message = "OK";
-              //  playPhase(&head); // Enter into the play phase
-            } else {
-                message = "Error: No deck loaded.";
             }
-        }
+                //P function
 
-    //Move cards from one column to column
-        else if ( function[0]=='C' &&
-                    function[2]==':' &&
-                        function[5]=='-' &&
-                         function[6]=='>' &&
-                          function[7]=='C')
-        {
-            int sourceColumn=convertValue(function[1]);;
-            char sourceValue=function[3];
-            char sourceSuit=function[4];
-            int destColumn=convertValue(function[8]);
-
-            moveCard(&columns[sourceColumn-1], &columns[destColumn-1], sourceValue, sourceSuit);
-            dealColumns(columns);
-
-        }
-
-
-
-    //SR function
-        else if (strcmp(function, "SR") == 0){
-            Card *newDeck = SR(head);
-            if (newDeck != NULL) {
+            else if (strcmp(function, "P") == 0) {
                 if (deck != NULL) {
-                    freeDeck(deck);
+                    columns = dealCards(head); // Deal cards from the deck into columns
+                    message = "OK";
+                    //  playPhase(&head); // Enter into the play phase
+                } else {
+                    message = "Error: No deck loaded.";
                 }
-                deck = newDeck;
-                head = deck;
-                loadedDeck();
-                message = "OK";
-            } else {
-                board();
-                message= "Error";
-            }
-        }
-        //SI function
-        else if (strcmp(function,"SI") == 0){
-            int input;
-            sscanf(argument, "%d", &input);
-            Card* newDeck = splitShuffle(head,input);
-            if (newDeck != NULL) {
-                if (deck != NULL) {
-                //    freeDeck(deck);
-                }
-                deck = newDeck;
-                 head = deck;
-                //head = newDeck;
-                loadedDeck();
-                message = "OK";
-            } else {
-                board();
-                message= "Error: No deck loaded.";
             }
 
-        }
-        //SD function
-        else if (strcmp(function, "SD") == 0){
-            char input[50] = "";
-            sscanf(argument, "%s", &input);
-            if (input[0] != '\0'){
-                char filename[60];
-                sprintf(filename, "rsc/%s", input);
-                saveDeck(head, filename);
+                //Move cards from one column to column
+            else if (function[0] == 'C' &&
+                     function[2] == ':' &&
+                     function[5] == '-' &&
+                     function[6] == '>' &&
+                     function[7] == 'C') {
+                int sourceColumn = convertValue(function[1]);;
+                char sourceValue = function[3];
+                char sourceSuit = function[4];
+                int destColumn = convertValue(function[8]);
+
+                moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
+                dealColumns(columns);
+
             }
+
+
+
+                //SR function
+            else if (strcmp(function, "SR") == 0) {
+                Card *newDeck = SR(head);
+                if (newDeck != NULL) {
+                    if (deck != NULL) {
+                        freeDeck(deck);
+                    }
+                    deck = newDeck;
+                    head = deck;
+                    loadedDeck();
+                    message = "OK";
+                } else {
+                    board();
+                    message = "Error";
+                }
+            }
+                //SI function
+            else if (strcmp(function, "SI") == 0) {
+                int input;
+                sscanf(argument, "%d", &input);
+                Card *newDeck = splitShuffle(head, input);
+                if (newDeck != NULL) {
+                    if (deck != NULL) {
+                        //    freeDeck(deck);
+                    }
+                    deck = newDeck;
+                    head = deck;
+                    //head = newDeck;
+                    loadedDeck();
+                    message = "OK";
+                } else {
+                    board();
+                    message = "Error: No deck loaded.";
+                }
+
+            }
+                //SD function
+            else if (strcmp(function, "SD") == 0) {
+                char input[50] = "";
+                sscanf(argument, "%s", &input);
+                if (input[0] != '\0') {
+                    char filename[60];
+                    sprintf(filename, "rsc/%s", input);
+                    saveDeck(head, filename);
+                } else {
+                    saveDeck(head, "rsc/cards.txt");
+                }
+            }
+                //SW function
+            else if (strcmp(function, "SW") == 0) {
+                message = displayDynamicInterface(head);
+
+            }
+
+                //"Unknown command" message
             else {
-                saveDeck(head, "rsc/cards.txt");
+                strcpy(lastCommand, command);
+                message = "Unknown command.";
             }
-        }
-    //SW function
-        else if (strcmp(function, "SW") == 0){
-            message = displayDynamicInterface(head);
-
+            strcpy(argument, "");
         }
 
-    //"Unknown command" message
-        else {
-            strcpy(lastCommand, command);
-            message = "Unknown command.";
-        }
     }
-
-}
 
