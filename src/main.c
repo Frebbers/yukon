@@ -12,11 +12,10 @@
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
     char *filename = malloc(60);
-    if (strcmp(input, "") == 0) {
-        NULL;
-    }
     sprintf(filename, "rsc/%s", input);
-    return filename;
+    char *result = strdup(filename);
+    free(filename);
+    return result;
 }
 int fileExists(const char *filename) {
     FILE *file;
@@ -56,7 +55,7 @@ int main() {
         if (strcmp(function, "LD") == 0) {
             // strcpy(lastCommand, "LD");
             char *filePath;
-            if (strcmp(argument, "") == 0) { filePath = "rsc/UnShuffledcards.txt"; }
+            if (strcmp(argument, "") == 0) { filePath = "rsc/UnShuffledCards.txt"; }
             else { filePath = getFilePath(argument); }
             if (fileExists(filePath) == 1) {
                 Card *newDeck = loadDeck(filePath);
