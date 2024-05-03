@@ -6,7 +6,7 @@
 #include <renderTools.h>
 #include <SDL_image.h>
 #include "carddeck.h"
-
+//Cleans up the SDL window and renderer. Must be called before the program ends
 void closeSDL(SDL_Window* window, SDL_Renderer* renderer) {
     // Destroy window and renderer
     SDL_DestroyRenderer(renderer);
