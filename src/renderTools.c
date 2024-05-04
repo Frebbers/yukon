@@ -87,11 +87,11 @@ void renderCard(SDL_Renderer* renderer, Card card, int x, int y) {
     SDL_RenderCopy(renderer, card.texture, &srcRect, &dstRect);
 }
 
-void renderColumn(SDL_Renderer* renderer, Column* column, int x, int y) {
-    Card* card = column->head;
-    while (card != NULL) {
-        renderCard(renderer, *card, x, y);
-        card = card->next;
+void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y) {
+
+    while (head != NULL) {
+        renderCard(renderer, *head, x, y);
+        head = head->next;
         y += 30;
     }
 }
