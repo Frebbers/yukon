@@ -10,18 +10,19 @@
 
 Card * SR(Card *head) {
 
-    Card *copyCard =NULL;
+//    Card *copyCard =NULL;
     Card *temp = head;
     Card *shuffledPile = NULL; // The shuffled pile starts out empty
     int counter = 0;
 
     // Copy the unshuffled pile to a new pile
-    while(temp != NULL) {
+   /* while(temp != NULL) {
         appendCard(&copyCard, temp->value, temp->suit);
         temp = temp->next;
     }
-
-    temp = copyCard;
+*/
+    //temp = copyCard;
+    Card *shuffledPileTemp;
     while (temp != NULL) {
         // Remove the top card from the unshuffled pile
         Card *currentCard = temp;
@@ -32,12 +33,12 @@ Card * SR(Card *head) {
         srand(time(NULL)); // Seed the random number generator
         // Generate a random position to insert the card in the shuffled pile
         int position = rand() % (counter + 1);
-
         // Insert the card at the random position
         if (position == 0) {
             // Insert at the head of the shuffled pile
             currentCard->next = shuffledPile;
             shuffledPile = currentCard;
+        shuffledPileTemp = shuffledPile;
         } else {
             // Insert at the given position
             Card *current = shuffledPile;
@@ -50,7 +51,7 @@ Card * SR(Card *head) {
 
         counter++; // Increase the size of the shuffled pile
     }
-
+    shuffledPile=shuffledPileTemp;
     return shuffledPile; // Return the shuffled pile as the new deck
 }
 

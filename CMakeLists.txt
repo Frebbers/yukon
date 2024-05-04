@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.24.2)
-project(untitled C)
+project(Yukon C)
 
 set(CMAKE_C_STANDARD 17)
+
 # If you are using CLion, setting the C_STANDARD property ensures that it will understand the C17 standard.
 # For add_executable, typically only source files are listed.
-add_executable(untitled src/main.c src/carddeck.c
+add_executable(Yukon src/main.c src/carddeck.c
         src/board.c
         src/board.h
         src/LD.c
@@ -31,10 +32,8 @@ target_link_libraries(untitled
         $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
-
 find_package(SDL2_image CONFIG REQUIRED)
 target_link_libraries(untitled
         PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,
         SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
-
-file(COPY ${CMAKE_SOURCE_DIR}/rsc/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
+file(COPY ${CMAKE_SOURCE_DIR}/rsc/UnShuffledcards.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
