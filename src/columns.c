@@ -388,8 +388,6 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
                 // Check if the card can be moved to the destination column
                 int destValue = convertValue(destCard->card->value);
                 int currentValue = convertValue(current->card->value);
-               // char sourceSuit = convertSuit(current->card->suit);
-                //char destSuit = convertSuit(destCard->card->suit);
                 if (destValue - 1 != currentValue || suit == destCard->card->suit || current->card->isFaceUp==0) {
                     printf("Invalid move: Card cannot be moved to destination column.\n");
                     printf("Current Value: %d, Destination Value: %d\n", currentValue, destValue);
