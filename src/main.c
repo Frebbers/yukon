@@ -70,8 +70,8 @@ int main(int argc, char *argv[]) {
     }
     deck->next = NULL;
     deck = temp;
-    SDL_RenderClear(rend);
-    renderColumn(rend, deck, 0, 0, 0);
+   // SDL_RenderClear(rend);
+    //renderColumn(rend, deck, 0, 0, 0);
 /*
     //create texture from surface
     SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
@@ -90,29 +90,23 @@ int main(int argc, char *argv[]) {
 
 
 
-
+*/
 
 
     int close_requested = 0;
     SDL_Event windowEvent;
+    // Main loop which keeps the window open until the user presses the x button
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
-
             SDL_RenderClear(rend);
-            SDL_RenderCopy(rend, tex, NULL, &dest);
-            SDL_RenderPresent(rend);
-
+            renderColumn(rend, deck, 0, 0, 0);
             SDL_Delay(1000 / FPS);
-            if (windowEvent.type == SDL_QUIT) {
-                close_requested = 1;
-            }
-
+            if (windowEvent.type == SDL_QUIT) {close_requested = 1;}
         }
-
     }
 
-    */
-    SDL_Delay(5000);
+
+
     closeSDL(window, rend);
 
     return 0;
