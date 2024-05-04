@@ -44,7 +44,6 @@ SDL_Renderer* initSDL(SDL_Window* window) {
     }
     // Create renderer
     SDL_Renderer *newRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
-    SDL_RenderSetScale(newRenderer, 0.35,0.35);
     if (newRenderer == NULL) {
         printf("Could not create renderer: %s\n", SDL_GetError());
         return 0;
@@ -76,7 +75,7 @@ void applyCardBackTexture(SDL_Renderer* renderer, Card* card) {
 void applyCardTexture(SDL_Renderer* renderer, Card* card) {
     if (!card->isFaceUp) {applyCardBackTexture(renderer, card);
     }
-    else {char pathToCard[] = "";
+    else {char pathToCard[100];
         sprintf(pathToCard,"rsc/graphics/%c%c.png",card->value,card->suit);
         card->texture = loadTexture(pathToCard, renderer);}
 }
@@ -87,11 +86,12 @@ void renderCard(SDL_Renderer* renderer, Card card, int x, int y) {
     SDL_RenderCopy(renderer, card.texture, &srcRect, &dstRect);
 }
 
-void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y) {
+void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int compressionFactor) {
 
     while (head != NULL) {
         renderCard(renderer, *head, x, y);
         head = head->next;
-        y += 30;
+        y += 65 - compressionFactor;
     }
+    SDL_RenderPresent(renderer);
 }

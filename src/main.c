@@ -58,8 +58,16 @@ int main(int argc, char *argv[]) {
         SDL_DestroyWindow(window);
         return 1;}
     // Load image into memory
-    SDL_Surface* surface = IMG_Load("rsc/graphics/2_of_clubs.png");
-
+    Card* deck = loadDeck("rsc/UnShuffledCards.txt", rend);
+    Card* temp = deck;
+    for (int i = 0; i < 7; i++) {
+        deck = deck->next;
+    }
+    deck->next = NULL;
+    deck = temp;
+    SDL_RenderClear(rend);
+    renderColumn(rend, deck, 0, 0, 0);
+/*
     //create texture from surface
     SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
     SDL_FreeSurface(surface);
@@ -78,13 +86,17 @@ int main(int argc, char *argv[]) {
 
 
 
+
+
     int close_requested = 0;
     SDL_Event windowEvent;
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
+
             SDL_RenderClear(rend);
             SDL_RenderCopy(rend, tex, NULL, &dest);
             SDL_RenderPresent(rend);
+
             SDL_Delay(1000 / FPS);
             if (windowEvent.type == SDL_QUIT) {
                 close_requested = 1;
@@ -93,6 +105,9 @@ int main(int argc, char *argv[]) {
         }
 
     }
+
+    */
+    SDL_Delay(5000);
     closeSDL(window, rend);
 
     return 0;

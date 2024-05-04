@@ -114,7 +114,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     // Find the card and end column
 
     while (current != NULL) {
-        if (current->card->value == value && current->card->suit == suit) {
+        if (current->head->value == value && current->head->suit == suit) {
             if (prev == NULL) {
                 *sourceColumn = current->next;
             } else {
@@ -134,7 +134,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     }
 
     //get the last card from the destination column
-    if (tempDest ==NULL && current->card->value == 'K'){
+    if (tempDest ==NULL && current->head->value == 'K'){
         destCard = current;
     } else {
         while (tempDest != NULL) {
@@ -147,25 +147,26 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     }
 
     // Check if the card can be moved to the destination column
-    int destValue = convertValue(destCard->card->value);
-    int currentValue = convertValue(current->card->value);
-    char sourceSuit = convertSuit(current->card->suit);
-    char destSuit = convertSuit(destCard->card->suit);
+    int destValue = convertValue(destCard->head->value);
+    int currentValue = convertValue(current->head->value);
+    char sourceSuit = convertSuit(current->head->suit);
+    char destSuit = convertSuit(destCard->head->suit);
     if (destValue - 1 != currentValue || sourceSuit == destSuit) {
         printf("Invalid move: Card cannot be moved to destination column.\n");
         printf("Current Value: %d, Destination Value: %d\n", currentValue, destValue);
-        printf("Current Suit: %c, Destination Suit: %c\n", current->card->suit, destCard->card->suit);
+        printf("Current Suit: %c, Destination Suit: %c\n", current->head->suit, destCard->head->suit);
         return;
     }
     // Add the card and all cards below to the destination column
     destCard->next = current;
+
 }
 
 void createColumn(Column** headColumn, Card card) {
     Column* newColumn = (Column*)malloc(sizeof(Column));
-    newColumn->card = (Card*)malloc(sizeof(Card));
+    newColumn->head = (Card*)malloc(sizeof(Card));
 
-    *(newColumn->card) = card; // Copy the contents of card
+    *(newColumn->head) = card; // Copy the contents of card
     newColumn->next = NULL; // The new column is the last one, so its next is NULL
 
     if (*headColumn == NULL) {
@@ -250,7 +251,7 @@ void printColumns(Column** columns) {
         printf("Column %d:\n", i + 1);
         Column* current = columns[i];
         while (current != NULL) {
-            printf("Card Value: %c, Card Suit: %c\n", current->card->value, current->card->suit);
+            printf("Card Value: %c, Card Suit: %c\n", current->head->value, current->head->suit);
             current = current->next;
         }
         printf("\n");
@@ -272,7 +273,7 @@ Card* reverseDealCards(Column** columns) {
             Card* copyCard = NULL;
             if (current != NULL) {
                 //copy current card to copyCard
-                appendCard(&copyCard, current->card->value, current->card->suit);
+                appendCard(&copyCard, current->head->value, current->head->suit);
                 //delete current card from this column
                 current = current->next;
                 columns[i] = current;
@@ -331,7 +332,7 @@ Column** dealColumns(Column** columns){
                 if (row < faceUpStartIndex[col] && columns[col]->next!=NULL) {
                     printf("[]\t"); // Face down card representation.
                 } else {
-                    printf("%c%c\t", columns[col]->card->value, columns[col]->card->suit); // Face up card representation.
+                    printf("%c%c\t", columns[col]->head->value, columns[col]->head->suit); // Face up card representation.
                 }
             } else {
                 printf("\t"); // Empty space if there is no card in this column.
