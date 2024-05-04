@@ -9,6 +9,7 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
+#include "columns.h"
 
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
