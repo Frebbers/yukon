@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.24.2)
-project(untitled C)
+project(Yukon C)
 
 set(CMAKE_C_STANDARD 17)
 
 # If you are using CLion, setting the C_STANDARD property ensures that it will understand the C17 standard.
 # For add_executable, typically only source files are listed.
-add_executable(untitled src/main.c src/carddeck.c
+add_executable(Yukon src/main.c src/carddeck.c
         src/board.c
         src/board.h
         src/LD.c
