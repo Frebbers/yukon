@@ -26,6 +26,7 @@ void printColumns(Column** columns);
 void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit);
 Column** dealColumns(Column** columns);
 void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value, char suit);
+void moveCardFromFoundation(Column** foundation, Column** destColumn, char value, char suit);
 
 
 #endif //UNTITLED_COLUMNS_H

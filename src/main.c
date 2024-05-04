@@ -145,6 +145,21 @@ int main() {
             moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
             dealColumns(columns);
         }
+    //Move from foundation to column
+        else if ( function[0]=='F' &&
+                  function[2]==':' &&
+                  function[5]=='-' &&
+                  function[6]=='>' &&
+                  function[7]=='C')
+        {
+            int sourceColumn=convertValue(function[1]);;
+            char sourceValue=function[3];
+            char sourceSuit=function[4];
+            int destColumn=convertValue(function[8]);
+
+            moveCardFromFoundation(&columns[sourceColumn+6], &columns[destColumn-1], sourceValue, sourceSuit);
+            dealColumns(columns);
+        }
         else if((strcmp(function, "PR") == 0)){ printColumns(columns);}
 
                 //SR function
