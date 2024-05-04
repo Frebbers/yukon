@@ -9,6 +9,7 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
+#include "columns.h"
 
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
@@ -112,7 +113,7 @@ int main() {
                 }
             }
 
-                //Move cards from one column to column
+    //Move cards from column to column
             else if (function[0] == 'C' &&
                      function[2] == ':' &&
                      function[5] == '-' &&
@@ -123,10 +124,43 @@ int main() {
                 char sourceSuit = function[4];
                 int destColumn = convertValue(function[8]);
 
-                moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
+                message=moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
                 dealColumns(columns);
 
             }
+
+
+    //Move from column to foundation
+        else if ( function[0]=='C' &&
+                  function[2]==':' &&
+                  function[5]=='-' &&
+                  function[6]=='>' &&
+                  function[7]=='F')
+        {
+            int sourceColumn=convertValue(function[1]);;
+            char sourceValue=function[3];
+            char sourceSuit=function[4];
+            int destColumn=convertValue(function[8]);
+
+            message=moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
+            dealColumns(columns);
+        }
+    //Move from foundation to column
+        else if ( function[0]=='F' &&
+                  function[2]==':' &&
+                  function[5]=='-' &&
+                  function[6]=='>' &&
+                  function[7]=='C')
+        {
+            int sourceColumn=convertValue(function[1]);;
+            char sourceValue=function[3];
+            char sourceSuit=function[4];
+            int destColumn=convertValue(function[8]);
+
+            message=moveCardFromFoundation(&columns[sourceColumn+6], &columns[destColumn-1], sourceValue, sourceSuit);
+            dealColumns(columns);
+        }
+        else if((strcmp(function, "PR") == 0)){ printColumns(columns);}
 
                 //SR function
             else if (strcmp(function, "SR") == 0) {
