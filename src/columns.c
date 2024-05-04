@@ -400,15 +400,13 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
                 // Add the card and all cards below to the destination column
                 destCard->next = current;
 
-                break;
-            }
-            tempDest = tempDest->next;
-            //remove the card from the source column
-
+                //remove the card from the source column
                 prev->next = current;
                 prev->next=NULL;
 
-
+                break;
+            }
+            tempDest = tempDest->next;
         }
     }
 }
