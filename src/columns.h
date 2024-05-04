@@ -13,7 +13,7 @@ typedef struct Column {
 } Column;
 
 
-char convertSuit(char suit);
+
 int convertValue(char value);
 void createColumn(Column** headColumn, Card card);
 
