@@ -37,3 +37,5 @@ target_link_libraries(Yukon
         PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,
         SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
 file(COPY ${CMAKE_SOURCE_DIR}/rsc/UnShuffledcards.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
+file(GLOB GRAPHICS_FILES "${CMAKE_SOURCE_DIR}/rsc/graphics/*")
+file(COPY ${GRAPHICS_FILES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/rsc/graphics/")
