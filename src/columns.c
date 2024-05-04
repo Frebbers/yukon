@@ -197,7 +197,7 @@ Column** dealColumns(Column** columns){
 
     int counter = 0;
     //Prints the cards in the columns
-    Column* firstCardInColumns[7];
+    Column* firstCardInColumns[11];
     Column* fnColumn[4];
 
 
@@ -225,12 +225,14 @@ Column** dealColumns(Column** columns){
 
             // Print the card
             if (columns[col] != NULL) {
-                int count = 0;
-                if (row < faceUpStartIndex[col] && columns[col]->next!=NULL) {
+
+                if (columns[col]->next != NULL && columns[col]->card->isFaceUp == 0) {
                     printf("[]\t"); // Face down card representation.
                 } else {
+                    columns[col]->card->isFaceUp=1;
                     printf("%c%c\t", columns[col]->card->value, columns[col]->card->suit); // Face up card representation.
                 }
+
             } else {
                 printf("\t"); // Empty space if there is no card in this column.
             }
@@ -320,14 +322,13 @@ Column** dealColumns(Column** columns){
         }else{
             printf("\n");
         }
-        //}
+
 
     }
     //reset columns pointer to the first card in the columns
     for (int i = 0; i < 7; i++) {
         columns[i] = firstCardInColumns[i];
     }
-
 
     return columns;
 }
@@ -337,6 +338,11 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     Column* tempDest = *destColumn;
     Column* destCard = *destColumn;
     Column* prev = NULL;
+
+    if(sourceColumn==destColumn){
+        printf("Source and destination columns are the same.\n");
+        return;
+    }
 
 
     char *message = "";
@@ -353,7 +359,7 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
 
 
     // If the card is not found, return
-    if (current == NULL && current->card->isFaceUp==0) {
+    if (current == NULL || current->card->isFaceUp==0) {
         printf("Card not found in source column.\n");
         return;
     }
@@ -361,21 +367,22 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
     //Move if the destination column is empty
     if (tempDest ==NULL && current->card->value == 'K') {
         *destColumn = &(*current);
+
         //remove the card from the source column
         if (prev == NULL) {
             *sourceColumn = current->next;
         } else {
             prev->next = current;
-            prev->next=NULL;
+            prev->next = NULL;
         }
-
         return;
     } else if (tempDest ==NULL && current->card->value != 'K') {
-        printf("Card %c%c\n is not King", current->card->value, current->card->suit);
+        printf("Card %c%c is not King\n", current->card->value, current->card->suit);
         return;
     }
 
-    //get the last card from the destination column
+    //Move if the destination column is not empty
+    // get the last card from the destination column
     if (tempDest != NULL) {
         while (tempDest != NULL) {
             if (tempDest->next == NULL) {
@@ -400,12 +407,11 @@ void moveCard(Column** sourceColumn, Column** destColumn, char value, char suit)
             }
             tempDest = tempDest->next;
             //remove the card from the source column
-            if (prev == NULL) {
-                *sourceColumn = current->next;
-            } else {
+
                 prev->next = current;
                 prev->next=NULL;
-            }
+
+
         }
     }
 }
