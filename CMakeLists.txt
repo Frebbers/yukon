@@ -27,13 +27,13 @@ include_directories(src/include/SDL2)
 link_directories(${PROJECT_SOURCE_DIR}/src/lib)
 find_package(SDL2 CONFIG REQUIRED)
 
-target_link_libraries(untitled
+target_link_libraries(Yukon
         PRIVATE
         $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 find_package(SDL2_image CONFIG REQUIRED)
-target_link_libraries(untitled
+target_link_libraries(Yukon
         PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,
         SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
 file(COPY ${CMAKE_SOURCE_DIR}/rsc/UnShuffledcards.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
