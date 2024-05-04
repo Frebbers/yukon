@@ -13,3 +13,4 @@ void applyCardTexture(SDL_Renderer* renderer, Card* card);
 void closeSDL(SDL_Window* window, SDL_Renderer* renderer);
 SDL_Window *createWindow(int WINDOW_WIDTH, int WINDOW_HEIGHT);
 SDL_Renderer* initSDL(SDL_Window* window);
+void renderColumn(SDL_Renderer* renderer, Column* column, int x, int y);

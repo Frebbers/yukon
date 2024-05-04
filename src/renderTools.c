@@ -6,6 +6,12 @@
 #include <renderTools.h>
 #include <SDL_image.h>
 #include "carddeck.h"
+const double SCALE_FACTOR = 0.35;
+const int ORIGINAL_CARD_WIDTH = 500;
+const int ORIGINAL_CARD_HEIGHT = 726;
+const int SCALED_CARD_WIDTH = (int)(ORIGINAL_CARD_WIDTH * SCALE_FACTOR);
+const int SCALED_CARD_HEIGHT = (int)(ORIGINAL_CARD_HEIGHT * SCALE_FACTOR);
+
 //Cleans up the SDL window and renderer. Must be called before the program ends
 void closeSDL(SDL_Window* window, SDL_Renderer* renderer) {
     // Destroy window and renderer
@@ -38,6 +44,7 @@ SDL_Renderer* initSDL(SDL_Window* window) {
     }
     // Create renderer
     SDL_Renderer *newRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
+    SDL_RenderSetScale(newRenderer, 0.35,0.35);
     if (newRenderer == NULL) {
         printf("Could not create renderer: %s\n", SDL_GetError());
         return 0;
@@ -72,4 +79,19 @@ void applyCardTexture(SDL_Renderer* renderer, Card* card) {
     else {char pathToCard[] = "";
         sprintf(pathToCard,"rsc/graphics/%c%c.png",card->value,card->suit);
         card->texture = loadTexture(pathToCard, renderer);}
+}
+void renderCard(SDL_Renderer* renderer, Card card, int x, int y) {
+    SDL_Rect srcRect = {0, 0, ORIGINAL_CARD_WIDTH, ORIGINAL_CARD_HEIGHT}; // Source rectangle
+    SDL_Rect dstRect = {x, y, SCALED_CARD_WIDTH, SCALED_CARD_HEIGHT};     // Destination rectangle scaled
+
+    SDL_RenderCopy(renderer, card.texture, &srcRect, &dstRect);
+}
+
+void renderColumn(SDL_Renderer* renderer, Column* column, int x, int y) {
+    Card* card = column->head;
+    while (card != NULL) {
+        renderCard(renderer, *card, x, y);
+        card = card->next;
+        y += 30;
+    }
 }
