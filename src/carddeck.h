@@ -21,7 +21,7 @@ typedef struct Deck {
 } Deck;
 
 typedef struct Column {
-    Card* card;
+    Card* head;
 
     struct Column* next;
 } Column;
