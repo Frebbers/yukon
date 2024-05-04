@@ -113,7 +113,7 @@ int main() {
                 }
             }
 
-                //Move cards from one column to column
+    //Move cards from column to column
             else if (function[0] == 'C' &&
                      function[2] == ':' &&
                      function[5] == '-' &&
@@ -124,7 +124,7 @@ int main() {
                 char sourceSuit = function[4];
                 int destColumn = convertValue(function[8]);
 
-                moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
+                message=moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
                 dealColumns(columns);
 
             }
@@ -142,7 +142,7 @@ int main() {
             char sourceSuit=function[4];
             int destColumn=convertValue(function[8]);
 
-            moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
+            message=moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
             dealColumns(columns);
         }
     //Move from foundation to column
@@ -157,7 +157,7 @@ int main() {
             char sourceSuit=function[4];
             int destColumn=convertValue(function[8]);
 
-            moveCardFromFoundation(&columns[sourceColumn+6], &columns[destColumn-1], sourceValue, sourceSuit);
+            message=moveCardFromFoundation(&columns[sourceColumn+6], &columns[destColumn-1], sourceValue, sourceSuit);
             dealColumns(columns);
         }
         else if((strcmp(function, "PR") == 0)){ printColumns(columns);}
