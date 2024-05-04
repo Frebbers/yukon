@@ -474,7 +474,7 @@ void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value
                 int destValue = convertValue(destFound->card->value);
                 int currentValue = convertValue(current->card->value);
                 char destSuit = convertSuit(destFound->card->suit);
-                if (destValue + 1 != currentValue || suit != destSuit || current->card->next != NULL ||current->card->isFaceUp==0) {
+                if (destValue + 1 != currentValue || suit != destSuit || current->next != NULL ||current->card->isFaceUp==0) {
                     printf("Invalid move: Card cannot be moved to destination column.\n");
                     printf("Current Value: %d, Destination Value: %d\n", currentValue, destValue);
                     printf("Current Suit: %c, Destination Suit: %c\n", current->card->suit, destFound->card->suit);
@@ -482,7 +482,7 @@ void moveCardToFoundation(Column** sourceColumn, Column** foundation, char value
                 }
 
                 // Add the card to the destination column
-                if (destValue + 1 == currentValue && suit == destSuit && current->card->next == NULL) {
+                if (destValue + 1 == currentValue && suit == destSuit && current->next == NULL) {
                     destFound->next = current;
                     //remove the card from the source column
                     if (prev == NULL) {
