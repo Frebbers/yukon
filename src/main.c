@@ -59,6 +59,11 @@ int main(int argc, char *argv[]) {
         return 1;}
     // Load image into memory
     Card* deck = loadDeck("rsc/UnShuffledCards.txt", rend);
+    if (deck == NULL) {
+        printf("Could not load deck: %s\n", SDL_GetError());
+        closeSDL(window, rend);
+        return 1;
+    }
     Card* temp = deck;
     for (int i = 0; i < 7; i++) {
         deck = deck->next;
