@@ -20,4 +20,4 @@ add_executable(untitled src/main.c src/carddeck.c
 # If you need to include directories for your project, you can use include_directories like so:
 include_directories(src)
 
-file(COPY ${CMAKE_SOURCE_DIR}/rsc/cards.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
+file(COPY ${CMAKE_SOURCE_DIR}/rsc/UnShuffledcards.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/rsc)
