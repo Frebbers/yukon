@@ -17,6 +17,8 @@ add_executable(Yukon src/main.c src/carddeck.c
         src/SI.c
         src/renderTools.c
         src/renderTools.h
+        src/columns.c
+        src/columns.h
 )
 
 # If you need to include directories for your project, you can use include_directories like so:

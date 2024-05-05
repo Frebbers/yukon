@@ -9,9 +9,7 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
-#include "renderTools.h"
-#include <SDL_image.h>
-#include <SDL.h>
+
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
     char *filename = malloc(60);
@@ -180,31 +178,76 @@ int main(int argc, char *argv[]) {
             }
                 //P function
 
-            else if (strcmp(function, "P") == 0) {
-                if (deck != NULL) {
-                    columns = dealCards(head); // Deal cards from the deck into columns
-                    message = "OK";
-                    //  playPhase(&head); // Enter into the play phase
+        else if (strcmp(function, "P") == 0) {
+            if (deck != NULL) {
+                columns = dealCards(head); // Deal cards from the deck into columns
+                message = "OK";
+                int inPlayPhase = 1;
+                while (inPlayPhase) {
+                    memset(command, 0, sizeof(command));
+                    memset(argument, 0, sizeof(argument));
+                    memset(function, 0, sizeof(function));
+
+                    printf("In Play: %s\nINPUT >", message);
+                    fgets(command, sizeof(command), stdin);
+                    sscanf(command, "%s %s", function, argument);
+
+                    if (strcmp(function, "Q") == 0) {
+                        printf("Ending play phase.\n");
+                        inPlayPhase = 0; // Properly end play phase
+                        } else if (function[0] == 'C' &&
+                                 function[2] == ':' &&
+                                 function[5] == '-' &&
+                                 function[6] == '>' &&
+                                 function[7] == 'C') {
+                            int sourceColumn = convertValue(function[1]);;
+                            char sourceValue = function[3];
+                            char sourceSuit = function[4];
+                            int destColumn = convertValue(function[8]);
+
+                            message=moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
+                            dealColumns(columns);
+
+                        }
+
+
+                            //Move from column to foundation
+                        else if ( function[0]=='C' &&
+                                  function[2]==':' &&
+                                  function[5]=='-' &&
+                                  function[6]=='>' &&
+                                  function[7]=='F')
+                        {
+                            int sourceColumn=convertValue(function[1]);;
+                            char sourceValue=function[3];
+                            char sourceSuit=function[4];
+                            int destColumn=convertValue(function[8]);
+
+                            message=moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
+                            dealColumns(columns);
+                        }
+                            //Move from foundation to column
+                        else if ( function[0]=='F' &&
+                                  function[2]==':' &&
+                                  function[5]=='-' &&
+                                  function[6]=='>' &&
+                                  function[7]=='C')
+                        {
+                            int sourceColumn=convertValue(function[1]);;
+                            char sourceValue=function[3];
+                            char sourceSuit=function[4];
+                            int destColumn=convertValue(function[8]);
+
+                            message=moveCardFromFoundation(&columns[sourceColumn+6], &columns[destColumn-1], sourceValue, sourceSuit);
+                            dealColumns(columns);
+                        }
+                        else if((strcmp(function, "PR") == 0)){ printColumns(columns);}
+
+                    }
                 } else {
                     message = "Error: No deck loaded.";
                 }
             }
-
-                //Move cards from one column to column
-            else if (function[0] == 'C' &&
-                     function[2] == ':' &&
-                     function[5] == '-' &&
-                     function[6] == '>' &&
-                     function[7] == 'C') {
-                int sourceColumn = convertValue(function[1]);;
-                char sourceValue = function[3];
-                char sourceSuit = function[4];
-                int destColumn = convertValue(function[8]);
-
-                moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
-                dealColumns(columns);
-
-        }
 
                 //SR function
             else if (strcmp(function, "SR") == 0) {
@@ -258,5 +301,5 @@ int main(int argc, char *argv[]) {
             strcpy(argument, "");
         }
 
-}
-*/
+    }
+
