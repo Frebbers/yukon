@@ -6,14 +6,28 @@
 #include "SDL.h"
 #include "columns.h"
 #include "renderTools.h"
+
+/**
+ * Moves a stack of cards at the given position.
+ * @param stack The card stack to drop
+ * @param x The x position to render the card stack
+ * @param y The y position to render the card stack
+ */
+void moveCardStack(Card* stack, int deltaX, int deltaY) {
+    while (stack != NULL) {
+        stack->rect.x += deltaX;
+        stack->rect.y += deltaY;
+        stack = stack->next;
+    }
+}
 char* dropCardStack(Card* stack, Column* columns, Column* foundations, int x, int y) {
     // Determine if the drop is over a column or foundation
     for (int i = 0; i < 7; i++) {
-        SDL_Rect columnRect = {columns[i].x, columns[i].y, COLUMN_WIDTH, COLUMN_HEIGHT};
+        SDL_Rect columnRect = {columns[i].card->rect.x, columns[i].card->rect.y, COLUMN_WIDTH, COLUMN_HEIGHT};
         if (x >= columnRect.x && x < (columnRect.x + COLUMN_WIDTH) &&
             y >= columnRect.y && y < (columnRect.y + COLUMN_HEIGHT)) {
             // Drop over a column
-            return moveCard(&(columns[i]), &stack, stack->value, stack->suit);
+            return moveCard(&columns[i], &stack, stack->value, stack->suit);
         }
     }
     for (int j = 0; j < 4; j++) {
@@ -47,7 +61,7 @@ void handleMouseEvents(SDL_Event* event, Column* columns, Column* foundations, C
             if (*isDragging && event->button.button == SDL_BUTTON_LEFT) {
                 int dropX = event->button.x - dragOffset.x;
                 int dropY = event->button.y - dragOffset.y;
-                char* result = dropCardStack(draggedCardStack, columns, numColumns, foundations, 4, dropX, dropY);
+                char* result = dropCardStack(draggedCardStack, columns, foundations, dropX, dropY);
                 if (strcmp(result, "OK") != 0) {
                     // Reset position if drop is not valid
                     draggedCardStack->rect.x = originalPosition->x;
@@ -67,20 +81,7 @@ void handleMouseEvents(SDL_Event* event, Column* columns, Column* foundations, C
     }
 }
 
-/**
- * Moves a stack of cards at the given position.
- * @param stack The card stack to drop
- * @param x The x position to drop the card stack
- * @param y The y position to drop the card stack
- * @return 1 if the drop was successful, 0 otherwise
- */
-void moveCardStack(Card* stack, int deltaX, int deltaY) {
-    while (stack != NULL) {
-        stack->rect.x += deltaX;
-        stack->rect.y += deltaY;
-        stack = stack->next;
-    }
-}
+
 
 
 
