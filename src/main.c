@@ -46,8 +46,8 @@ int main() {
 */
 
 int main(int argc, char *argv[]) {
-    int WINDOW_WIDTH = 1600;
-    int WINDOW_HEIGHT = 1000;
+   int WINDOW_WIDTH = 1600;
+   int WINDOW_HEIGHT = 1000;
     int FPS = 120;
     int SCROLL_SPEED = 5;
     SDL_INIT_EVERYTHING;
@@ -57,6 +57,13 @@ int main(int argc, char *argv[]) {
     if (!rend) {
         SDL_DestroyWindow(window);
         return 1;}
+    //Create the rects for the column and foundation spaces
+    SDL_Rect columnSpaces[7];
+    SDL_Rect foundationSpaces[4];
+    SDL_Texture *backGroundTexture = loadTexture("rsc/graphics/background_basic.png", rend);
+    setupRects(columnSpaces, foundationSpaces);
+    renderGameBoard(rend, loadTexture
+    ("rsc/graphics/background_basic.png", rend), columnSpaces, foundationSpaces);
     // Load image into memory
     Card* deck = loadDeck("rsc/UnShuffledCards.txt", rend);
     if (deck == NULL) {
@@ -99,7 +106,8 @@ int main(int argc, char *argv[]) {
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
             SDL_RenderClear(rend);
-            renderColumn(rend, deck, 0, 0, 0);
+            renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces);
+            renderColumn(rend, deck, 25, 25, 0);
             SDL_Delay(1000 / FPS);
             if (windowEvent.type == SDL_QUIT) {close_requested = 1;}
         }
