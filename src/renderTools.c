@@ -95,12 +95,20 @@ void renderCard(SDL_Renderer* renderer, Card card, int x, int y) {
     SDL_RenderCopy(renderer, card.texture, &srcRect, &dstRect);
 }
 
-void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int compressionFactor) {
+/**
+ * Renders a column of cards to the screen
+ * @param renderer The renderer to render to
+ * @param head The head of the linked list of cards
+ * @param x The x-coordinate to render the first card
+ * @param y The y-coordinate to render the first card
+ * @param distanceBetweenCards The distance between each card - default is 65
+ */
+void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int distanceBetweenCards) {
 
     while (head != NULL) {
         renderCard(renderer, *head, x, y);
         head = head->next;
-        y += 65 - compressionFactor;
+        y += distanceBetweenCards;
     }
     SDL_RenderPresent(renderer);
 }

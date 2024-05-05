@@ -28,7 +28,7 @@ void renderGameBoard(SDL_Renderer* renderer, SDL_Texture* backgroundTexture, SDL
  * @param head The head of the column
  * @param x The x position of the column
  * @param y The y position of the column
- * @param compressionFactor The distance between the top of one card and the next. 0 = no compression, 65 = cards will be rendered directly on top of each other
+ * @param distanceBetweenCards The distance between the top of one card and the next. 0 = no compression, 65 = cards will be rendered directly on top of each other
 
  */
-void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int compressionFactor);
+void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int distanceBetweenCards);
