@@ -9,6 +9,8 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
+#include "renderTools.h"
+#include "columns.h"
 
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
@@ -114,13 +116,12 @@ int main(int argc, char *argv[]) {
 
 
     closeSDL(window, rend);
-
     return 0;
 }
 /*
     int startGame = 1;
     int len;
-    Card *deck = NULL;
+   // Card *deck = NULL;
     Card *head = NULL;
     Column **columns = NULL;
 
@@ -148,7 +149,7 @@ int main(int argc, char *argv[]) {
             if (strcmp(argument, "") == 0) { filePath = "rsc/UnShuffledCards.txt"; }
             else { filePath = getFilePath(argument); }
             if (fileExists(filePath) == 1) {
-                Card *newDeck = loadDeck(filePath);
+                Card *newDeck = loadDeck(filePath, rend);
 
                 if (newDeck != NULL) {
                     if (deck != NULL) {
@@ -173,6 +174,7 @@ int main(int argc, char *argv[]) {
 
                 freeDeck(deck);
                 printf("The program exits.");
+                closeSDL(window, rend);
                 exit(0);
 
             }
@@ -303,3 +305,4 @@ int main(int argc, char *argv[]) {
 
     }
 
+*/
