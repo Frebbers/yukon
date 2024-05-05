@@ -6,11 +6,11 @@
 #include <renderTools.h>
 #include <SDL_image.h>
 #include "carddeck.h"
-const double SCALE_FACTOR = 0.35;
+const double CARD_SCALE_FACTOR = 0.35;
 const int ORIGINAL_CARD_WIDTH = 500;
 const int ORIGINAL_CARD_HEIGHT = 726;
-const int SCALED_CARD_WIDTH = (int)(ORIGINAL_CARD_WIDTH * SCALE_FACTOR);
-const int SCALED_CARD_HEIGHT = (int)(ORIGINAL_CARD_HEIGHT * SCALE_FACTOR);
+const int SCALED_CARD_WIDTH = (int)(ORIGINAL_CARD_WIDTH * CARD_SCALE_FACTOR);
+const int SCALED_CARD_HEIGHT = (int)(ORIGINAL_CARD_HEIGHT * CARD_SCALE_FACTOR);
 
 //Cleans up the SDL window and renderer. Must be called before the program ends
 void closeSDL(SDL_Window* window, SDL_Renderer* renderer) {
@@ -95,3 +95,20 @@ void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int compress
     }
     SDL_RenderPresent(renderer);
 }
+void renderGameBoard(SDL_Renderer* renderer, SDL_Texture* backgroundTexture, SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces) {
+    // Render the background first
+    SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+
+    // Render column spaces (for columns)
+    for (int i = 0; i < 7; i++) {
+        SDL_SetRenderDrawColor(renderer, 192, 192, 192, 255); // Light grey
+        SDL_RenderFillRect(renderer, &columnSpaces[i]);
+    }
+
+    // Render foundation spaces (for foundations)
+    for (int i = 0; i < 4; i++) {
+        SDL_SetRenderDrawColor(renderer, 160, 160, 160, 255); // Slightly darker grey
+        SDL_RenderFillRect(renderer, &foundationSpaces[i]);
+    }
+}
+
