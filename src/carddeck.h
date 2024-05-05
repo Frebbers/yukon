@@ -12,6 +12,7 @@ typedef struct Card {
     int isFaceUp;
     struct Card* next;
     SDL_Texture* texture;
+    SDL_Rect rect;
 } Card;
 
 typedef struct Deck {

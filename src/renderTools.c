@@ -6,20 +6,9 @@
 #include <renderTools.h>
 #include <SDL_image.h>
 #include "carddeck.h"
-const double CARD_SCALE_FACTOR = 0.32;
-const int ORIGINAL_CARD_WIDTH = 500;
-const int ORIGINAL_CARD_HEIGHT = 726;
-const int SCALED_CARD_WIDTH = (int)(ORIGINAL_CARD_WIDTH * CARD_SCALE_FACTOR);
-const int SCALED_CARD_HEIGHT = (int)(ORIGINAL_CARD_HEIGHT * CARD_SCALE_FACTOR);
-const int COLUMN_WIDTH = SCALED_CARD_WIDTH;
-const int COLUMN_HEIGHT = SCALED_CARD_HEIGHT;
-const int COLUMN_PADDING = 25;
-const int FOUNDATION_WIDTH = SCALED_CARD_WIDTH;
-const int FOUNDATION_HEIGHT = SCALED_CARD_HEIGHT;
-const int FOUNDATION_PADDING = 11;
-const int COLUMN_TO_FOUNDATION_PADDING = COLUMN_PADDING*3;
-int WINDOW_WIDTH = 1600;
-int WINDOW_HEIGHT = 1080;
+#include "columns.h"
+
+
 
 //Cleans up the SDL window and renderer. Must be called before the program ends
 void closeSDL(SDL_Window* window, SDL_Renderer* renderer) {
@@ -91,7 +80,7 @@ void applyCardTexture(SDL_Renderer* renderer, Card* card) {
 void renderCard(SDL_Renderer* renderer, Card card, int x, int y) {
     SDL_Rect srcRect = {0, 0, ORIGINAL_CARD_WIDTH, ORIGINAL_CARD_HEIGHT}; // Source rectangle
     SDL_Rect dstRect = {x, y, SCALED_CARD_WIDTH, SCALED_CARD_HEIGHT};     // Destination rectangle scaled
-
+    card.rect = dstRect;
     SDL_RenderCopy(renderer, card.texture, &srcRect, &dstRect);
 }
 
@@ -140,5 +129,21 @@ void setupRects(SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces) {
         }
     }
 }
+
+Card* getCardStackAtPosition(Column* columns, int x, int y) {
+    for (int i = 0; i < 7; i++) {
+        Card* card = columns[i].card;
+        while (card != NULL) {
+            SDL_Rect cardRect = {card->rect.x, card->rect.y, SCALED_CARD_WIDTH, SCALED_CARD_HEIGHT};
+            if (x >= cardRect.x && x < (cardRect.x + cardRect.w) &&
+                y >= cardRect.y && y < (cardRect.y + cardRect.h)) {
+                return card; // Return the first card in the stack at the cursor position
+            }
+            card = card->next;
+        }
+    }
+    return NULL; // No card found at this position
+}
+
 
 
