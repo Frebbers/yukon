@@ -8,8 +8,9 @@
 
 typedef struct Column {
     Card* card;
-
+    SDL_Rect rect;
     struct Column* next;
+
 } Column;
 int convertValue(char value);
 void createColumn(Column** headColumn, Card card);

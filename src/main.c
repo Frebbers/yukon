@@ -11,6 +11,7 @@
 #include "Phases.h"
 #include "renderTools.h"
 #include "columns.h"
+#include "mouseTools.h"
 const double CARD_SCALE_FACTOR = 0.32;
 const int ORIGINAL_CARD_WIDTH = 500;
 const int ORIGINAL_CARD_HEIGHT = 726;
@@ -111,12 +112,14 @@ int main(int argc, char *argv[]) {
 
 */
 
-
+    createColumn()
     int close_requested = 0;
     SDL_Event windowEvent;
+    int isDragging = 0;
     // Main loop which keeps the window open until the user presses the x button
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
+            handleMouseEvents(&windowEvent, columns, isDragging);
             SDL_RenderClear(rend);
             renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces);
             renderColumn(rend, deck, 25, 25, 0);
