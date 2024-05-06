@@ -72,9 +72,9 @@ Column** columnFront(Card* card){
         columns[i] = NULL;
     }
 
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 7; i++) {
         int count=0;
-        while (count < 8) {
+        while (count < 7) {
             count++;
             card = card->next;
             createColumn(&columns[i], *card);
