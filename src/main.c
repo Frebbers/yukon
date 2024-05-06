@@ -61,7 +61,7 @@ int main() {
 */
 
 int main(int argc, char *argv[]) {
-    int FPS = 120;
+    int FPS = 60;
     int SCROLL_SPEED = 5;
     SDL_INIT_EVERYTHING;
     SDL_Window *window = createWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -113,27 +113,45 @@ int main(int argc, char *argv[]) {
 */
 
     Column** columns = NULL;
-    columns = dealColumnsFront(deck);
+    columns = columnFront(deck);
     int close_requested = 0;
     SDL_Event windowEvent;
-    int* isDragging = malloc(sizeof(int));
-    *isDragging = 0;
-    // Main loop which keeps the window open until the user presses the x button
+// Initialize dragging state
+    int isDragging = 0;
+    Card* draggedCard = NULL;
+
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
-           //
-            SDL_RenderClear(rend);
-            renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
-            renderColumns(rend, *columns, columnSpaces);
-            handleMouseEvents(&windowEvent, *columns, isDragging);
-            SDL_Delay(1000 / FPS);
-            if (windowEvent.type == SDL_QUIT) {close_requested = 1;}
+            // Handle mouse events with updated function call
+            handleMouseEvents(&windowEvent, *columns, &isDragging, &draggedCard);
+
+            if (windowEvent.type == SDL_QUIT) {
+                close_requested = 1;
+            }
         }
+
+        // Clear the renderer
+        SDL_RenderClear(rend);
+
+        // Render the game board and the columns
+        renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
+        renderColumns(rend, *columns, columnSpaces);
+
+        // Render dragged card last so it appears on top
+        if (isDragging && draggedCard != NULL) {
+            renderCard(rend, draggedCard, windowEvent.button.x - draggedCard->rect.w / 2,
+                        windowEvent.button.y - draggedCard->rect.h / 2);
+        }
+
+        // Update the screen
+        SDL_RenderPresent(rend);
+
+        // Cap the frame rate
+        SDL_Delay(1000 / FPS);
     }
 
 
     freeDeck(deck);
-    free(isDragging);
     closeSDL(window, rend);
     return 0;
 }

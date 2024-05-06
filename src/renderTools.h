@@ -92,3 +92,13 @@ Card* getCardStackAtPosition(Column* column, int y);
  * @author Frederik Bode Hendrichsen s224804
  */
 Column* getColumnAtPosition(Column* columns, int x, int y);
+
+/**
+ * Renders a card to the screen
+ * @param renderer The renderer to render to
+ * @param card The card to render
+ * @param x The x-coordinate to render the card
+ * @param y The y-coordinate to render the card
+ * @author Frederik Bode Hendrichsen s224804
+ */
+void renderCard(SDL_Renderer* renderer, Card* card, int x, int y);

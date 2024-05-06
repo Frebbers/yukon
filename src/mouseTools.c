@@ -112,18 +112,20 @@ char* dropCardStack(Card* stack, Column* stackColumn, Column* columns, int x, in
 
 void handleMouseEvents(SDL_Event *event, Column *columns, int *isDragging, Card** draggedCard) {
     static SDL_Point dragOffset;
-    SDL_Point originalPosition;
+    static SDL_Point originalPosition;
+    static Column* currentColumn = NULL;
 
     switch (event->type) {
         case SDL_MOUSEBUTTONDOWN:
             if (event->button.button == SDL_BUTTON_LEFT) {
-                Column* currentColumn = getColumnAtPosition(columns, event->button.x, event->button.y);
+                currentColumn = getColumnAtPosition(columns, event->button.x, event->button.y);
                 *draggedCard = getCardStackAtPosition(currentColumn, event->button.y);
 
                 if (*draggedCard) {
-                    originalPosition = (SDL_Point){(*draggedCard)->rect.x, (*draggedCard)->rect.y};
-                    dragOffset.x = event->button.x - (*draggedCard)->rect.x;
-                    dragOffset.y = event->button.y - (*draggedCard)->rect.y;
+                    originalPosition.x = (*draggedCard)->rect.x; // Update originalPosition
+                    originalPosition.y = (*draggedCard)->rect.y;
+                    dragOffset.x = event->button.x - originalPosition.x;
+                    dragOffset.y = event->button.y - originalPosition.y;
                     *isDragging = 1;
                 }
             }
@@ -139,7 +141,7 @@ void handleMouseEvents(SDL_Event *event, Column *columns, int *isDragging, Card*
                     return;
                 }
 
-                char *result = dropCardStack(*draggedCard, columns, dropX, dropY);
+                char *result = dropCardStack(*draggedCard, currentColumn, columns, dropX, dropY);
 
                 if (strcmp(result, "OK") != 0) {
                     // Reset position if drop is not valid
@@ -161,15 +163,5 @@ void handleMouseEvents(SDL_Event *event, Column *columns, int *isDragging, Card*
 }
 
 
-        case SDL_MOUSEMOTION:
-            if (*isDragging) {
-                draggedCardStack->rect.x = event->motion.x - dragOffset.x;
-                draggedCardStack->rect.y = event->motion.y - dragOffset.y;
-                moveCardStack(draggedCardStack->next, event->motion.x - dragOffset.x,
-                              event->motion.y - dragOffset.y - draggedCardStack->rect.y);
-            }
-            break;
-    }
-}
 
 

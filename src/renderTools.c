@@ -163,7 +163,7 @@ Card* getCardStackAtPosition(Column* column, int y) {
     Card* card = column->card;
     while (card != NULL) {
         SDL_Rect cardRect = {card->rect.x, card->rect.y, SCALED_CARD_WIDTH, SCALED_CARD_HEIGHT};
-        if (y >= cardRect.y && y < (cardRect.y + cardRect.h)) {
+        if (y >= cardRect.y && y < (cardRect.y + 60)) {
             return card; // Return the first card in the stack at the cursor position
         }
         card = card->next;
@@ -178,6 +178,8 @@ void renderColumns(SDL_Renderer* renderer, Column* columns, SDL_Rect* columnSpac
     while (currentColumn != NULL) {
         if (i == 7){distanceBetweenCards = 0;}
         renderColumn(renderer, currentColumn->card, columnSpaces[i].x, columnSpaces[i].y, distanceBetweenCards);
+        SDL_Rect columnRect = {columnSpaces[i].x, columnSpaces[i].y, COLUMN_WIDTH, WINDOW_HEIGHT};
+        currentColumn -> rect = columnRect;
         currentColumn = currentColumn->next;
         i++;
     }
