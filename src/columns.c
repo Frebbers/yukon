@@ -73,8 +73,12 @@ Column** columnFront(Card* card){
     }
 
     for (int i = 0; i < 11; i++) {
-        createColumn(&columns[i], *card);
-        card = card->next;
+        int count=0;
+        while (count < 8) {
+            count++;
+            card = card->next;
+            createColumn(&columns[i], *card);
+        }
     }
     return columns;
 }
