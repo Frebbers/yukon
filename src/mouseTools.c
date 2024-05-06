@@ -99,7 +99,7 @@ char* dropCardStack(Card* stack, Column* stackColumn, Column* columns, int x, in
                 }
                 break;
             case SDL_MOUSEMOTION:
-                if (*isDragging) {
+                if (isDragging) {
                     draggedCardStack->rect.x = event->motion.x - dragOffset.x;
                     draggedCardStack->rect.y = event->motion.y - dragOffset.y;
                     moveCardStack(draggedCardStack->next, event->motion.x - dragOffset.x,

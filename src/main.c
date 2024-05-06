@@ -113,17 +113,18 @@ int main(int argc, char *argv[]) {
 
 */
 
-    Column** columns = columnFront(deck);
+    Column** columns = dealCards(deck);
     int close_requested = 0;
     SDL_Event windowEvent;
     int* isDragging = 0;
     // Main loop which keeps the window open until the user presses the x button
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
-           // handleMouseEvents(&windowEvent, *columns, isDragging);
+           //
             SDL_RenderClear(rend);
             renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces);
             renderColumns(rend, *columns, columnSpaces);
+            handleMouseEvents(&windowEvent, *columns, isDragging);
             SDL_Delay(1000 / FPS);
             if (windowEvent.type == SDL_QUIT) {close_requested = 1;}
         }
