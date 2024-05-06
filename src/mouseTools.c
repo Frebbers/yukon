@@ -62,7 +62,7 @@ char* dropCardStack(Card* stack, Column* stackColumn, Column* columns, int x, in
         Card* draggedCardStack;
         static SDL_Point dragOffset;
         char *result = NULL;
-        SDL_Point originalPosition;
+        static SDL_Point originalPosition;
         Column* currentColumn;
         switch (event->type) {
             case SDL_MOUSEBUTTONDOWN:

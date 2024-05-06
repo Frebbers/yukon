@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
 // Initialize dragging state
     int isDragging = 0;
     Card* draggedCard = NULL;
-
+    renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
             // Handle mouse events with updated function call
@@ -131,10 +131,10 @@ int main(int argc, char *argv[]) {
         }
 
         // Clear the renderer
-        SDL_RenderClear(rend);
+        //SDL_RenderClear(rend);
 
         // Render the game board and the columns
-        renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
+        //renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
         renderColumns(rend, *columns, columnSpaces);
 
         // Render dragged card last so it appears on top
@@ -148,6 +148,7 @@ int main(int argc, char *argv[]) {
 
         // Cap the frame rate
         SDL_Delay(1000 / FPS);
+        //SDL_RenderClear(rend);
     }
 
 
