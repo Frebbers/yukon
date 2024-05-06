@@ -13,7 +13,7 @@ Card* splitShuffle(Card* oldDeck, int splitIndex) {
     Card *deck1 = oldDeck;
     //The second part of the deck equal to 52-splitIndex
     Card *deck2;
-    if (splitIndex < 1 || splitIndex > 52) {return oldDeck;}
+    if (splitIndex < 1 || splitIndex >= 52) {return oldDeck;}
     // Split the deck into two decks
     // Find the "splitIndex" card set its "next" pointer to NULL. Set Deck2 to point to that card.
     for (int i = 0; i < splitIndex; i++) {oldDeck = oldDeck->next;}

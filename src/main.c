@@ -61,6 +61,21 @@ int main() {
 */
 
 int main(int argc, char *argv[]) {
+
+
+    int startGame = 1;
+    int len;
+   // Card *deck = NULL;
+    Card *head = NULL;
+    Column **columns = NULL;
+
+    char command[50] = "";
+    char lastCommand[50] = "";
+    char argument[50] = "";
+    char *message = "Enter a command to start the game";
+    char function[9] = " ";
+    board();
+    char*filename = "";
     int FPS = 60;
     int SCROLL_SPEED = 5;
     SDL_INIT_EVERYTHING;
@@ -83,59 +98,18 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    Column **columns = columnFront(deck);
-    dealColumns(columns);
+
     int close_requested = 0;
     SDL_Event windowEvent;
 // Initialize dragging state
     int isDragging = 0;
     Card* draggedCard = NULL;
+    columns = columnFront(deck);
     renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
-    while (!close_requested) {
-        while (SDL_PollEvent(&windowEvent)) {
-            // Handle mouse events with updated function call
-            handleMouseEvents(&windowEvent, *columns, &isDragging, &draggedCard);
-
-            if (windowEvent.type == SDL_QUIT) {
-                close_requested = 1;
-            }
-        }
-
-        renderColumns(rend, *columns, columnSpaces);
-
-        // Render dragged card last so it appears on top
-        if (isDragging && draggedCard != NULL) {
-            renderCard(rend, draggedCard, windowEvent.button.x - draggedCard->rect.w / 2,
-                        windowEvent.button.y - draggedCard->rect.h / 2);
-        }
-
-        // Update the screen
-        SDL_RenderPresent(rend);
-
-        // Cap the frame rate
-        SDL_Delay(1000 / FPS);
-        //SDL_RenderClear(rend);
-    }
 
 
-    freeDeck(deck);
-    closeSDL(window, rend);
-    return 0;
-}
 
-    int startGame = 1;
-    int len;
-   // Card *deck = NULL;
-    Card *head = NULL;
-    Column **columns = NULL;
 
-    char command[50] = "";
-    char lastCommand[50] = "";
-    char argument[50] = "";
-    char *message = "Enter a command to start the game";
-    char function[9] = " ";
-    board();
-    char*filename = "";
 
     while (1) {
         strcpy(lastCommand, handleInput(message, command));
@@ -171,7 +145,34 @@ int main(int argc, char *argv[]) {
                 message = "Error: File not found.";
             }
         }
+        else if (strcmp(function, "SDL") == 0) {
+        columns = columnFront(deck);
+        dealColumns(columns);
+            while (!close_requested) {
+                while (SDL_PollEvent(&windowEvent)) {
+                    // Handle mouse events with updated function call
+                    handleMouseEvents(&windowEvent, *columns, &isDragging, &draggedCard);
+                    if (windowEvent.type == SDL_QUIT) {
+                    close_requested = 1;
+                    }
+                }
 
+                renderColumns(rend, *columns, columnSpaces);
+
+                // Render dragged card last so it appears on top
+                if (isDragging && draggedCard != NULL) {
+                renderCard(rend, draggedCard, windowEvent.button.x - draggedCard->rect.w / 2,
+                windowEvent.button.y - draggedCard->rect.h / 2);
+                }
+
+            // Update the screen
+            SDL_RenderPresent(rend);
+
+            // Cap the frame rate
+            SDL_Delay(1000 / FPS);
+            //SDL_RenderClear(rend);
+            }
+        }
                 //QQ function
             else if (strcmp(function, "QQ") == 0) {
                 //  saveDeck(head, "rsc/savedcards.txt");
@@ -180,7 +181,6 @@ int main(int argc, char *argv[]) {
                 printf("The program exits.");
                 closeSDL(window, rend);
                 exit(0);
-
             }
                 //P function
 
@@ -272,6 +272,9 @@ int main(int argc, char *argv[]) {
             else if (strcmp(function, "SI") == 0) {
                 int input;
                 sscanf(argument, "%d", &input);
+                if (!input) {
+                    input = 26;
+                }
                 Card *newDeck = splitShuffle(head, input);
                 if (newDeck != NULL) {
                     deck = newDeck;
