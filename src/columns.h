@@ -12,6 +12,7 @@ typedef struct Column {
     struct Column* next;
 
 } Column;
+Column** columnFront(Card* card);
 int convertValue(char value);
 void createColumn(Column** headColumn, Card card);
 Column** dealCards(Card* card);
@@ -21,6 +22,6 @@ char* moveCard(Column** sourceColumn, Column** destColumn, char value, char suit
 Column** dealColumns(Column** columns);
 char* moveCardToFoundation(Column** sourceColumn, Column** foundation, char value, char suit);
 char* moveCardFromFoundation(Column** foundation, Column** destColumn, char value, char suit);
-
+Column** columnFront(Card* card);
 
 #endif //UNTITLED_COLUMNS_H
