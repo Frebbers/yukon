@@ -107,6 +107,7 @@ char* dropCardStack(Card* stack, Column* stackColumn, Column* columns, int x, in
                 }
                 break;
         }
+        printf("%s\n", result);
     }
 
 

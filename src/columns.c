@@ -83,8 +83,15 @@ Column** columnFront(Card* card){
             count++;
         }
 
-
+        // Set the next field of the current column to point to the next column
+        if (i < 6) { // Ensure we don't go out of bounds
+            columns[i]->next = columns[i+1];
+        }
     }
+
+    // The last column's next should be NULL
+    columns[6]->next = NULL;
+
     return columns;
 }
 

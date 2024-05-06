@@ -111,9 +111,8 @@ int main(int argc, char *argv[]) {
 
 
 */
-
-    Column** columns = NULL;
-    columns = columnFront(deck);
+    Column **columns = columnFront(deck);
+    dealColumns(columns);
     int close_requested = 0;
     SDL_Event windowEvent;
 // Initialize dragging state

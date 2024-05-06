@@ -176,7 +176,7 @@ void renderColumns(SDL_Renderer* renderer, Column* columns, SDL_Rect* columnSpac
     int distanceBetweenCards = 60;
     int i = 0;
     while (currentColumn != NULL) {
-        if (i == 7){distanceBetweenCards = 0;}
+       // if (i == 7){distanceBetweenCards = 0;}
         renderColumn(renderer, currentColumn->card, columnSpaces[i].x, columnSpaces[i].y, distanceBetweenCards);
         SDL_Rect columnRect = {columnSpaces[i].x, columnSpaces[i].y, COLUMN_WIDTH, WINDOW_HEIGHT};
         currentColumn -> rect = columnRect;
