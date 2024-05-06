@@ -66,6 +66,19 @@ void createColumn(Column** headColumn, Card card) {
     }
 }
 
+Column** columnFront(Card* card){
+    Column** columns = malloc(11 * sizeof(Column*));
+    for (int i = 0; i < 11; i++) {
+        columns[i] = NULL;
+    }
+
+    for (int i = 0; i < 11; i++) {
+        createColumn(&columns[i], *card);
+        card = card->next;
+    }
+    return columns;
+}
+
 
 Column** dealCards(Card* card){
     // Constants for the game setup.
