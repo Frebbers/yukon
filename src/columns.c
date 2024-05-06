@@ -72,13 +72,18 @@ Column** columnFront(Card* card){
         columns[i] = NULL;
     }
 
-    for (int i = 0; i < 7; i++) {
-        int count=0;
-        while (count < 7) {
-            count++;
-            card = card->next;
+    createColumn(&columns[0], *card);
+    card = card->next;
+    for (int i = 1; i < 7; i++) {
+        int count=1;
+
+        while (count < i+6) {
             createColumn(&columns[i], *card);
+            card = card->next;
+            count++;
         }
+
+
     }
     return columns;
 }
@@ -86,7 +91,6 @@ Column** columnFront(Card* card){
 Column** dealColumnsFront(Card* card){
     // Constants for the game setup.
     const int totalCardsInColumns[7] = {1, 6, 7, 8, 9, 10, 11};
-    const int faceUpStartIndex[7] = {0, 1, 2, 3, 4, 5, 6};
 
     // Create an array to hold the columns and foundations
     Column** columns = malloc(11 * sizeof(Column*));
@@ -96,24 +100,15 @@ Column** dealColumnsFront(Card* card){
         columns[i] = NULL;
     }
 
-    int counter = 0;
+
     //Creates and prints the cards in the columns
     for (int row = 0; row < maxRows; row++) {
-       for (int col = 0; col < 7; col++) {
-
+        for (int col = 0; col < 7; col++) {
             if ( row < totalCardsInColumns[col]) { // If the current row should have a card for this column.
-
-                if (card != NULL) { // Check if the card is face down.
-
                 createColumn(&columns[col], *card);
                 card= card->next; // Move to the next card.
-
-                } else {
-                    continue;
-                }
-                }
+            }
         }
-
 
     }
     return columns;
