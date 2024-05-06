@@ -2,7 +2,6 @@
 // Created by Magnus on 17/04/2024.
 //
 #include <string.h>
-#include "phases.h"
 #include "stdlib.h"
 #include "carddeck.h"
 #include "SW.h"
@@ -13,26 +12,23 @@ void startupPhase(){
 
 }
 
-
-void playPhase(Card **head) {
+ char* playPhase(char* function){
     int inPlayPhase = 1;
     char command[50] = "";
-    char *message = "Enter a command during play phase";
+    char *message = " ";
 
     while (inPlayPhase) {
-        printf("%s\n", message);
-        fgets(command, sizeof(command), stdin);
-        command[strcspn(command, "\n")] = 0;
-        board();
-
-        if (strcmp(command, "Q") == 0) {
-            printf("Ending play phase.\n");
+       if (strcmp(function, "Q") == 0) {
+            message="Ending play phase.";
             inPlayPhase = 0;
-        } else if (strcmp(command, "QQ") == 0 || strcmp(command, "SW") == 0 || strcmp(command, "SR") == 0
-        || strcmp(command, "SI") == 0 || strcmp(command, "LD") == 0 || strcmp(command, "P") == 0)  {
-            printf("Command not available during play phase.\n");
+        } else if (strcmp(function, "QQ") == 0 || strcmp(function, "SW") == 0 || strcmp(function, "SR") == 0
+        || strcmp(function, "SI") == 0 || strcmp(function, "LD") == 0 || strcmp(function, "P") == 0)  {
+            message="Command not available during play phase.";
+            return message;
         } else{
-            printf("Unknown command.\n");
+            message= "Unknown command.";
+            return message;
         }
     }
+    return message;
 }

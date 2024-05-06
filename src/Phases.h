@@ -13,6 +13,6 @@
 
 void startupPhase();
 
-void playPhase(Card **head);
+char* playPhase(char* function);
 
 

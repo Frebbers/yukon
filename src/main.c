@@ -55,7 +55,7 @@ int main() {
     char *message = "Enter a command to start the game";
     char function[9] = " ";
     board();
-    char*filename = "";
+    char *filename = "";
 
     while (1) {
         strcpy(lastCommand, handleInput(message, command));
@@ -92,139 +92,148 @@ int main() {
             }
         }
 
-                //QQ function
-            else if (strcmp(function, "QQ") == 0) {
-                //  saveDeck(head, "rsc/savedcards.txt");
+            //QQ function
+        else if (strcmp(function, "QQ") == 0) {
+            //  saveDeck(head, "rsc/savedcards.txt");
 
-                freeDeck(deck);
-                printf("The program exits.");
-                exit(0);
+            freeDeck(deck);
+            printf("The program exits.");
+            exit(0);
 
-            }
-                //P function
-
-        else if (strcmp(function, "P") == 0) {
-            if (deck != NULL) {
-                columns = dealCards(head); // Deal cards from the deck into columns
+        }
+            //SR function
+        else if (strcmp(function, "SR") == 0) {
+            Card *newDeck = SR(head);
+            if (newDeck != NULL) {
+                deck = newDeck;
+                head = deck;
+                loadedDeck();
                 message = "OK";
-                int inPlayPhase = 1;
-                while (inPlayPhase) {
-                    memset(command, 0, sizeof(command));
-                    memset(argument, 0, sizeof(argument));
-                    memset(function, 0, sizeof(function));
-
-                    printf("In Play: %s\nINPUT >", message);
-                    fgets(command, sizeof(command), stdin);
-                    sscanf(command, "%s %s", function, argument);
-
-                    if (strcmp(function, "Q") == 0) {
-                        printf("Ending play phase.\n");
-                        inPlayPhase = 0; // Properly end play phase
-                        } else if (function[0] == 'C' &&
-                                 function[2] == ':' &&
-                                 function[5] == '-' &&
-                                 function[6] == '>' &&
-                                 function[7] == 'C') {
-                            int sourceColumn = convertValue(function[1]);;
-                            char sourceValue = function[3];
-                            char sourceSuit = function[4];
-                            int destColumn = convertValue(function[8]);
-
-                            message=moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
-                            dealColumns(columns);
-
-                        }
-
-
-                            //Move from column to foundation
-                        else if ( function[0]=='C' &&
-                                  function[2]==':' &&
-                                  function[5]=='-' &&
-                                  function[6]=='>' &&
-                                  function[7]=='F')
-                        {
-                            int sourceColumn=convertValue(function[1]);;
-                            char sourceValue=function[3];
-                            char sourceSuit=function[4];
-                            int destColumn=convertValue(function[8]);
-
-                            message=moveCardToFoundation(&columns[sourceColumn-1], &columns[destColumn+6], sourceValue, sourceSuit);
-                            dealColumns(columns);
-                        }
-                            //Move from foundation to column
-                        else if ( function[0]=='F' &&
-                                  function[2]==':' &&
-                                  function[5]=='-' &&
-                                  function[6]=='>' &&
-                                  function[7]=='C')
-                        {
-                            int sourceColumn=convertValue(function[1]);;
-                            char sourceValue=function[3];
-                            char sourceSuit=function[4];
-                            int destColumn=convertValue(function[8]);
-
-                            message=moveCardFromFoundation(&columns[sourceColumn+6], &columns[destColumn-1], sourceValue, sourceSuit);
-                            dealColumns(columns);
-                        }
-                        else if((strcmp(function, "PR") == 0)){ printColumns(columns);}
-
-                    }
-                } else {
-                    message = "Error: No deck loaded.";
-                }
+            } else {
+                board();
+                message = "Error: No deck loaded.";
+            }
+        }
+            //SI function
+        else if (strcmp(function, "SI") == 0) {
+            int input;
+            sscanf(argument, "%d", &input);
+            Card *newDeck = splitShuffle(head, input);
+            if (newDeck != NULL) {
+                deck = newDeck;
+                head = deck;
+                //head = newDeck;
+                loadedDeck();
+                message = "OK";
+            } else {
+                board();
+                message = "Error: No deck loaded.";
             }
 
-                //SR function
-            else if (strcmp(function, "SR") == 0) {
-                Card *newDeck = SR(head);
-                if (newDeck != NULL) {
-                    deck = newDeck;
-                    head = deck;
-                    loadedDeck();
-                    message = "OK";
-                } else {
-                    board();
-                    message = "Error: No deck loaded.";
-                }
-            }
-                //SI function
-            else if (strcmp(function, "SI") == 0) {
-                int input;
-                sscanf(argument, "%d", &input);
-                Card *newDeck = splitShuffle(head, input);
-                if (newDeck != NULL) {
-                    deck = newDeck;
-                    head = deck;
-                    //head = newDeck;
-                    loadedDeck();
-                    message = "OK";
-                } else {
-                    board();
-                    message = "Error: No deck loaded.";
-                }
-
-            }
-                //SD function
-            else if (strcmp(function, "SD") == 0) {
+        }
+            //SD function
+        else if (strcmp(function, "SD") == 0) {
             char *filePath;
             if (strcmp(argument, "") == 0) { filePath = "rsc/cards.txt"; }
             else { filePath = getFilePath(argument); }
-                    saveDeck(head, filePath);
-                    message = "OK";
-            }
-                //SW function
-            else if (strcmp(function, "SW") == 0) {
-                message = displayDynamicInterface(head);
+            saveDeck(head, filePath);
+            message = "OK";
+        }
+            //SW function
+        else if (strcmp(function, "SW") == 0) {
+            message = displayDynamicInterface(head);
 
-            }
-
-                //"Unknown command" message
-            else {
-                strcpy(lastCommand, command);
-                message = "Unknown command.";
-            }
-            strcpy(argument, "");
         }
 
-    }
+            //P function
+
+        else if (strcmp(function, "P") == 0) {
+
+            if (deck != NULL) {
+                columns = dealCards(head); // Deal cards from the deck into columns
+                message = "Enter a command during play phase";
+
+
+                int inPlayPhase = 1;
+                while (inPlayPhase) {
+
+                    strcpy(lastCommand, handleInput(message, command));
+                    strcpy(command, lastCommand);
+                    // Extract function name and argument
+                    sscanf(command, "%s %s", function, argument);
+
+                    function[strlen(function)] = '\0';
+                    //Move cards from column to column
+                    if (function[0] == 'C' &&
+                             function[2] == ':' &&
+                             function[5] == '-' &&
+                             function[6] == '>' &&
+                             function[7] == 'C') {
+                        int sourceColumn = convertValue(function[1]);;
+                        char sourceValue = function[3];
+                        char sourceSuit = function[4];
+                        int destColumn = convertValue(function[8]);
+
+                        message=moveCard(&columns[sourceColumn - 1], &columns[destColumn - 1], sourceValue, sourceSuit);
+                        dealColumns(columns);
+
+                    }
+                    //Move from column to foundation
+                    else if (function[0] == 'C' &&
+                        function[2] == ':' &&
+                        function[5] == '-' &&
+                        function[6] == '>' &&
+                        function[7] == 'F') {
+                        int sourceColumn = convertValue(function[1]);;
+                        char sourceValue = function[3];
+                        char sourceSuit = function[4];
+                        int destColumn = convertValue(function[8]);
+
+                        message=moveCardToFoundation(&columns[sourceColumn - 1], &columns[destColumn + 6],
+                                                       sourceValue, sourceSuit);
+                        dealColumns(columns);
+                    }
+                        //Move from foundation to column
+                    else if (function[0] == 'F' &&
+                             function[2] == ':' &&
+                             function[5] == '-' &&
+                             function[6] == '>' &&
+                             function[7] == 'C') {
+                        int sourceColumn = convertValue(function[1]);;
+                        char sourceValue = function[3];
+                        char sourceSuit = function[4];
+                        int destColumn = convertValue(function[8]);
+
+                        message = moveCardFromFoundation(&columns[sourceColumn + 6], &columns[destColumn - 1],
+                                                         sourceValue, sourceSuit);
+                        dealColumns(columns);
+                    } else if ((strcmp(function, "PR") == 0)) {
+                        printColumns(columns);
+                    } else if ((strcmp(function, "Q") == 0)) {
+                        message="Ending play phase.\n Enter a command to start setup the game.";
+                        inPlayPhase = 0;
+                    }
+
+                    else {
+                        dealColumns(columns);
+                        message=playPhase(function);
+                    }
+
+                }
+            } else {
+                message = "Error: No deck loaded.";
+            }
+        }
+
+            //"Unknown command" message
+        else {
+            strcpy(lastCommand, command);
+            message = "Unknown command.";
+        }
+
+
+
+    }//while(1)
+
+}//main
 
