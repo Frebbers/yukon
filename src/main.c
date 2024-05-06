@@ -9,7 +9,23 @@
 #include "SR.h"
 #include "SI.h"
 #include "Phases.h"
+#include "renderTools.h"
 #include "columns.h"
+#include "mouseTools.h"
+const double CARD_SCALE_FACTOR = 0.32;
+const int ORIGINAL_CARD_WIDTH = 500;
+const int ORIGINAL_CARD_HEIGHT = 726;
+const int SCALED_CARD_WIDTH = (int)(ORIGINAL_CARD_WIDTH * CARD_SCALE_FACTOR);
+const int SCALED_CARD_HEIGHT = (int)(ORIGINAL_CARD_HEIGHT * CARD_SCALE_FACTOR);
+const int COLUMN_WIDTH = SCALED_CARD_WIDTH;
+const int COLUMN_HEIGHT = SCALED_CARD_HEIGHT;
+const int COLUMN_PADDING = 25;
+const int FOUNDATION_WIDTH = SCALED_CARD_WIDTH;
+const int FOUNDATION_HEIGHT = SCALED_CARD_HEIGHT;
+const int FOUNDATION_PADDING = 11;
+const int COLUMN_TO_FOUNDATION_PADDING = COLUMN_PADDING*3;
+const int WINDOW_WIDTH = 1600;
+const int WINDOW_HEIGHT = 1080;
 
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
@@ -43,9 +59,106 @@ int main() {
     exit(0);
 }
 */
-int main() {
+
+int main(int argc, char *argv[]) {
+    int FPS = 60;
+    int SCROLL_SPEED = 5;
+    SDL_INIT_EVERYTHING;
+    SDL_Window *window = createWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
+    if (!window) {return 1;}
+    SDL_Renderer *rend = initSDL(window);
+    if (!rend) {
+        SDL_DestroyWindow(window);
+        return 1;}
+    //Create the rects for the column and foundation spaces
+    SDL_Rect columnSpaces[7];
+    SDL_Rect foundationSpaces[4];
+    SDL_Texture *backGroundTexture = loadTexture("rsc/graphics/background_basic.png", rend);
+    setupRects(columnSpaces, foundationSpaces);
+   // renderGameBoard(rend, loadTexture("rsc/graphics/background_basic.png", rend), columnSpaces, foundationSpaces,);
+    // Load image into memory
+    Card* deck = loadDeck("rsc/UnShuffledCards.txt", rend);
+    if (deck == NULL) {
+        printf("Could not load deck: %s\n", SDL_GetError());
+        closeSDL(window, rend);
+        return 1;
+    }
+/*   Card* temp = deck;
+    for (int i = 0; i < 7; i++) {
+        deck = deck->next;
+    }
+    deck->next = NULL;
+    deck = temp;
+   // SDL_RenderClear(rend);
+    //renderColumn(rend, deck, 0, 0, 0);
+*/
+/*
+    //create texture from surface
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
+    SDL_FreeSurface(surface);
+    if (!tex) {
+        printf("Could not create texture: %s\n", SDL_GetError());
+        return 1;
+    }
+    // Get the dimensions of texture and set destination to the whole screen
+    SDL_Rect dest;
+    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
+    // Center the texture on the screen
+    dest.x = (WINDOW_WIDTH - dest.w) / 2;
+    dest.y = (WINDOW_HEIGHT - dest.h) / 2;
+    float y_pos = WINDOW_HEIGHT;
+
+
+
+*/
+    Column **columns = columnFront(deck);
+    dealColumns(columns);
+    int close_requested = 0;
+    SDL_Event windowEvent;
+// Initialize dragging state
+    int isDragging = 0;
+    Card* draggedCard = NULL;
+    renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
+    while (!close_requested) {
+        while (SDL_PollEvent(&windowEvent)) {
+            // Handle mouse events with updated function call
+            handleMouseEvents(&windowEvent, *columns, &isDragging, &draggedCard);
+
+            if (windowEvent.type == SDL_QUIT) {
+                close_requested = 1;
+            }
+        }
+
+        // Clear the renderer
+        //SDL_RenderClear(rend);
+
+        // Render the game board and the columns
+        //renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
+        renderColumns(rend, *columns, columnSpaces);
+
+        // Render dragged card last so it appears on top
+        if (isDragging && draggedCard != NULL) {
+            renderCard(rend, draggedCard, windowEvent.button.x - draggedCard->rect.w / 2,
+                        windowEvent.button.y - draggedCard->rect.h / 2);
+        }
+
+        // Update the screen
+        SDL_RenderPresent(rend);
+
+        // Cap the frame rate
+        SDL_Delay(1000 / FPS);
+        //SDL_RenderClear(rend);
+    }
+
+
+    freeDeck(deck);
+    closeSDL(window, rend);
+    return 0;
+}
+/*
+    int startGame = 1;
     int len;
-    Card *deck = NULL;
+   // Card *deck = NULL;
     Card *head = NULL;
     Column **columns = NULL;
 
@@ -73,7 +186,7 @@ int main() {
             if (strcmp(argument, "") == 0) { filePath = "rsc/UnShuffledCards.txt"; }
             else { filePath = getFilePath(argument); }
             if (fileExists(filePath) == 1) {
-                Card *newDeck = loadDeck(filePath);
+                Card *newDeck = loadDeck(filePath, rend);
 
                 if (newDeck != NULL) {
                     if (deck != NULL) {
@@ -98,6 +211,7 @@ int main() {
 
                 freeDeck(deck);
                 printf("The program exits.");
+                closeSDL(window, rend);
                 exit(0);
 
             }
@@ -228,3 +342,4 @@ int main() {
 
     }
 
+*/

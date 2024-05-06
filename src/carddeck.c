@@ -2,7 +2,8 @@
 #include "carddeck.h"
 #include "stdlib.h"
 #include "string.h"
-
+#include "rendertools.h"
+#include <SDL_image.h>
 
 
 Card* createCard(char value, char suit) {
@@ -13,7 +14,7 @@ Card* createCard(char value, char suit) {
     }
     newCard->suit = suit;
     newCard->value = value;
-    newCard->isFaceUp = 1;
+    newCard->isFaceUp = 0;
 
     return newCard;
 }
