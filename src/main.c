@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
         closeSDL(window, rend);
         return 1;
     }
-  /*  Card* temp = deck;
+/*   Card* temp = deck;
     for (int i = 0; i < 7; i++) {
         deck = deck->next;
     }
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
     deck = temp;
    // SDL_RenderClear(rend);
     //renderColumn(rend, deck, 0, 0, 0);
-    */
+*/
 /*
     //create texture from surface
     SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
@@ -112,7 +112,8 @@ int main(int argc, char *argv[]) {
 
 */
 
-    Column** columns = dealColumnsFront(deck);
+    Column** columns = NULL;
+    columns = dealColumnsFront(deck);
     int close_requested = 0;
     SDL_Event windowEvent;
     int* isDragging = malloc(sizeof(int));

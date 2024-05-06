@@ -58,7 +58,7 @@ char* dropCardStack(Card* stack, Column* stackColumn, Column* columns, int x, in
     }
     return "Error!_Invalid drop location";
 }
-    void handleMouseEvents(SDL_Event *event, Column *columns, int *isDragging) {
+    void handleMouseEventsold(SDL_Event *event, Column *columns, int *isDragging) {
         Card* draggedCardStack;
         static SDL_Point dragOffset;
         char *result = NULL;
@@ -110,22 +110,20 @@ char* dropCardStack(Card* stack, Column* stackColumn, Column* columns, int x, in
     }
 
 
-void handleMouseEvents2(SDL_Event *event, Column *columns, int *isDragging) {
-    Card* draggedCardStack;
+void handleMouseEvents(SDL_Event *event, Column *columns, int *isDragging, Card** draggedCard) {
     static SDL_Point dragOffset;
     SDL_Point originalPosition;
-    Column* currentColumn;
 
     switch (event->type) {
         case SDL_MOUSEBUTTONDOWN:
             if (event->button.button == SDL_BUTTON_LEFT) {
-                currentColumn = getColumnAtPosition(columns, event->button.x, event->button.y);
-                draggedCardStack = getCardStackAtPosition(currentColumn, event->button.y);
+                Column* currentColumn = getColumnAtPosition(columns, event->button.x, event->button.y);
+                *draggedCard = getCardStackAtPosition(currentColumn, event->button.y);
 
-                if (draggedCardStack) {
-                    originalPosition = (SDL_Point) {draggedCardStack->rect.x, draggedCardStack->rect.y};
-                    dragOffset.x = event->button.x - draggedCardStack->rect.x;
-                    dragOffset.y = event->button.y - draggedCardStack->rect.y;
+                if (*draggedCard) {
+                    originalPosition = (SDL_Point){(*draggedCard)->rect.x, (*draggedCard)->rect.y};
+                    dragOffset.x = event->button.x - (*draggedCard)->rect.x;
+                    dragOffset.y = event->button.y - (*draggedCard)->rect.y;
                     *isDragging = 1;
                 }
             }
@@ -136,22 +134,32 @@ void handleMouseEvents2(SDL_Event *event, Column *columns, int *isDragging) {
                 int dropX = event->button.x - dragOffset.x;
                 int dropY = event->button.y - dragOffset.y;
 
-                if (!draggedCardStack) {
+                if (!*draggedCard) {
                     // Handle error: no card stack to drop
                     return;
                 }
 
-                char *result = dropCardStack(draggedCardStack, currentColumn, columns, dropX, dropY);
+                char *result = dropCardStack(*draggedCard, columns, dropX, dropY);
 
                 if (strcmp(result, "OK") != 0) {
                     // Reset position if drop is not valid
-                    moveCardStack(draggedCardStack, originalPosition.x, originalPosition.y);
+                    moveCardStack(*draggedCard, originalPosition.x, originalPosition.y);
                 }
 
                 *isDragging = 0;
-                draggedCardStack = NULL;
+                *draggedCard = NULL;
             }
             break;
+
+        case SDL_MOUSEMOTION:
+            if (*isDragging) {
+                (*draggedCard)->rect.x = event->motion.x - dragOffset.x;
+                (*draggedCard)->rect.y = event->motion.y - dragOffset.y;
+            }
+            break;
+    }
+}
+
 
         case SDL_MOUSEMOTION:
             if (*isDragging) {

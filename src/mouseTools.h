@@ -9,5 +9,5 @@
 #define YUKON_MOUSETOOLS_H
 
 #endif //YUKON_MOUSETOOLS_H
-void handleMouseEvents(SDL_Event *event, Column *columns, int *isDragging);
+void handleMouseEvents(SDL_Event *event, Column *columns, int *isDragging, Card** draggedCard);
 
