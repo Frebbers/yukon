@@ -57,7 +57,7 @@ void setupRects(SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces);
  * @param foundationSpaces The SDL_Rect array of the foundation spaces
  * @author Frederik Bode Hendrichsen s224804
  */
-void renderGameBoard(SDL_Renderer* renderer, SDL_Texture* backgroundTexture, SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces);
+void renderGameBoard(SDL_Renderer* renderer, SDL_Texture* backgroundTexture, SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces, Column* columns);
 /**
  * Renders a column of cards to the screen
  * @param renderer The renderer to render to

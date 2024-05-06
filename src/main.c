@@ -75,8 +75,7 @@ int main(int argc, char *argv[]) {
     SDL_Rect foundationSpaces[4];
     SDL_Texture *backGroundTexture = loadTexture("rsc/graphics/background_basic.png", rend);
     setupRects(columnSpaces, foundationSpaces);
-    renderGameBoard(rend, loadTexture
-    ("rsc/graphics/background_basic.png", rend), columnSpaces, foundationSpaces);
+   // renderGameBoard(rend, loadTexture("rsc/graphics/background_basic.png", rend), columnSpaces, foundationSpaces,);
     // Load image into memory
     Card* deck = loadDeck("rsc/UnShuffledCards.txt", rend);
     if (deck == NULL) {
@@ -113,16 +112,17 @@ int main(int argc, char *argv[]) {
 
 */
 
-    Column** columns = dealCards(deck);
+    Column** columns = dealColumnsFront(deck);
     int close_requested = 0;
     SDL_Event windowEvent;
-    int* isDragging = 0;
+    int* isDragging = malloc(sizeof(int));
+    *isDragging = 0;
     // Main loop which keeps the window open until the user presses the x button
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
            //
             SDL_RenderClear(rend);
-            renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces);
+            renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
             renderColumns(rend, *columns, columnSpaces);
             handleMouseEvents(&windowEvent, *columns, isDragging);
             SDL_Delay(1000 / FPS);
@@ -131,7 +131,8 @@ int main(int argc, char *argv[]) {
     }
 
 
-
+    freeDeck(deck);
+    free(isDragging);
     closeSDL(window, rend);
     return 0;
 }

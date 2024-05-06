@@ -94,22 +94,30 @@ void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int distance
     }
     SDL_RenderPresent(renderer);
 }
-void renderGameBoard(SDL_Renderer* renderer, SDL_Texture* backgroundTexture, SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces) {
+void renderGameBoard(SDL_Renderer* renderer, SDL_Texture* backgroundTexture, SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces, Column* columns) {
     // Render the background first
     SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
-
+    Column* tempColumn = columns;
     // Render column spaces (for columns)
     for (int i = 0; i < 7; i++) {
         SDL_SetRenderDrawColor(renderer, 192, 192, 192, 255); // Light grey
         SDL_RenderFillRect(renderer, &columnSpaces[i]);
+       if (columns != NULL) {
+           columns->rect = columnSpaces[i];
+           columns = columns->next;
+       }
     }
 
     // Render foundation spaces (for foundations)
     for (int i = 0; i < 4; i++) {
         SDL_SetRenderDrawColor(renderer, 160, 160, 160, 255); // Slightly darker grey
         SDL_RenderFillRect(renderer, &foundationSpaces[i]);
+        if (columns != NULL) {
+            columns->rect = foundationSpaces[i + 7];
+            columns = columns->next;
+        }
     }
-
+    columns = tempColumn;
 }
 
 void setupRects(SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces) {
@@ -133,7 +141,7 @@ Column* getColumnAtPosition(Column* columns, int x, int y) {
     Column* currentColumn = columns;
     int i = 0;
     while (currentColumn != NULL) {
-        SDL_Rect columnRect = {currentColumn->card->rect.x, currentColumn->card->rect.y, COLUMN_WIDTH, WINDOW_HEIGHT};
+        SDL_Rect columnRect = {currentColumn->rect.x, currentColumn->rect.y, COLUMN_WIDTH, WINDOW_HEIGHT};
         if (x >= columnRect.x && x < (columnRect.x + COLUMN_WIDTH)) {
             if (i < 7) {
                 return currentColumn;
