@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
         closeSDL(window, rend);
         return 1;
     }
-    Card* temp = deck;
+  /*  Card* temp = deck;
     for (int i = 0; i < 7; i++) {
         deck = deck->next;
     }
@@ -92,6 +92,7 @@ int main(int argc, char *argv[]) {
     deck = temp;
    // SDL_RenderClear(rend);
     //renderColumn(rend, deck, 0, 0, 0);
+    */
 /*
     //create texture from surface
     SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
@@ -112,17 +113,17 @@ int main(int argc, char *argv[]) {
 
 */
 
-    createColumn()
+    Column** columns = columnFront(deck);
     int close_requested = 0;
     SDL_Event windowEvent;
-    int isDragging = 0;
+    int* isDragging = 0;
     // Main loop which keeps the window open until the user presses the x button
     while (!close_requested) {
         while (SDL_PollEvent(&windowEvent)) {
-            handleMouseEvents(&windowEvent, columns, isDragging);
+           // handleMouseEvents(&windowEvent, *columns, isDragging);
             SDL_RenderClear(rend);
             renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces);
-            renderColumn(rend, deck, 25, 25, 0);
+            renderColumns(rend, *columns, columnSpaces);
             SDL_Delay(1000 / FPS);
             if (windowEvent.type == SDL_QUIT) {close_requested = 1;}
         }
