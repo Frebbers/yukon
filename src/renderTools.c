@@ -129,21 +129,41 @@ void setupRects(SDL_Rect* columnSpaces, SDL_Rect* foundationSpaces) {
         }
     }
 }
-
-Card* getCardStackAtPosition(Column* columns, int x, int y) {
-    for (int i = 0; i < 7; i++) {
-        Card* card = columns[i].card;
-        while (card != NULL) {
-            SDL_Rect cardRect = {card->rect.x, card->rect.y, SCALED_CARD_WIDTH, SCALED_CARD_HEIGHT};
-            if (x >= cardRect.x && x < (cardRect.x + cardRect.w) &&
-                y >= cardRect.y && y < (cardRect.y + cardRect.h)) {
-                return card; // Return the first card in the stack at the cursor position
+Column* getColumnAtPosition(Column* columns, int x, int y) {
+    Column* currentColumn = columns;
+    int i = 0;
+    while (currentColumn != NULL) {
+        SDL_Rect columnRect = {currentColumn->card->rect.x, currentColumn->card->rect.y, COLUMN_WIDTH, WINDOW_HEIGHT};
+        if (x >= columnRect.x && x < (columnRect.x + COLUMN_WIDTH)) {
+            if (i < 7) {
+                return currentColumn;
             }
-            card = card->next;
+            else {
+                // Check which foundation is at the position
+                if (y >= columnRect.y && y < (columnRect.x + COLUMN_HEIGHT)) {
+                    return currentColumn;
+                }
+            }
         }
+        i++;
+        currentColumn = currentColumn->next;
+    }
+    return currentColumn;
+}
+
+Card* getCardStackAtPosition(Column* column, int y) {
+    Card* card = column->card;
+    while (card != NULL) {
+        SDL_Rect cardRect = {card->rect.x, card->rect.y, SCALED_CARD_WIDTH, SCALED_CARD_HEIGHT};
+        if (y >= cardRect.y && y < (cardRect.y + cardRect.h)) {
+            return card; // Return the first card in the stack at the cursor position
+        }
+        card = card->next;
     }
     return NULL; // No card found at this position
 }
+
+
 
 
 

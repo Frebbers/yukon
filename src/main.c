@@ -11,6 +11,20 @@
 #include "Phases.h"
 #include "renderTools.h"
 #include "columns.h"
+const double CARD_SCALE_FACTOR = 0.32;
+const int ORIGINAL_CARD_WIDTH = 500;
+const int ORIGINAL_CARD_HEIGHT = 726;
+const int SCALED_CARD_WIDTH = (int)(ORIGINAL_CARD_WIDTH * CARD_SCALE_FACTOR);
+const int SCALED_CARD_HEIGHT = (int)(ORIGINAL_CARD_HEIGHT * CARD_SCALE_FACTOR);
+const int COLUMN_WIDTH = SCALED_CARD_WIDTH;
+const int COLUMN_HEIGHT = SCALED_CARD_HEIGHT;
+const int COLUMN_PADDING = 25;
+const int FOUNDATION_WIDTH = SCALED_CARD_WIDTH;
+const int FOUNDATION_HEIGHT = SCALED_CARD_HEIGHT;
+const int FOUNDATION_PADDING = 11;
+const int COLUMN_TO_FOUNDATION_PADDING = COLUMN_PADDING*3;
+const int WINDOW_WIDTH = 1600;
+const int WINDOW_HEIGHT = 1080;
 
 //function to take a file name from the user and return a path to that file in rsc folder
 char *getFilePath(char *input) {
@@ -46,8 +60,6 @@ int main() {
 */
 
 int main(int argc, char *argv[]) {
-   int WINDOW_WIDTH = 1600;
-   int WINDOW_HEIGHT = 1000;
     int FPS = 120;
     int SCROLL_SPEED = 5;
     SDL_INIT_EVERYTHING;

@@ -20,66 +20,89 @@ void moveCardStack(Card* stack, int deltaX, int deltaY) {
         stack = stack->next;
     }
 }
-char* dropCardStack(Card* stack, Column* columns, Column* foundations, int x, int y) {
+char* dropCardStack(Card* stack, Column* stackColumn, Column* columns, Column* foundations, int x, int y) {
     // Determine if the drop is over a column or foundation
-    for (int i = 0; i < 7; i++) {
-        SDL_Rect columnRect = {columns[i].card->rect.x, columns[i].card->rect.y, COLUMN_WIDTH, COLUMN_HEIGHT};
+    Column *currentColumn = columns;
+    int i = 0;
+    while (currentColumn != NULL) {
+        SDL_Rect columnRect = {currentColumn->card->rect.x, currentColumn->card->rect.y, COLUMN_WIDTH, COLUMN_HEIGHT};
         if (x >= columnRect.x && x < (columnRect.x + COLUMN_WIDTH) &&
             y >= columnRect.y && y < (columnRect.y + COLUMN_HEIGHT)) {
             // Drop over a column
-            return moveCard(&columns[i], &stack, stack->value, stack->suit);
+            if (i > 7) {
+                return moveCard(&stackColumn, &currentColumn, stack->value, stack->suit);
+            }
+        } else {
+            Column *foundation = getColumnAtPosition(columns, x, y);
+            SDL_Rect foundationRect = {currentColumn->card->rect.x, currentColumn->card->rect.y, COLUMN_WIDTH,
+                                       COLUMN_HEIGHT};
+            if (x >= foundationRect.x && x < (foundationRect.x + COLUMN_WIDTH) &&
+                y >= foundationRect.y && y < (foundationRect.y + FOUNDATION_HEIGHT)) {
+                return moveCardToFoundation(&stackColumn, &foundation, stack->value, stack->suit);
+            }
+
+            /* for (int j = 0; j < 4; j++) {
+                 SDL_Rect foundationRect = {foundations[j].card->rect.x, foundations[j].card->rect.y, FOUNDATION_WIDTH, FOUNDATION_HEIGHT};
+                 if (x >= foundationRect.x && x < (foundationRect.x + FOUNDATION_WIDTH) &&
+                     y >= foundationRect.y && y < (foundationRect.y + FOUNDATION_HEIGHT)) {
+                     // Drop over a foundation
+                     return moveCardToFoundation(&stackColumn, &(foundations[j]), stack->value, stack->suit);
+                 }
+             } */
         }
-    }
-    for (int j = 0; j < 4; j++) {
-        SDL_Rect foundationRect = {foundations[j].card->rect.x, foundations[j].card->rect.y, FOUNDATION_WIDTH, FOUNDATION_HEIGHT};
-        if (x >= foundationRect.x && x < (foundationRect.x + FOUNDATION_WIDTH) &&
-            y >= foundationRect.y && y < (foundationRect.y + FOUNDATION_HEIGHT)) {
-            // Drop over a foundation
-            return moveCardToFoundation(&stack, &(foundations[j]), stack->value, stack->suit);
-        }
+        currentColumn = currentColumn->next;
+        i++;
     }
     return "Error!_Invalid drop location";
 }
-void handleMouseEvents(SDL_Event* event, Column* columns, Column* foundations, Card** draggedCard, SDL_Point* originalPosition, int* isDragging) {
-    static Card* draggedCardStack = NULL;
-    static SDL_Point dragOffset;
-
-    switch (event->type) {
-        case SDL_MOUSEBUTTONDOWN:
-            if (event->button.button == SDL_BUTTON_LEFT) {
-                draggedCardStack = getCardStackAtPosition(columns, event->button.x, event->button.y);
-                if (draggedCardStack) {
-                    *originalPosition = (SDL_Point){draggedCardStack->rect.x, draggedCardStack->rect.y};
-                    dragOffset.x = event->button.x - draggedCardStack->rect.x;
-                    dragOffset.y = event->button.y - draggedCardStack->rect.y;
-                    *draggedCard = draggedCardStack;
-                    *isDragging = 1;
+    void handleMouseEvents(SDL_Event *event, Column *columns, Column *foundations, Card **draggedCard,
+                           SDL_Point *originalPosition, int *isDragging) {
+        static Card *draggedCardStack = NULL;
+        static SDL_Point dragOffset;
+        Column *currentColumn = NULL;
+        char *result = NULL;
+        switch (event->type) {
+            case SDL_MOUSEBUTTONDOWN:
+                if (event->button.button == SDL_BUTTON_LEFT) {
+                    currentColumn = getColumnAtPosition(columns, event->button.x, event->button.y);
+                    draggedCardStack = getCardStackAtPosition(currentColumn, event->button.x);
+                    if (draggedCardStack) {
+                        *originalPosition = (SDL_Point) {draggedCardStack->rect.x, draggedCardStack->rect.y};
+                        dragOffset.x = event->button.x - draggedCardStack->rect.x;
+                        dragOffset.y = event->button.y - draggedCardStack->rect.y;
+                        *draggedCard = draggedCardStack;
+                        *isDragging = 1;
+                    }
                 }
-            }
-            break;
-        case SDL_MOUSEBUTTONUP:
-            if (*isDragging && event->button.button == SDL_BUTTON_LEFT) {
-                int dropX = event->button.x - dragOffset.x;
-                int dropY = event->button.y - dragOffset.y;
-                char* result = dropCardStack(draggedCardStack, columns, foundations, dropX, dropY);
-                if (strcmp(result, "OK") != 0) {
-                    // Reset position if drop is not valid
-                    draggedCardStack->rect.x = originalPosition->x;
-                    draggedCardStack->rect.y = originalPosition->y;
+                break;
+            case SDL_MOUSEBUTTONUP:
+                if (*isDragging && event->button.button == SDL_BUTTON_LEFT) {
+                    int dropX = event->button.x - dragOffset.x;
+                    int dropY = event->button.y - dragOffset.y;
+                    if (draggedCardStack == NULL) {
+                        result = "Error!_No card stack to drop";
+                    } else {
+                        result = dropCardStack(draggedCardStack, currentColumn, columns, foundations, dropX, dropY);
+                    }
+                    if (strcmp(result, "OK") != 0) {
+                        // Reset position if drop is not valid
+                        draggedCardStack->rect.x = originalPosition->x;
+                        draggedCardStack->rect.y = originalPosition->y;
+                    }
+                    *isDragging = 0;
+                    draggedCardStack = NULL;
                 }
-                *isDragging = 0;
-                draggedCardStack = NULL;
-            }
-            break;
-        case SDL_MOUSEMOTION:
-            if (*isDragging) {
-                draggedCardStack->rect.x = event->motion.x - dragOffset.x;
-                draggedCardStack->rect.y = event->motion.y - dragOffset.y;
-                moveCardStack(draggedCardStack->next, event->motion.x - dragOffset.x, event->motion.y - dragOffset.y - draggedCardStack->rect.y);
-            }
-            break;
+                break;
+            case SDL_MOUSEMOTION:
+                if (*isDragging) {
+                    draggedCardStack->rect.x = event->motion.x - dragOffset.x;
+                    draggedCardStack->rect.y = event->motion.y - dragOffset.y;
+                    moveCardStack(draggedCardStack->next, event->motion.x - dragOffset.x,
+                                  event->motion.y - dragOffset.y - draggedCardStack->rect.y);
+                }
+                break;
+        }
     }
-}
 
 
 

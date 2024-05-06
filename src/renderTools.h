@@ -9,20 +9,20 @@
 #define UNTITLED_RENDERTOOLS_H
 
 #endif //UNTITLED_RENDERTOOLS_H
-const double CARD_SCALE_FACTOR = 0.32;
-const int ORIGINAL_CARD_WIDTH = 500;
-const int ORIGINAL_CARD_HEIGHT = 726;
-const int SCALED_CARD_WIDTH = (int)(ORIGINAL_CARD_WIDTH * CARD_SCALE_FACTOR);
-const int SCALED_CARD_HEIGHT = (int)(ORIGINAL_CARD_HEIGHT * CARD_SCALE_FACTOR);
-const int COLUMN_WIDTH = SCALED_CARD_WIDTH;
-const int COLUMN_HEIGHT = SCALED_CARD_HEIGHT;
-const int COLUMN_PADDING = 25;
-const int FOUNDATION_WIDTH = SCALED_CARD_WIDTH;
-const int FOUNDATION_HEIGHT = SCALED_CARD_HEIGHT;
-const int FOUNDATION_PADDING = 11;
-const int COLUMN_TO_FOUNDATION_PADDING = COLUMN_PADDING*3;
-int WINDOW_WIDTH = 1600;
-int WINDOW_HEIGHT = 1080;
+extern const double CARD_SCALE_FACTOR;
+extern const int ORIGINAL_CARD_WIDTH;
+extern const int ORIGINAL_CARD_HEIGHT;
+extern const int SCALED_CARD_WIDTH;
+extern const int SCALED_CARD_HEIGHT;
+extern const int COLUMN_WIDTH;
+extern const int COLUMN_HEIGHT;
+extern const int COLUMN_PADDING;
+extern const int FOUNDATION_WIDTH;
+extern const int FOUNDATION_HEIGHT;
+extern const int FOUNDATION_PADDING;
+extern const int COLUMN_TO_FOUNDATION_PADDING;
+extern const int WINDOW_WIDTH;
+extern const int WINDOW_HEIGHT;
 
 /**
  * Loads a texture from a file and returns it
@@ -70,9 +70,16 @@ void renderGameBoard(SDL_Renderer* renderer, SDL_Texture* backgroundTexture, SDL
 void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int distanceBetweenCards);
 /**
  * Returns the card at the position x, y
- * @param columns The columns to search for the card
- * @param x The x-coordinate to render the card
- * @param y The y-coordinate to render the card
+ * @param columns The column to search for a card
+ * @param y The y-coordinate to search
  * @author Frederik Bode Hendrichsen s224804
  */
-Card* getCardStackAtPosition(Column* columns, int x, int y);
+Card* getCardStackAtPosition(Column* column, int y);
+/**
+ * Returns the column at the position x
+ * @param columns The columns to search for the column
+ * @param x The x-coordinate to search
+ * @return The column at the position x
+ * @author Frederik Bode Hendrichsen s224804
+ */
+Column* getColumnAtPosition(Column* columns, int x, int y);
