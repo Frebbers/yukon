@@ -77,18 +77,18 @@ void applyCardTexture(SDL_Renderer* renderer, Card* card) {
         sprintf(pathToCard,"rsc/graphics/%c%c.png",card->value,card->suit);
         card->texture = loadTexture(pathToCard, renderer);}
 }
-void renderCard(SDL_Renderer* renderer, Card card, int x, int y) {
+void renderCard(SDL_Renderer* renderer, Card* card, int x, int y) {
     SDL_Rect srcRect = {0, 0, ORIGINAL_CARD_WIDTH, ORIGINAL_CARD_HEIGHT}; // Source rectangle
     SDL_Rect dstRect = {x, y, SCALED_CARD_WIDTH, SCALED_CARD_HEIGHT};     // Destination rectangle scaled
-    card.rect = dstRect;
-    SDL_RenderCopy(renderer, card.texture, &srcRect, &dstRect);
+    card->rect = dstRect;
+    SDL_RenderCopy(renderer, card->texture, &srcRect, &dstRect);
 }
 
 
 void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int distanceBetweenCards) {
 
     while (head != NULL) {
-        renderCard(renderer, *head, x, y);
+        renderCard(renderer, head, x, y);
         head = head->next;
         y += distanceBetweenCards;
     }
@@ -173,7 +173,7 @@ Card* getCardStackAtPosition(Column* column, int y) {
 
 void renderColumns(SDL_Renderer* renderer, Column* columns, SDL_Rect* columnSpaces) {
     Column* currentColumn = columns;
-    int distanceBetweenCards = 65;
+    int distanceBetweenCards = 60;
     int i = 0;
     while (currentColumn != NULL) {
         if (i == 7){distanceBetweenCards = 0;}
