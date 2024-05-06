@@ -28,5 +28,6 @@ Column** dealColumns(Column** columns);
 char* moveCardToFoundation(Column** sourceColumn, Column** foundation, char value, char suit);
 char* moveCardFromFoundation(Column** foundation, Column** destColumn, char value, char suit);
 
+Column** dealColumnsFront(Card* card);
 
 #endif //UNTITLED_COLUMNS_H
