@@ -74,6 +74,15 @@ void renderColumn(SDL_Renderer* renderer, Card* head, int x, int y, int distance
  * @param y The y-coordinate to search
  * @author Frederik Bode Hendrichsen s224804
  */
+
+/**
+ * Moves a stack of cards at the given position.
+ * @param renderer The renderer to render the columns
+ * @param columns The columns to render
+ * @param columnSpaces The SDL_Rect array of the column origin spaces
+ * @author
+ */
+void renderColumns(SDL_Renderer* renderer, Column* columns, SDL_Rect* columnSpaces);
 Card* getCardStackAtPosition(Column* column, int y);
 /**
  * Returns the column at the position x

@@ -163,6 +163,17 @@ Card* getCardStackAtPosition(Column* column, int y) {
     return NULL; // No card found at this position
 }
 
+void renderColumns(SDL_Renderer* renderer, Column* columns, SDL_Rect* columnSpaces) {
+    Column* currentColumn = columns;
+    int distanceBetweenCards = 65;
+    int i = 0;
+    while (currentColumn != NULL) {
+        if (i == 7){distanceBetweenCards = 0;}
+        renderColumn(renderer, currentColumn->card, columnSpaces[i].x, columnSpaces[i].y, distanceBetweenCards);
+        currentColumn = currentColumn->next;
+        i++;
+    }
+}
 
 
 
