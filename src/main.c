@@ -75,7 +75,6 @@ int main(int argc, char *argv[]) {
     SDL_Rect foundationSpaces[4];
     SDL_Texture *backGroundTexture = loadTexture("rsc/graphics/background_basic.png", rend);
     setupRects(columnSpaces, foundationSpaces);
-   // renderGameBoard(rend, loadTexture("rsc/graphics/background_basic.png", rend), columnSpaces, foundationSpaces,);
     // Load image into memory
     Card* deck = loadDeck("rsc/UnShuffledCards.txt", rend);
     if (deck == NULL) {
@@ -83,34 +82,7 @@ int main(int argc, char *argv[]) {
         closeSDL(window, rend);
         return 1;
     }
-/*   Card* temp = deck;
-    for (int i = 0; i < 7; i++) {
-        deck = deck->next;
-    }
-    deck->next = NULL;
-    deck = temp;
-   // SDL_RenderClear(rend);
-    //renderColumn(rend, deck, 0, 0, 0);
-*/
-/*
-    //create texture from surface
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
-    SDL_FreeSurface(surface);
-    if (!tex) {
-        printf("Could not create texture: %s\n", SDL_GetError());
-        return 1;
-    }
-    // Get the dimensions of texture and set destination to the whole screen
-    SDL_Rect dest;
-    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
-    // Center the texture on the screen
-    dest.x = (WINDOW_WIDTH - dest.w) / 2;
-    dest.y = (WINDOW_HEIGHT - dest.h) / 2;
-    float y_pos = WINDOW_HEIGHT;
 
-
-
-*/
     Column **columns = columnFront(deck);
     dealColumns(columns);
     int close_requested = 0;
@@ -129,11 +101,6 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        // Clear the renderer
-        //SDL_RenderClear(rend);
-
-        // Render the game board and the columns
-        //renderGameBoard(rend, backGroundTexture, columnSpaces, foundationSpaces, *columns);
         renderColumns(rend, *columns, columnSpaces);
 
         // Render dragged card last so it appears on top
@@ -155,7 +122,7 @@ int main(int argc, char *argv[]) {
     closeSDL(window, rend);
     return 0;
 }
-/*
+
     int startGame = 1;
     int len;
    // Card *deck = NULL;
@@ -342,4 +309,3 @@ int main(int argc, char *argv[]) {
 
     }
 
-*/
